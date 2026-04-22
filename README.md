@@ -4,3 +4,8 @@
 - Rodrigo Delaunay
 - Rúben Rocha
 - Tiago Alves
+
+
+### How to setup
+Run setup.ps1
+
