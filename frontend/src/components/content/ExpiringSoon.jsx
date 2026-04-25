@@ -1,6 +1,26 @@
 import ExpiringItemCard from "./ExpiringItemCard.jsx";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import data from "bootstrap/js/src/dom/data.js";
 
 const ExpiringSoon = () => {
+
+    const foodImagePath = "/foods/";
+    const URL_PRODUCTDATA = "http://localhost:8000/products/api/products/";
+    const [productsList, setProductsList] = useState([]);
+
+    // lesson learned:
+    //  use useEffect() for a single API call on component mount
+    //  otherwise React calls it on every Render
+
+    useEffect(() => {
+        axios.get(URL_PRODUCTDATA)
+            .then(response => {
+                setProductsList(response.data);
+            })
+            .catch(error => console.error(error));
+    }, []);
+
     return (
         <>
             <h5>Consumir Brevemente</h5>
@@ -13,13 +33,41 @@ const ExpiringSoon = () => {
                 maxWidth: "auto"
               }}
             >
-                <ExpiringItemCard name="chicken breasts" image="test" daysLeft={1}/>
-                <ExpiringItemCard name="cheese" image="test" daysLeft={2}/>
+                <ExpiringItemCard
+                    name="Peitos de frango"
+                    image={foodImagePath + findProductImage(productsList, "FRANGO")}
+                    daysLeft={1}
+                />
+                <ExpiringItemCard
+                          key={99}
+                    name="Queijo"
+                    image={foodImagePath + findProductImage(productsList, "queiJO")}
+                    daysLeft={2}
+                />
                   {[1, 2, 3, 4, 5].map((i) => (
-                      <ExpiringItemCard name={"item" + i} image="test" daysLeft={i}/>
+                      <ExpiringItemCard
+                          key={i}
+                          name={"item" + i}
+                          image={foodImagePath + findProductImage(productsList, "test")}
+                          daysLeft={i}/>
                     ))}
             </div>
         </>
     )
 }
+
+function findProductImage(fetchedData, productString){
+
+   const result = fetchedData.find(item =>
+        item.name.toLowerCase().includes(productString.toLowerCase())
+    );
+
+    if (result)
+    {
+        console.log(result.img);
+    }
+
+    return result ? result.img : "diet.png";
+}
+
 export default ExpiringSoon;
