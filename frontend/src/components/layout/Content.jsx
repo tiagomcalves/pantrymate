@@ -1,6 +1,6 @@
-import GeneralView from "./content/GeneralView.jsx";
-import ExpiringSoon from "./content/ExpiringSoon.jsx";
-import SuggestionByAI from "./content/SuggestionByAI.jsx";
+import GeneralView from "../../features/GeneralView.jsx";
+import ExpiringBelt from "../../features/Expiring/ExpiringBelt.jsx";
+import SuggestionByAI from "../../features/SuggestionByAI.jsx";
 
 const Content = () => {
 
@@ -12,7 +12,7 @@ const Content = () => {
         <section>
             <GeneralView/>
             <hr/>
-            <ExpiringSoon/>
+            <ExpiringBelt/>
             <hr/>
             <SuggestionByAI/>
             <hr/>

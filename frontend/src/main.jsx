@@ -10,6 +10,6 @@
 // )
 
 import { createRoot } from 'react-dom/client'
-import Home from './components/Landpage'
+import Home from './pages/Landpage.jsx'
 
 createRoot(document.getElementById('root')).render(<Home/>)
