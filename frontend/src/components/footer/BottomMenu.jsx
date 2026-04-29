@@ -1,5 +1,4 @@
-import React from "react";
-import {Button, ButtonGroup} from "reactstrap";
+import { ButtonGroup } from "reactstrap";
 import BottomMenuItem from "./BottomMenuItem.jsx";
 
 import dashboardIcon from '../../assets/bottom-menu/dashboard.svg'
@@ -8,19 +7,16 @@ import pantryIcon from '../../assets/bottom-menu/pantry.svg'
 import recipesIcon from '../../assets/bottom-menu/recipes.svg'
 import scannerIcon from '../../assets/bottom-menu/scanner.svg'
 
-//  svg icons from
-//  https://www.untitledui.com/free-icons
-//  https://www.svgrepo.com/svg/524002/chef-hat
-
 const BottomMenu = () => {
     return (
         <ButtonGroup className="d-flex">
-            <BottomMenuItem icon={dashboardIcon} string={"Dashboard"}/>
-            <BottomMenuItem icon={pantryIcon} string={"Dispensa"}/>
-            <BottomMenuItem icon={scannerIcon} string={"Scanner"}/>
-            <BottomMenuItem icon={recipesIcon} string={"Receitas"}/>
-            <BottomMenuItem icon={familyIcon} string={"Familia"}/>
+            <BottomMenuItem icon={dashboardIcon} string="Dashboard" href="/" />
+            <BottomMenuItem icon={pantryIcon}    string="Dispensa"  href="/dispensa" />
+            <BottomMenuItem icon={scannerIcon}   string="Scanner"   href="/scanner" />
+            <BottomMenuItem icon={recipesIcon}   string="Receitas"  href="/receitas" />
+            <BottomMenuItem icon={familyIcon}    string="Família"   href="/familia" />
         </ButtonGroup>
-    )
-}
+    );
+};
+
 export default BottomMenu;
