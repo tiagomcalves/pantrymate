@@ -5,7 +5,7 @@ import { useUser } from "../context/UserContext";
 import comprasData from "../data/compras.json";
 
 const ListaCompras = () => {
-    const [itens, setItens] = useState(comprasData.slice(0, 4));
+    const [itens, setItens] = useState(comprasData);
     const navigate = useNavigate();
     const { currentUser } = useUser();
     const role = currentUser?.role;
@@ -14,8 +14,12 @@ const ListaCompras = () => {
         setItens(prev =>
             prev.map(item => item.id === id ? { ...item, comprado: !item.comprado } : item)
         );
+        setTimeout(() => {
+            setItens(prev => prev.filter(item => !(item.id === id && item.comprado)));
+        }, 600);
     };
 
+    const visiveis = itens.slice(0, 4);
     const pendentes = itens.filter(i => !i.comprado).length;
 
     if (role === "junior") {
@@ -35,7 +39,7 @@ const ListaCompras = () => {
                     <Button
                         size="sm"
                         style={{ marginTop: "12px", background: "#45A293", border: "none", borderRadius: "8px" }}
-                        onClick={() => navigate("/compras")}
+                        onClick={() => navigate("/pedidos")}
                     >
                         Fazer Pedido
                     </Button>
@@ -51,8 +55,16 @@ const ListaCompras = () => {
                 <Badge color="warning" pill>{pendentes} por comprar</Badge>
             </div>
 
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "0 12px", marginBottom: "4px" }}>
+                <span style={{ width: "18px" }} />
+                <span style={{ width: "20px" }} />
+                <span style={{ flex: 1, fontSize: "11px", color: "#aaa", textTransform: "uppercase" }}>Produto</span>
+                <span style={{ fontSize: "11px", color: "#aaa", minWidth: "32px", textAlign: "right", textTransform: "uppercase" }}>QTD</span>
+                <span style={{ fontSize: "11px", color: "#aaa", minWidth: "28px", textTransform: "uppercase" }}>UF</span>
+            </div>
+
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {itens.map(item => (
+                {visiveis.map(item => (
                     <div
                         key={item.id}
                         onClick={() => toggleComprado(item.id)}
@@ -78,7 +90,8 @@ const ListaCompras = () => {
                         />
                         <span style={{ fontSize: "20px" }}>{item.icone}</span>
                         <span style={{ flex: 1 }}>{item.nome}</span>
-                        <span style={{ fontSize: "12px", color: "#888" }}>{item.categoria}</span>
+                        <span style={{ fontSize: "12px", color: "#888", minWidth: "32px", textAlign: "right" }}>{item.qtd}</span>
+                        <span style={{ fontSize: "12px", color: "#aaa", minWidth: "28px" }}>{item.uf}</span>
                     </div>
                 ))}
             </div>

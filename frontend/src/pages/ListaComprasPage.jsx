@@ -5,10 +5,65 @@ import comprasData from "../data/compras.json";
 
 const CATEGORIAS = ["Laticínios", "Padaria", "Frutas e Legumes", "Carnes", "Bebidas", "Outros"];
 
+const CATALOGO = {
+    "Laticínios": [
+        { nome: "Leite", icone: "🥛", uf: "L" },
+        { nome: "Queijo", icone: "🧀", uf: "KG" },
+        { nome: "Ovos", icone: "🥚", uf: "EA" },
+        { nome: "Manteiga", icone: "🧈", uf: "EA" },
+        { nome: "Iogurte", icone: "🥛", uf: "EA" },
+        { nome: "Natas", icone: "🥛", uf: "EA" },
+    ],
+    "Padaria": [
+        { nome: "Pão", icone: "🍞", uf: "EA" },
+        { nome: "Croissant", icone: "🥐", uf: "EA" },
+        { nome: "Tostas", icone: "🍞", uf: "PCT" },
+        { nome: "Bolo", icone: "🎂", uf: "EA" },
+    ],
+    "Frutas e Legumes": [
+        { nome: "Maçã", icone: "🍎", uf: "KG" },
+        { nome: "Tomate", icone: "🍅", uf: "KG" },
+        { nome: "Banana", icone: "🍌", uf: "KG" },
+        { nome: "Laranja", icone: "🍊", uf: "KG" },
+        { nome: "Alface", icone: "🥬", uf: "EA" },
+        { nome: "Cenoura", icone: "🥕", uf: "KG" },
+        { nome: "Batata", icone: "🥔", uf: "KG" },
+        { nome: "Cebola", icone: "🧅", uf: "KG" },
+        { nome: "Alho", icone: "🧄", uf: "EA" },
+    ],
+    "Carnes": [
+        { nome: "Frango", icone: "🍗", uf: "KG" },
+        { nome: "Carne Picada", icone: "🥩", uf: "KG" },
+        { nome: "Salsichas", icone: "🌭", uf: "PCT" },
+        { nome: "Bacon", icone: "🥓", uf: "PCT" },
+        { nome: "Porco", icone: "🥩", uf: "KG" },
+        { nome: "Atum", icone: "🐟", uf: "EA" },
+        { nome: "Salmão", icone: "🐟", uf: "KG" },
+    ],
+    "Bebidas": [
+        { nome: "Água (6x1.5L)", icone: "💧", uf: "CX" },
+        { nome: "Sumo de Laranja", icone: "🍊", uf: "L" },
+        { nome: "Refrigerante", icone: "🥤", uf: "L" },
+        { nome: "Cerveja", icone: "🍺", uf: "CX" },
+        { nome: "Vinho", icone: "🍷", uf: "EA" },
+        { nome: "Café", icone: "☕", uf: "PCT" },
+    ],
+    "Outros": [
+        { nome: "Açúcar", icone: "🍬", uf: "KG" },
+        { nome: "Sal", icone: "🧂", uf: "KG" },
+        { nome: "Azeite", icone: "🫙", uf: "L" },
+        { nome: "Massa", icone: "🍝", uf: "PCT" },
+        { nome: "Arroz", icone: "🍚", uf: "KG" },
+        { nome: "Detergente", icone: "🧴", uf: "EA" },
+    ],
+};
+
 const ListaComprasPage = () => {
     const [itens, setItens] = useState(comprasData);
     const [novoNome, setNovoNome] = useState("");
     const [novaCategoria, setNovaCategoria] = useState("Outros");
+    const [novaQtd, setNovaQtd] = useState(1);
+    const [novaUf, setNovaUf] = useState("EA");
     const [pedidoEnviado, setPedidoEnviado] = useState(false);
     const { currentUser } = useUser();
     const role = currentUser?.role;
@@ -17,25 +72,41 @@ const ListaComprasPage = () => {
         setItens(prev =>
             prev.map(item => item.id === id ? { ...item, comprado: !item.comprado } : item)
         );
+        setTimeout(() => {
+            setItens(prev => prev.filter(item => !(item.id === id && item.comprado)));
+        }, 600);
     };
 
     const removerItem = (id) => {
         setItens(prev => prev.filter(item => item.id !== id));
     };
 
-    const adicionarItem = () => {
-        const nome = novoNome.trim();
-        if (!nome) return;
-        setItens(prev => [
-            ...prev,
-            { id: Date.now(), nome, icone: "🛒", comprado: false, categoria: novaCategoria }
-        ]);
+    const handleCategoriaChange = (e) => {
+        setNovaCategoria(e.target.value);
         setNovoNome("");
     };
 
+    const handleProdutoChange = (e) => {
+        const nome = e.target.value;
+        setNovoNome(nome);
+        const produto = (CATALOGO[novaCategoria] || []).find(p => p.nome === nome);
+        if (produto) setNovaUf(produto.uf);
+    };
+
+    const adicionarItem = () => {
+        if (!novoNome) return;
+        const produto = (CATALOGO[novaCategoria] || []).find(p => p.nome === novoNome);
+        const icone = produto?.icone || "🛒";
+        setItens(prev => [
+            ...prev,
+            { id: Date.now(), nome: novoNome, icone, comprado: false, categoria: novaCategoria, qtd: novaQtd, uf: novaUf }
+        ]);
+        setNovoNome("");
+        setNovaQtd(1);
+    };
+
     const enviarPedido = () => {
-        const nome = novoNome.trim();
-        if (!nome) return;
+        if (!novoNome) return;
         setPedidoEnviado(true);
         setNovoNome("");
         setTimeout(() => setPedidoEnviado(false), 3000);
@@ -59,18 +130,22 @@ const ListaComprasPage = () => {
                 </p>
                 <InputGroup style={{ marginBottom: "12px" }}>
                     <Input
-                        placeholder="O que precisas? ex: Sumo de laranja..."
-                        value={novoNome}
-                        onChange={e => setNovoNome(e.target.value)}
-                        onKeyDown={e => e.key === "Enter" && enviarPedido()}
-                    />
-                    <Input
                         type="select"
                         value={novaCategoria}
-                        onChange={e => setNovaCategoria(e.target.value)}
-                        style={{ maxWidth: "140px" }}
+                        onChange={handleCategoriaChange}
+                        style={{ maxWidth: "150px" }}
                     >
                         {CATEGORIAS.map(cat => <option key={cat}>{cat}</option>)}
+                    </Input>
+                    <Input
+                        type="select"
+                        value={novoNome}
+                        onChange={handleProdutoChange}
+                    >
+                        <option value="">Selecionar Produto</option>
+                        {(CATALOGO[novaCategoria] || []).map(p => (
+                            <option key={p.nome} value={p.nome}>{p.icone} {p.nome}</option>
+                        ))}
                     </Input>
                     <Button
                         style={{ background: "#45A293", border: "none" }}
@@ -102,18 +177,38 @@ const ListaComprasPage = () => {
             <div style={{ marginBottom: "20px" }}>
                 <InputGroup>
                     <Input
-                        placeholder="Nome do produto..."
+                        type="select"
+                        value={novaCategoria}
+                        onChange={handleCategoriaChange}
+                        style={{ maxWidth: "150px" }}
+                    >
+                        {CATEGORIAS.map(cat => <option key={cat}>{cat}</option>)}
+                    </Input>
+                    <Input
+                        type="select"
                         value={novoNome}
-                        onChange={e => setNovoNome(e.target.value)}
-                        onKeyDown={e => e.key === "Enter" && adicionarItem()}
+                        onChange={handleProdutoChange}
+                    >
+                        <option value="">Selecionar Produto</option>
+                        {(CATALOGO[novaCategoria] || []).map(p => (
+                            <option key={p.nome} value={p.nome}>{p.icone} {p.nome}</option>
+                        ))}
+                    </Input>
+                    <Input
+                        type="number"
+                        min={1}
+                        value={novaQtd}
+                        onChange={e => setNovaQtd(Number(e.target.value))}
+                        style={{ maxWidth: "64px" }}
                     />
                     <Input
                         type="select"
-                        value={novaCategoria}
-                        onChange={e => setNovaCategoria(e.target.value)}
-                        style={{ maxWidth: "140px" }}
+                        value={novaUf}
+                        onChange={e => setNovaUf(e.target.value)}
+                        disabled={!!novoNome}
+                        style={{ maxWidth: "80px" }}
                     >
-                        {CATEGORIAS.map(cat => <option key={cat}>{cat}</option>)}
+                        {["EA", "KG", "G", "L", "CX", "PCT"].map(u => <option key={u}>{u}</option>)}
                     </Input>
                     <Button color="success" onClick={adicionarItem}>
                         <i className="bi bi-plus-lg" />
@@ -132,6 +227,14 @@ const ListaComprasPage = () => {
                     }}>
                         {categoria}
                     </h6>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "0 12px", marginBottom: "4px" }}>
+                        <span style={{ width: "18px" }} />
+                        <span style={{ width: "20px" }} />
+                        <span style={{ flex: 1, fontSize: "11px", color: "#aaa", textTransform: "uppercase" }}>Produto</span>
+                        <span style={{ fontSize: "11px", color: "#aaa", minWidth: "32px", textAlign: "right", textTransform: "uppercase" }}>QTD</span>
+                        <span style={{ fontSize: "11px", color: "#aaa", minWidth: "36px", textTransform: "uppercase" }}>UF</span>
+                        {role === "admin" && <span style={{ width: "24px" }} />}
+                    </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                         {grupo.map(item => (
                             <div
@@ -160,7 +263,8 @@ const ListaComprasPage = () => {
                                 }}>
                                     {item.nome}
                                 </span>
-                                {/* Só o Admin pode remover */}
+                                <span style={{ fontSize: "12px", color: "#888", minWidth: "32px", textAlign: "right" }}>{item.qtd}</span>
+                                <span style={{ fontSize: "12px", color: "#aaa", minWidth: "36px" }}>{item.uf}</span>
                                 {role === "admin" && (
                                     <Button
                                         close
