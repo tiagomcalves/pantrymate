@@ -1,6 +1,6 @@
 [
-  { "id": 1, "nome": "Maria Silva",   "avatar": "/assets/avatars/maria.png",   "role": "admin" },
-  { "id": 2, "nome": "João Silva",    "avatar": "/assets/avatars/joao.png",    "role": "member" },
-  { "id": 3, "nome": "Ana Silva",     "avatar": "/assets/avatars/ana.png",     "role": "junior" },
-  { "id": 4, "nome": "Pedro Silva",   "avatar": "/assets/avatars/pedro.png",   "role": "member" }
+  { "id": 1, "nome": "Maria Silva",  "role": "admin"  },
+  { "id": 2, "nome": "João Silva",   "role": "member" },
+  { "id": 3, "nome": "Ana Silva",    "role": "junior" },
+  { "id": 4, "nome": "Pedro Silva",  "role": "member" }
 ]

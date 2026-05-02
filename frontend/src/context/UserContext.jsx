@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
 
     const registarMembro = (nome, role, email, password) => {
         const id = Date.now();
-        setMembros(prev => [...prev, { id, nome, avatar: null, role }]);
+        setMembros(prev => [...prev, { id, nome, role }]);
         setCredentials(prev => [...prev, { email, password, userId: id }]);
     };
 
