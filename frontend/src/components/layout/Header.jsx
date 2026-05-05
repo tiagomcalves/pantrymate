@@ -6,8 +6,6 @@ import WelcomeUser from "./header/WelcomeUser.jsx";
 
 const Header = () => {
 
-    const mock_user = {'username': 'Moita'}
-
     return (
         <header>
             <div id="top-header" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
