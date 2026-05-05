@@ -2,11 +2,11 @@ import React from "react";
 import {Button, ButtonGroup} from "reactstrap";
 import BottomMenuItem from "./BottomMenuItem.jsx";
 
-import dashboardIcon from '../../assets/bottom-menu/dashboard.svg'
-import familyIcon from '../../assets/bottom-menu/family.svg'
-import pantryIcon from '../../assets/bottom-menu/pantry.svg'
-import recipesIcon from '../../assets/bottom-menu/recipes.svg'
-import scannerIcon from '../../assets/bottom-menu/scanner.svg'
+import dashboardIcon from '../../../assets/bottom-menu/dashboard.svg'
+import familyIcon from '../../../assets/bottom-menu/family.svg'
+import pantryIcon from '../../../assets/bottom-menu/pantry.svg'
+import recipesIcon from '../../../assets/bottom-menu/recipes.svg'
+import scannerIcon from '../../../assets/bottom-menu/scanner.svg'
 
 //  svg icons from
 //  https://www.untitledui.com/free-icons

@@ -1,7 +1,7 @@
 // import logo from "../src/assets/images/logo.png"
 import React from "react";
 import {Badge, Button, Input, InputGroup, InputGroupText, Table} from "reactstrap";
-import bellIcon from '../assets/bell.svg'
+import bellIcon from '../../assets/bell.svg'
 
 const Header = () => {
     return (

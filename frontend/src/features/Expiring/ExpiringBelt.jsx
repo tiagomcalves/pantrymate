@@ -1,11 +1,10 @@
 import ExpiringItemCard from "./ExpiringItemCard.jsx";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import data from "bootstrap/js/src/dom/data.js";
+import ContentSection from "../../components/common/ContentSection.jsx";
 
-const ExpiringSoon = () => {
+const ExpiringBelt = () => {
 
-    const foodImagePath = "/foods/";
     const URL_PRODUCTDATA = "http://localhost:8000/products/api/products/";
     const [productsList, setProductsList] = useState([]);
 
@@ -22,39 +21,39 @@ const ExpiringSoon = () => {
     }, []);
 
     return (
-        <>
-            <h5>Consumir Brevemente</h5>
+        <ContentSection title={"Consumir Brevemente"} w={1024} h={250}>
             <div
               style={{
                 display: "flex",
                 overflowX: "auto",
                 gap: "10px",
-                padding: "10px",
+                padding: "10px 0px 15px",
                 maxWidth: "auto"
               }}
             >
                 <ExpiringItemCard
                     name="Peitos de frango"
-                    image={foodImagePath + findProductImage(productsList, "FRANGO")}
+                    imageFile={findProductImage(productsList, "FRANGO")}
                     daysLeft={1}
                 />
                 <ExpiringItemCard
                           key={99}
-                    name="Queijo"
-                    image={foodImagePath + findProductImage(productsList, "queiJO")}
+                          name="Queijo"
+                    imageFile={findProductImage(productsList, "queiJO")}
                     daysLeft={2}
                 />
                   {[1, 2, 3, 4, 5].map((i) => (
                       <ExpiringItemCard
                           key={i}
                           name={"item" + i}
-                          image={foodImagePath + findProductImage(productsList, "test")}
+                          imageFile={findProductImage(productsList, "test")}
                           daysLeft={i}/>
                     ))}
             </div>
-        </>
+        </ContentSection>
     )
 }
+
 
 function findProductImage(fetchedData, productString){
 
@@ -70,4 +69,4 @@ function findProductImage(fetchedData, productString){
     return result ? result.img : "diet.png";
 }
 
-export default ExpiringSoon;
+export default ExpiringBelt;
