@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "nome": "Tomates Frescos",
+    "categoria": "Frescos",
+    "dataValidade": "2026-05-11",
+    "imagemSrc": "/foods/tomate.jpg",
+    "quantidade": 6
+  },
+  {
+    "id": 2,
+    "nome": "Fiambre Fatiado",
+    "categoria": "Frescos",
+    "dataValidade": "2026-05-06",
+    "imagemSrc": "/foods/fiambre.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 3,
+    "nome": "Peitos de Frango",
+    "categoria": "Congelados",
+    "dataValidade": "2026-05-07",
+    "imagemSrc": "/foods/frango.jpg",
+    "quantidade": 2
+  },
+  {
+    "id": 4,
+    "nome": "Queijo Flamengo",
+    "categoria": "Frescos",
+    "dataValidade": "2026-05-08",
+    "imagemSrc": "/foods/queijo.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 5,
+    "nome": "Ovos",
+    "categoria": "Mercearia",
+    "dataValidade": "2026-12-01",
+    "imagemSrc": "/foods/ovos.jpg",
+    "quantidade": 12
+  },
+  {
+    "id": 6,
+    "nome": "Presunto Curado",
+    "categoria": "Frescos",
+    "dataValidade": "2026-06-15",
+    "imagemSrc": "/foods/presunto.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 7,
+    "nome": "Massa Esparguete",
+    "categoria": "Mercearia",
+    "dataValidade": "2026-12-10",
+    "imagemSrc": "/foods/diet.png",
+    "quantidade": 3
+  }
+]
