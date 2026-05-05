@@ -1,6 +1,6 @@
 import {Card, CardTitle} from "reactstrap";
 
-const ItemCard = ({title, img, children}) => {
+const ProductCard = ({title, img, children}) => {
     return (
         <>
             <Card
@@ -35,4 +35,4 @@ const ItemCard = ({title, img, children}) => {
         </>
     )
 }
-export default ItemCard;
+export default ProductCard;
