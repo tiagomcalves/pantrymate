@@ -1,7 +1,8 @@
 // import logo from "../src/assets/images/logo.png"
 import React from "react";
-import SearchBox from "../common/SearchBox.jsx";
-import Notifications from "../common/Notifications.jsx";
+import SearchBox from "./header/SearchBox.jsx";
+import Notifications from "./header/Notifications.jsx";
+import WelcomeUser from "./header/WelcomeUser.jsx";
 
 const Header = () => {
 
@@ -11,8 +12,7 @@ const Header = () => {
         <header>
             <div id="top-header" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <div id="left-header" style={{textAlign: "left"}}>
-                    <h3>Bom dia,</h3>
-                    <h4>Visitante!</h4>
+                    <WelcomeUser/>
                 </div>
 
                 <div id="right-header">

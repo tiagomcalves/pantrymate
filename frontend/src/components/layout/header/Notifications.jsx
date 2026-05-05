@@ -1,6 +1,6 @@
 import {Badge, Button} from "reactstrap";
 import React from "react";
-import bellIcon from '../../assets/bell.svg'
+import bellIcon from '../../../assets/bell.svg'
 
 const Notifications = () => {
     return (
