@@ -1,9 +1,6 @@
-import {Badge, Card, CardBody, CardText, CardTitle, ListGroup, ListGroupItem} from "reactstrap";
+import {Card, CardTitle} from "reactstrap";
 
-const ExpiringItemCard = ({image, name, daysLeft}) => {
-
-    const labelColor = (daysLeft > 1) ? "warning" : "danger";
-
+const ProductCard = ({title, img, children}) => {
     return (
         <>
             <Card
@@ -23,22 +20,19 @@ const ExpiringItemCard = ({image, name, daysLeft}) => {
                             height: "100px",
                             objectFit: "contain"
                         }}
-                        alt={name + " picture"}
-                        src={image}
+                        alt={title + "??img"}
+                        src={img}
                     />
                 </div>
 
                 <div style={{textAlign: "center", paddingBottom: "8px"}}>
-                    <CardTitle tag="h5">{name}</CardTitle>
-
-                    <Badge color={labelColor} pill>
-                        <CardText style={{margin: 0}}>
-                            {daysLeft > 1 ? daysLeft + " dias" : "Expira hoje"}
-                        </CardText>
-                    </Badge>
+                    <CardTitle tag="h5">
+                        {title}
+                    </CardTitle>
+                    {children}
                 </div>
             </Card>
         </>
     )
 }
-export default ExpiringItemCard;
+export default ProductCard;

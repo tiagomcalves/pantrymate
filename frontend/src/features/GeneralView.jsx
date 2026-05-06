@@ -1,20 +1,11 @@
 import {Card, CardBody, CardHeader, CardText, CardTitle, ListGroup, ListGroupItem} from "reactstrap";
-import ExpiringItemCard from "./ExpiringItemCard.jsx";
+import ExpireBadge from "./Expiring/ExpireBadge.jsx";
+import ContentSection from "../components/common/ContentSection.jsx";
 
 const GeneralView = () => {
     return (
         <>
-            <h5>Visão Geral</h5>
-            <div
-                style={{
-                    display: "flex",
-                    overflowX: "auto",
-                    gap: "10px",
-                    padding: "10px"
-                }}
-            >
-
-
+            <ContentSection title={"Visão Geral"} w={400} h={500}>
                 <Card
                     className="my-2"
                     color="danger"
@@ -55,7 +46,7 @@ const GeneralView = () => {
                         </CardText>
                     </CardBody>
                 </Card>
-            </div>
+            </ContentSection>
         </>
     )
 }
