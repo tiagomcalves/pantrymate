@@ -27,8 +27,8 @@ const ExpiringBelt = () => {
                 display: "flex",
                 overflowX: "auto",
                 gap: "10px",
-                padding: "10px 0px 15px",
-                maxWidth: "auto"
+                // padding: "10px 0px 15px",
+                paddingBottom: "15px"
               }}
             >
                 <ExpiringItemCard
@@ -42,7 +42,7 @@ const ExpiringBelt = () => {
                     imageFile={findProductImage(productsList, "queiJO")}
                     daysLeft={2}
                 />
-                  {[1, 2, 3, 4, 5].map((i) => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                       <ExpiringItemCard
                           key={i}
                           name={"item" + i}

@@ -1,4 +1,3 @@
-// import logo from "../src/assets/images/logo.png"
 import React from "react";
 import SearchBox from "./header/SearchBox.jsx";
 import Notifications from "./header/Notifications.jsx";
