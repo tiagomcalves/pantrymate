@@ -1,5 +1,5 @@
 import {Card, CardBody, CardHeader, CardText, CardTitle, ListGroup, ListGroupItem} from "reactstrap";
-import ExpiringItemCard from "./Expiring/ExpiringItemCard.jsx";
+import ExpireBadge from "./Expiring/ExpireBadge.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 
 const GeneralView = () => {
