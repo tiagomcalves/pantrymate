@@ -1,8 +1,9 @@
+import NavMenu from "./nav/NavMenu.jsx";
 
 const Nav = () => {
     return (
-        <nav>
-            <hr/>
+        <nav style={{marginBottom: "1rem"}}>
+            <NavMenu/>
         </nav>
     )
 }

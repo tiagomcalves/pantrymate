@@ -7,7 +7,7 @@ import WelcomeUser from "./header/WelcomeUser.jsx";
 const Header = () => {
 
     return (
-        <header>
+        <header style={{ margin: "1rem", marginBottom: "1rem"}}>
             <div id="top-header" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <div id="left-header" style={{textAlign: "left"}}>
                     <WelcomeUser/>
