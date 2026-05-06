@@ -32,8 +32,9 @@ const CarrosselConsumir = () => {
                     display: "flex",
                     overflowX: "auto",
                     gap: "10px",
-                    padding: "10px 0px 15px",
-                    maxWidth: "auto"
+                    // padding: "10px 0px 15px",
+                    paddingBottom: "15px"
+
                 }}
             >
                 {productsList.map((produto) => (
