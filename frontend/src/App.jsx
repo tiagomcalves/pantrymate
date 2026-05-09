@@ -14,19 +14,27 @@ import Footer from "./components/layout/Footer.jsx";
 function App() {
     return (
         <BrowserRouter>
-            <Container style={{ maxWidth: "2560px"}}>
                 <Header/>
                 <Nav/>
-                    <Routes>
-                        <Route path="/" element={<Dashboard/>}/>
-                        <Route path="/scanner" element={<Scanner/>}/>
-                        <Route path="/recipes" element={<Recipes/>}/>
-                        <Route path="/family" element={<Family/>}/>
-                    </Routes>
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <Container>
+                            Column 1
+                        </Container>
+                        <Container style={{ width: "50%"}}>
+                            <Routes>
+                                <Route path="/" element={<Dashboard/>}/>
+                                <Route path="/scanner" element={<Scanner/>}/>
+                                <Route path="/recipes" element={<Recipes/>}/>
+                                <Route path="/family" element={<Family/>}/>
+                            </Routes>
+                        </Container>
+                        <Container>
+                            Column 3
+                        </Container>
+                    </div>
                 {/*<div className="position-fixed bottom-0 start-0 w-100">*/}
                 {/*    <Footer/>*/}
                 {/*</div>*/}
-            </Container>
         </BrowserRouter>
     );
 }
