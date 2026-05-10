@@ -1,5 +1,5 @@
 import GeneralView from "../../features/GeneralView.jsx";
-import ExpiringBelt from "../../features/Expiring/ExpiringBelt.jsx";
+import CarrosselConsumir from "../../features/Expiring/CarrosselConsumir.jsx";
 import SuggestionByAI from "../../features/SuggestionByAI.jsx";
 
 const Content = () => {
@@ -12,7 +12,7 @@ const Content = () => {
         <section>
             <GeneralView/>
             <hr/>
-            <ExpiringBelt/>
+            <CarrosselConsumir/>
             <hr/>
             <SuggestionByAI/>
             <hr/>
