@@ -19,7 +19,7 @@ const ContentSection = ({ title, w, h, children}) => {
             <div
                 style={{
                     display: "flex",
-                    overflowX: "auto",
+                    overflowX: "hidden",
                     gap: "12px",
                     padding: "0px 15px 5px",
                     maxWidth: { w } + "px",

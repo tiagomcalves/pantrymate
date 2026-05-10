@@ -9,7 +9,7 @@ import Recipes from "./pages/Recipes.jsx";
 import {Container} from "reactstrap";
 import Header from "./components/layout/Header.jsx";
 import Nav from "./components/layout/Nav.jsx";
-import Footer from "./components/layout/Footer.jsx";
+import Dispensa from "./pages/Dispensa.jsx";
 
 function App() {
     return (
@@ -19,6 +19,7 @@ function App() {
                 <Nav/>
                     <Routes>
                         <Route path="/" element={<Dashboard/>}/>
+                        <Route path="/dispensa" element={<Dispensa/>}/>
                         <Route path="/scanner" element={<Scanner/>}/>
                         <Route path="/recipes" element={<Recipes/>}/>
                         <Route path="/family" element={<Family/>}/>
