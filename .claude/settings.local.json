@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(npm run *)",
+      "Bash(.venv/Scripts/python.exe manage.py runserver)",
+      "Bash(npm install *)",
+      "Bash(py --version)",
+      "Bash(py -m venv .venv)",
+      "Bash(py *)",
+      "Bash(backend/.venv/Scripts/pip install *)",
+      "Bash(/c/Users/Rodrigo_Silva/Desktop/LEI/\"3.º ANO\"/2_SEM/DIAM/pantrymate/backend/.venv/Scripts/pip install *)",
+      "Bash($VENV_PIP install *)",
+      "Bash(/c/Users/Rodrigo_Silva/Desktop/LEI/\"3.º ANO\"/2_SEM/DIAM/pantrymate/backend/.venv/Scripts/python.exe *)",
+      "Bash(curl *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *2)",
+      "Bash(git *)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\Rodrigo_Silva\\\\Desktop\\\\LEI\\\\3.º ANO\\\\2_SEM\\\\DIAM\\\\pantrymate\\\\backend\\\\products\\\\migrations\\\\0001_initial.py\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\Rodrigo_Silva\\\\Desktop\\\\LEI\\\\3.º ANO\\\\2_SEM\\\\DIAM\\\\pantrymate\\\\backend\\\\db.sqlite3\" -Force -ErrorAction SilentlyContinue)",
+      "Bash(Write-Output \"Limpo\")"
+    ]
+  }
+}
