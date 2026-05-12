@@ -1,0 +1,13 @@
+  # Terminal 1 — Frontend
+  cd frontend
+  npm run dev
+
+  # Terminal 2 — Backend
+  cd backend
+  python manage.py runserver
+
+
+
+ou 
+
+o run.bat
