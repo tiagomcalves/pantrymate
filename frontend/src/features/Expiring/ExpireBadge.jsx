@@ -8,6 +8,7 @@ const ExpireBadge = ({name, imageFile, daysLeft}) => {
     const[tempo, setTempo] = useState({dias: 0, horas: 0, minutos:0, segundos: 0});
     let labelColor;
     let labelDays;
+    let styleBadge = {};
 
 
     useEffect(() => {
@@ -26,7 +27,11 @@ const ExpireBadge = ({name, imageFile, daysLeft}) => {
         };
     }, [daysLeft]);
 
-    if(tempo.dias < 1) {
+    if(tempo.dias <= 0 && tempo.horas <= 0 && tempo.minutos <= 0 && tempo.segundos <= 0) {
+        labelColor= '';
+        styleBadge = { backgroundColor: '#7F14A3', color: 'white'};
+        labelDays = "Expirou";
+    } else if(tempo.dias < 1) {
         labelColor = 'danger';
         labelDays = "Expira hoje";
     } else if(tempo.dias < 3) {
@@ -45,8 +50,8 @@ const ExpireBadge = ({name, imageFile, daysLeft}) => {
 
     return (
         <ProductCard title={name} img={imgPath}>
-            <Badge color={labelColor} pill>
-                <CardText style={{margin: 0}}>
+            <Badge color={labelColor} style={styleBadge} pill >
+                <CardText>
                     {labelDays}
                 </CardText>
             </Badge>

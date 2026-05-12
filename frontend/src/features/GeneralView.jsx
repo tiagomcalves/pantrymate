@@ -5,7 +5,7 @@ import ContentSection from "../components/common/ContentSection.jsx";
 const GeneralView = () => {
     return (
         <>
-            <ContentSection title={"Visão Geral"} w={400} h={500}>
+            <ContentSection title={"Visão Geral"} w={"100%"} h={300}>
                 <Card
                     className="my-2"
                     color="danger"

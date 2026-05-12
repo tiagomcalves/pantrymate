@@ -5,11 +5,13 @@ const ProductCard = ({title, img, children}) => {
         <>
             <Card
                 style={{
-                    minWidth: "150px",
+                    width: "180px",
+                    minHeight: "200px",
                     flex: "0 0 auto",
+                    flexShrink: 0,
                     display: "flex",
                     flexDirection: "column",
-                    height: "200px",
+                    justifyContent: "space-between",
                     padding: "10px"
                 }}
             >
@@ -25,7 +27,7 @@ const ProductCard = ({title, img, children}) => {
                     />
                 </div>
 
-                <div style={{textAlign: "center", paddingBottom: "8px"}}>
+                <div style={{textAlign: "center", paddingBottom: "10px"}}>
                     <CardTitle tag="h5">
                         {title}
                     </CardTitle>

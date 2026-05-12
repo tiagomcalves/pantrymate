@@ -8,8 +8,7 @@ const FilterCategory = ({categorys, setFilteredCategory}) => {
                 display: "flex",
                 overflowX: "auto",
                 gap: "10px",
-                paddingBottom: "15px"
-
+                paddingBottom: "15px",
             }}
         >
             {categorys.map((c) => (
