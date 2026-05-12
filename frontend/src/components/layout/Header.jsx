@@ -2,6 +2,7 @@ import React from "react";
 import SearchBox from "./header/SearchBox.jsx";
 import Notifications from "./header/Notifications.jsx";
 import WelcomeUser from "./header/WelcomeUser.jsx";
+import Logout from "./header/Logout.jsx";
 
 const Header = () => {
 
@@ -14,6 +15,7 @@ const Header = () => {
 
                 <div id="right-header">
                     <Notifications/>
+                    <Logout/>
                 </div>
             </div>
             <div id="searchbar" style={{ display: "flex", flexDirection: "row", justifyContent: "end"}}>
