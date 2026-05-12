@@ -1,11 +1,15 @@
-
-const ContentSection = ({ title, w, h, children}) => {
+const ContentSection = ({title, w, h, children}) => {
 
     return (
-        <section style={ {
+        <section style={{
             border: "2px solid lightgrey",
             borderStyle: "groove",
-            borderRadius: "5px" } }>
+            borderRadius: "5px",
+            width: w,
+            height: h,
+            maxWidth: "100%",
+            overflow: "hidden"
+        }}>
 
             <h5 style={{
                 textAlign: "left",
@@ -19,14 +23,14 @@ const ContentSection = ({ title, w, h, children}) => {
             <div
                 style={{
                     display: "flex",
-                    overflowX: "auto",
+                    flex: "wrap",
+                    overflowX: "visible",
                     gap: "12px",
+                    width: "100%",
                     padding: "0px 15px 5px",
-                    maxWidth: { w } + "px",
-                    maxHeight: { h } + "px",
                 }}
             >
-                { children }
+                {children}
             </div>
         </section>
     )

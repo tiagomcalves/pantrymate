@@ -23,7 +23,7 @@ const NavMenu = () => {
               height: "30px"}}
         >
             <NavMenuItem icon={dashboardIcon} string={"Dashboard"} href={"/"}/>
-            <NavMenuItem icon={pantryIcon} string={"Dispensa"} href={"/"}/>
+            <NavMenuItem icon={pantryIcon} string={"Dispensa"} href={"/dispensa"}/>
             <NavMenuItem icon={scannerIcon} string={"Scanner"} href={"/scanner"}/>
             <NavMenuItem icon={recipesIcon} string={"Receitas"} href={"/recipes"}/>
             <NavMenuItem icon={familyIcon} string={"Familia"} href={"/family"}/>
