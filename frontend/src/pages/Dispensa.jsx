@@ -84,7 +84,9 @@ const Dispensa = () => {
                     </div>
                 </div>
             </ContentSection>
-            <Estatistics/>
+            <Estatistics
+                productsList={productsList}
+            />
         </div>
     )
 }
