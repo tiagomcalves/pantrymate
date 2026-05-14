@@ -27,7 +27,7 @@ const SuggestionByAI = () => {
         if (selectedProducts.length === 0) return;
 
         setLoading(true);
-        const names = selectedProducts.map(p => p.name).join(", ");
+        const names = selectedProducts.map(p => p.nome).join(", ");
         console.log("produtos selecionados:", names);
 
         axios.post(GROQ_API_URL, {
@@ -56,14 +56,14 @@ const SuggestionByAI = () => {
         .finally(() => setLoading(false));
     }, [selectedProducts]);
 
-    const names = selectedProducts.map(p => p.name);
+    const names = selectedProducts.map(p => p.nome);
     const usingText = names.length > 0
         ? `Usando os teus ${names.join(", ")}...`
         : "A carregar produtos...";
 
-    const recipeImage = selectedProducts.length > 0
-        ? `/foods/${selectedProducts[0].img}`
-        : null;
+    const recipeImage = selectedProducts.length > 0 && selectedProducts[0].imagem
+        ? selectedProducts[0].imagem
+        : "/foods/diet.png";
 
     // so funciona quando o backend ta ligado
     return (

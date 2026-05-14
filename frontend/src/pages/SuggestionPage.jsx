@@ -23,7 +23,9 @@ const SuggestionPage = () => {
     const selectedProducts = state?.selectedProducts ?? []
 
     // so usa a imagem do primeiro produto, nao temos mais
-    const recipeImage = selectedProducts.length > 0 ? `/foods/${selectedProducts[0].img}` : null
+    const recipeImage = selectedProducts.length > 0 && selectedProducts[0].imagem
+        ? selectedProducts[0].imagem
+        : "/foods/diet.png"
 
     useEffect(() => {
         if (!recipe?.name) return
@@ -109,7 +111,7 @@ const SuggestionPage = () => {
                                 </p>
                             )}
                             <p style={{ fontSize: '0.8rem', color: '#6c757d', marginTop: 4 }}>
-                                Ingredientes: {selectedProducts.map(p => p.name).join(', ')}
+                                Ingredientes: {selectedProducts.map(p => p.nome).join(', ')}
                             </p>
                         </div>
                     </div>
