@@ -26,13 +26,13 @@ const CarrosselConsumir = () => {
     // }, []);
 
     return (
-        <ContentSection title={"Consumir Brevemente"} w={1024} h={250}>
+        <ContentSection title={"Consumir Brevemente"} w={"100%"} h={350}>
             <div
                 style={{
                     display: "flex",
                     overflowX: "auto",
                     gap: "10px",
-                    // padding: "10px 0px 15px",
+                    padding: "10px 0px 30px",
                     paddingBottom: "15px"
 
                 }}
