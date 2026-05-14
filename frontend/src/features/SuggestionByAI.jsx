@@ -1,21 +1,77 @@
-import { Card, CardBody, CardText, CardTitle, CardHeader, ListGroup } from "reactstrap";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Card, CardBody, CardText, CardTitle } from "reactstrap";
 import ContentSection from "../components/common/ContentSection.jsx";
 
-// TODO: connect to AI api later
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_API_KEY = "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";
 
 const SuggestionByAI = () => {
+    const navigate = useNavigate();
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [recipe, setRecipe] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const suggestion = {
-        name: "Pasta Pomodoro com Mozzarella",
-        time: 20,
-        img: "pasta.png"
-    }
+    useEffect(() => {
+        axios.get("http://localhost:8000/products/api/products/")
+            .then(response => {
+                const shuffled = response.data.sort(() => 0.5 - Math.random());
+                setSelectedProducts(shuffled.slice(0, 3));
+            })
+            .catch(error => console.error(error));
+    }, []);
 
-    console.log("suggestion:", suggestion)
+    useEffect(() => {
+        if (selectedProducts.length === 0) return;
 
+        setLoading(true);
+        const names = selectedProducts.map(p => p.name).join(", ");
+        console.log("produtos selecionados:", names);
+
+        axios.post(GROQ_API_URL, {
+            model: "llama-3.1-8b-instant",
+            messages: [{
+                role: "user",
+                content: `Sugere uma receita de jantar portuguesa que use estes ingredientes: ${names}. Responde APENAS com JSON válido, sem markdown, sem texto extra: {"name": "nome da receita", "time": "X min"}`
+            }],
+            temperature: 0.7,
+        }, {
+            headers: {
+                "Authorization": `Bearer ${GROQ_API_KEY}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            let content = response.data.choices[0].message.content.trim();
+            const match = content.match(/\{[\s\S]*\}/);
+            if (match) content = match[0];
+            setRecipe(JSON.parse(content));
+        })
+        .catch(err => {
+            console.error("Groq error:", err);
+            setError(err.message ?? "Erro desconhecido");
+        })
+        .finally(() => setLoading(false));
+    }, [selectedProducts]);
+
+    const names = selectedProducts.map(p => p.name);
+    const usingText = names.length > 0
+        ? `Usando os teus ${names.join(", ")}...`
+        : "A carregar produtos...";
+
+    const recipeImage = selectedProducts.length > 0
+        ? `/foods/${selectedProducts[0].img}`
+        : null;
+
+    // so funciona quando o backend ta ligado
     return (
         <ContentSection title={"Sugestão Inteligente"}>
-            <Card style={{ borderRadius: "10px" }}>
+            <Card
+                style={{ borderRadius: "12px", width: "100%", cursor: recipe && !loading ? "pointer" : "default" }}
+                onClick={() => recipe && !loading && navigate("/suggestion", { state: { recipe, selectedProducts } })}
+            >
                 <CardBody>
                     <CardTitle tag="h6" style={{ fontWeight: "bold" }}>
                         Ideia para o Jantar? (IA)
@@ -26,14 +82,18 @@ const SuggestionByAI = () => {
 
                     <div style={{ display: "flex", gap: "12px" }}>
                         <img
-                            src={"/foods/" + suggestion.img}
+                            src={recipeImage}
                             alt="Sugestão de receita"
                             style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }}
                             onError={e => { e.target.onerror = null; e.target.style.background = "#dee2e6"; e.target.src = ""; }}
                         />
-                          <div>
-                            <div style={{ fontWeight: "600" }}>{suggestion.name}</div>
-                            <div style={{ fontSize: "0.85rem", color: "#6c757d" }}>⏱ {suggestion.time} min</div>
+                        <div>
+                            <div style={{ fontWeight: "600", fontSize: "0.95rem" }}>
+                                {loading ? "A gerar receita..." : error ? `Erro: ${error}` : (recipe?.name ?? "—")}
+                            </div>
+                            <div style={{ fontSize: "0.85rem", color: "#6c757d", marginTop: "4px" }}>
+                                {!loading && !error && recipe?.time ? `⏱ ${recipe.time}` : ""}
+                            </div>
                         </div>
                     </div>
                 </CardBody>

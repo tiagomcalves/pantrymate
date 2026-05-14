@@ -54,6 +54,29 @@ body {
   margin: 0;
 }
 
+html {
+  background: transparent !important;
+}
+
+body {
+  background: linear-gradient(135deg, #a8d4e8 0%, #f4b96e 100%) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+
+#root {
+  background: transparent !important;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(2px);
+}
+
+section {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
 #root {
   width: 1126px;
   max-width: 100%;
