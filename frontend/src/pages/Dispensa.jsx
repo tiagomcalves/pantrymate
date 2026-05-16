@@ -1,20 +1,33 @@
-import GeneralView from "../features/GeneralView.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 import ExpireBadge from "../features/Expiring/ExpireBadge.jsx";
-import produtosData from "../data/produtos.json";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
+import axios from "axios";
 
 
 const Dispensa = () => {
 
-    const [productsList] = useState([...produtosData])//Todo Adicionar depois como segundo parametro setProductsList
-    const [filteredCategory,  setFilteredCategory] = useState('Todos');
+    const URL_DISPENSADATA = "http://localhost:8000/products/api/items-dispensa/";
+    const [itemsList, setItemsList] = useState([])//Todo Adicionar depois como segundo parametro setProductsList
+    const [filteredCategory, setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
 
-    let filteredProducts = [...productsList];
+    const getProducts = () => {
+        axios.get(URL_DISPENSADATA)
+            .then((request) => {
+                setItemsList(request.data)
+            }).catch(error => console.error(error));
+    };
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    console.log(itemsList)
+
+    let filteredProducts = [...itemsList];
 
     if (filteredCategory !== 'Todos') {
         filteredProducts = filteredProducts.filter(product => product.categoria === filteredCategory);
@@ -76,8 +89,8 @@ const Dispensa = () => {
                                 <ExpireBadge
                                     key={produto.id}
                                     name={produto.nome}
-                                    imageFile={produto.imagemSrc || "diet.png"}
-                                    daysLeft={produto.dataValidade}
+                                    imageFile={"http://127.0.0.1:8000" + produto.imagem}
+                                    daysLeft={produto.data_validade}
                                 />
                             ))}
                         </div>
@@ -85,7 +98,7 @@ const Dispensa = () => {
                 </div>
             </ContentSection>
             <Estatistics
-                productsList={productsList}
+                productsList={itemsList}
             />
         </div>
     )
