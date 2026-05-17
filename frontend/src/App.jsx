@@ -12,6 +12,7 @@ import Login from "./pages/Login.jsx";
 import SessionManager from "./features/SessionManager.jsx";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
+import SuggestionPage from "./pages/SuggestionPage.jsx";
 
 function App() {
     return (
