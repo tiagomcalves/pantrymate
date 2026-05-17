@@ -1,6 +1,6 @@
 import { Button, Form, FormGroup, Input, Label, Alert } from "reactstrap";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getCurrentSession} from "../features/SessionManager.jsx";
 
 
@@ -14,19 +14,23 @@ const Login = () => {
     // console.log(newSession);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (newSession.currentUser) {
+            navigate("/", { replace: true });
+        }
+    }, [newSession.currentUser]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const username = emailField.split("@")[0];
         const success = await newSession.handleLogin(
-            emailField.trim(),
+            username,
             passwordField
         );
 
-        if (success) {
-            navigate("/", { replace: true });
-        } else {
+        if (!success) {
             setError(true);
-            setTimeout(() => setError(false), 3000);
+            setTimeout(() => setError(false), 4000);
         }
     };
 

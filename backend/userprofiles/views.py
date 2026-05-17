@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from userprofiles.serializers import ProfileSerializer
+
 """
     **************************************
     Account session management views first
@@ -29,9 +31,10 @@ def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
     user = authenticate(request, username=username, password=password)
+
     if user is not None:
         login(request, user)  # Criação da sessão
-        return Response({'msg': 'user logged in'})
+        return Response({'msg': 'user logged in'}, status=status.HTTP_200_OK)
     else:
         return Response({'msg': 'invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -45,7 +48,8 @@ def logout_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_view(request):
-    return Response({'username': request.user.username})
+    serializer = ProfileSerializer(request)
+    return Response(serializer.data)
 
 
 """

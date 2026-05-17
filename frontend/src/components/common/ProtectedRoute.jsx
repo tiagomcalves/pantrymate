@@ -1,13 +1,18 @@
 import {Navigate, Outlet} from "react-router-dom";
 import {getCurrentSession} from "../../features/SessionManager.jsx";
 
+
 const ProtectedRoute = () => {
-    const loggedIn = getCurrentSession();
+    const { currentUser, loading } = getCurrentSession();
 
-    console.log("logged in?", loggedIn );
+    if (loading) {
+        return null;
+    }
 
-    if (!loggedIn || loggedIn.currentUser == null)
+    if (!currentUser) {
         return <Navigate to="/login" replace />;
+    }
+
     return <Outlet />;
 };
 
