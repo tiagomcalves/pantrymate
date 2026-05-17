@@ -94,9 +94,12 @@ A partir daqui podes criar e gerir todas as tabelas manualmente.
 | `produto` | FK → Produto | |
 | `quantidade` | decimal | |
 | `unidade` | texto | |
-| `data_validade` | data | opcional |
+| `data_validade` | data | opcional; ignorada quando `congelado = true` |
+| `congelado` | booleano | `false` por defeito; quando `true`, a `data_validade` é devolvida como `null` pela API |
 | `adicionado_em` | data/hora | automático |
 | `adicionado_por` | FK → User | opcional |
+
+**Endpoint:** `GET /products/api/itens/` — devolve todos os itens da dispensa. Itens com `congelado = true` têm `data_validade: null` na resposta JSON.
 
 ---
 
