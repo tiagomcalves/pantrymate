@@ -1,26 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
 import { useUser } from "../context/UserContext";
-import comprasData from "../data/compras.json";
+import axios from "axios";
+
+const FAMILIA_ID = 1; // TODO: derivar do utilizador autenticado
 
 const ListaCompras = () => {
-    const [itens, setItens] = useState(comprasData);
+    const [itens, setItens] = useState([]);
     const navigate = useNavigate();
     const { currentUser } = useUser();
     const role = currentUser?.role;
 
+    useEffect(() => {
+        axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
+            .then(res => setItens(res.data))
+            .catch(err => console.error('Erro ao carregar lista de compras:', err));
+    }, []);
+
     const toggleComprado = (id) => {
-        setItens(prev =>
-            prev.map(item => item.id === id ? { ...item, comprado: !item.comprado } : item)
-        );
+        setItens(prev => prev.map(item => item.id === id ? { ...item, comprado: true } : item));
         setTimeout(() => {
-            setItens(prev => prev.filter(item => !(item.id === id && item.comprado)));
+            axios.delete(`/shopping/api/lista/${id}/`)
+                .then(() => setItens(prev => prev.filter(item => item.id !== id)))
+                .catch(err => console.error('Erro ao remover item:', err));
         }, 600);
     };
 
     const visiveis = itens.slice(0, 4);
-    const pendentes = itens.filter(i => !i.comprado).length;
+    const pendentes = itens.length;
 
     if (role === "junior") {
         return (
@@ -83,18 +91,24 @@ const ListaCompras = () => {
                     >
                         <input
                             type="checkbox"
-                            checked={item.comprado}
+                            checked={!!item.comprado}
                             onChange={() => toggleComprado(item.id)}
                             onClick={e => e.stopPropagation()}
                             style={{ width: "18px", height: "18px", cursor: "pointer" }}
                         />
                         <span style={{ fontSize: "20px" }}>{item.icone}</span>
                         <span style={{ flex: 1 }}>{item.nome}</span>
-                        <span style={{ fontSize: "12px", color: "#888", minWidth: "32px", textAlign: "right" }}>{item.qtd}</span>
-                        <span style={{ fontSize: "12px", color: "#aaa", minWidth: "28px" }}>{item.uf}</span>
+                        <span style={{ fontSize: "12px", color: "#888", minWidth: "32px", textAlign: "right" }}>{item.quantidade}</span>
+                        <span style={{ fontSize: "12px", color: "#aaa", minWidth: "28px" }}>{item.unidade}</span>
                     </div>
                 ))}
             </div>
+
+            {itens.length === 0 && (
+                <p style={{ textAlign: "center", color: "#aaa", marginTop: "12px", fontSize: "14px" }}>
+                    Lista vazia.
+                </p>
+            )}
 
             <Button
                 color="primary"

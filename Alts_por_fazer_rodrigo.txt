@@ -1,0 +1,33 @@
+ALTERAÇÕES A FAZER APÓS AUTENTICAÇÃO ESTAR TRATADA
+====================================================
+
+1. LISTA DE COMPRAS — derivar família do utilizador autenticado
+   - Ficheiros: backend/shopping/views.py, frontend/src/components/ListaCompras.jsx, frontend/src/pages/ListaComprasPage.jsx
+   - Remover FAMILIA_ID_DEFAULT e familia_id como query param / body param
+   - No view, substituir por:
+       membro = MembroFamilia.objects.get(utilizador=request.user)
+       familia = membro.familia
+   - No frontend, remover "?familia_id=1" de todos os pedidos axios
+
+2. ITENS DISPENSA — mesmo padrão
+   - Ficheiro: backend/products/views.py (itens_dispensa)
+   - Atualmente devolve todos os itens sem filtro por família
+   - Filtrar por: ItemDispensa.objects.filter(familia=request.user.membrosfamilia.familia)
+
+3. PEDIDOS DE COMPRA (júnior) — ligar ao backend
+   - Ficheiro: frontend/src/pages/ListaComprasPage.jsx
+   - A função enviarPedido() tem um TODO — ainda não chama nenhum endpoint
+   - Criar endpoint POST /shopping/api/pedidos/ no backend
+   - Frontend deve enviar o pedido e mostrar estado (pendente/aprovado/recusado)
+
+4. FAMÍLIA — ligar ao backend
+   - Ficheiro: frontend/src/pages/FamiliaPage.jsx
+   - Atualmente usa dados de familia.json (mock)
+   - Substituir por GET /family/api/membros/ (endpoint ainda não existe)
+   - Ações de convidar/remover membro devem chamar o backend
+
+5. SCANNER — autenticação necessária para associar produtos digitalizados ao utilizador/família
+   - Ficheiro: frontend/src/pages/ScannerPage.jsx
+
+6. APAGAR familia.json após ponto 4 estar feito
+   - Ficheiro: frontend/src/data/familia.json

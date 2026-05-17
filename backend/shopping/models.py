@@ -14,9 +14,12 @@ class ItemListaCompra(models.Model):
     adicionado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
     )
+    nome_livre = models.CharField(max_length=120, blank=True)
+    icone = models.CharField(max_length=10, blank=True)
+    categoria = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
-        nome = self.produto.nome if self.produto else '(sem produto)'
+        nome = self.produto.nome if self.produto else self.nome_livre or '(sem nome)'
         return f"{nome} — {self.familia.nome}"
 
 
