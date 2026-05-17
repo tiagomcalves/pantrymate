@@ -1,0 +1,6 @@
+[
+  { "id": 1, "nome": "Maria Silva",  "role": "admin"  },
+  { "id": 2, "nome": "João Silva",   "role": "member" },
+  { "id": 3, "nome": "Ana Silva",    "role": "junior" },
+  { "id": 4, "nome": "Pedro Silva",  "role": "member" }
+]

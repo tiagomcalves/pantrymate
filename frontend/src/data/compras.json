@@ -1,0 +1,12 @@
+[
+  { "id": 1, "nome": "Leite", "icone": "🥛", "comprado": false, "categoria": "Laticínios", "qtd": 2, "uf": "L" },
+  { "id": 2, "nome": "Queijo", "icone": "🧀", "comprado": false, "categoria": "Laticínios", "qtd": 1, "uf": "KG" },
+  { "id": 3, "nome": "Ovos", "icone": "🥚", "comprado": false, "categoria": "Laticínios", "qtd": 12, "uf": "EA" },
+  { "id": 4, "nome": "Pão", "icone": "🍞", "comprado": false, "categoria": "Padaria", "qtd": 1, "uf": "EA" },
+  { "id": 5, "nome": "Croissant", "icone": "🥐", "comprado": false, "categoria": "Padaria", "qtd": 4, "uf": "EA" },
+  { "id": 6, "nome": "Maçã", "icone": "🍎", "comprado": false, "categoria": "Frutas e Legumes", "qtd": 1, "uf": "KG" },
+  { "id": 7, "nome": "Tomate", "icone": "🍅", "comprado": false, "categoria": "Frutas e Legumes", "qtd": 500, "uf": "G" },
+  { "id": 8, "nome": "Frango", "icone": "🍗", "comprado": false, "categoria": "Carnes", "qtd": 1, "uf": "KG" },
+  { "id": 9, "nome": "Água (6x1.5L)", "icone": "💧", "comprado": false, "categoria": "Bebidas", "qtd": 1, "uf": "CX" },
+  { "id": 10, "nome": "Sumo de Laranja", "icone": "🍊", "comprado": false, "categoria": "Bebidas", "qtd": 1, "uf": "L" }
+]
