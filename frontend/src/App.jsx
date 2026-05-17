@@ -10,6 +10,7 @@ import {Container} from "reactstrap";
 import Header from "./components/layout/Header.jsx";
 import Nav from "./components/layout/Nav.jsx";
 import Dispensa from "./pages/Dispensa.jsx";
+import SuggestionPage from "./pages/SuggestionPage.jsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/scanner" element={<Scanner/>}/>
                         <Route path="/recipes" element={<Recipes/>}/>
                         <Route path="/family" element={<Family/>}/>
+                        <Route path="/suggestion" element={<SuggestionPage/>}/>
                     </Routes>
                 {/*<div className="position-fixed bottom-0 start-0 w-100">*/}
                 {/*    <Footer/>*/}
