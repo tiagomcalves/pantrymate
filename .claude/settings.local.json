@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python manage.py makemigrations products --name \"add_congelado_to_itemdispensa\")",
+      "Bash(.venv\\\\Scripts\\\\python.exe manage.py makemigrations products --name \"add_congelado_to_itemdispensa\")"
+    ]
+  }
+}
