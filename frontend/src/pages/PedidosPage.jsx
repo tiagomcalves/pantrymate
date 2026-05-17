@@ -67,8 +67,8 @@ const CATALOGO = {
 
 const estadoBadge = {
     pendente:  { color: "warning", label: "Pendente"  },
-    aceite:    { color: "success", label: "Aceite"    },
-    rejeitado: { color: "danger",  label: "Rejeitado" },
+    aprovado:  { color: "success", label: "Aprovado"  },
+    recusado:  { color: "danger",  label: "Recusado"  },
 };
 
 const PedidosPage = () => {
@@ -79,8 +79,7 @@ const PedidosPage = () => {
     const [categoriaAtiva, setCategoriaAtiva] = useState(null);
     const [selecionados, setSelecionados] = useState(new Set());
     const [carrinho, setCarrinho] = useState([]);
-
-    const meusPedidos = pedidos.filter(p => p.userId === currentUser?.id);
+    const [aSubmeter, setASubmeter] = useState(false);
 
     const abrirCategoria = (cat) => {
         // pré-selecionar o que já está no carrinho para esta categoria
@@ -114,9 +113,12 @@ const PedidosPage = () => {
     };
 
     const submeterPedido = () => {
-        if (carrinho.length === 0) return;
-        criarPedido(carrinho, currentUser);
-        setCarrinho([]);
+        if (carrinho.length === 0 || aSubmeter) return;
+        setASubmeter(true);
+        criarPedido(carrinho)
+            .then(() => setCarrinho([]))
+            .catch(err => console.error('Erro ao criar pedido:', err))
+            .finally(() => setASubmeter(false));
     };
 
     const itensNaCategoria = (nomeCategoria) =>
@@ -189,8 +191,8 @@ const PedidosPage = () => {
     // ── Vista: grelha de categorias ────────────────────────────────────────────
     return (
         <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
-            <h4 style={{ marginBottom: "4px" }}>🙋 Fazer um Pedido</h4>
-            <p style={{ color: "#888", marginBottom: "20px" }}>
+            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>🙋 Fazer um Pedido</h4>
+            <p style={{ color: "#1a1a2e", fontWeight: "600", marginBottom: "20px" }}>
                 Escolhe as categorias e seleciona os produtos que precisas.
             </p>
 
@@ -255,7 +257,7 @@ const PedidosPage = () => {
             )}
 
             <Button
-                disabled={carrinho.length === 0}
+                disabled={carrinho.length === 0 || aSubmeter}
                 style={{
                     width: "100%", background: carrinho.length > 0 ? "#45A293" : "#ccc",
                     border: "none", borderRadius: "12px", padding: "14px",
@@ -263,18 +265,18 @@ const PedidosPage = () => {
                 }}
                 onClick={submeterPedido}
             >
-                Criar Pedido
+                {aSubmeter ? "A enviar..." : "Criar Pedido"}
             </Button>
 
             {/* Histórico */}
-            {meusPedidos.length > 0 && (
+            {pedidos.length > 0 && (
                 <div style={{ marginTop: "28px" }}>
                     <h6 style={{ color: "#555", marginBottom: "12px" }}>Os meus pedidos</h6>
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                        {[...meusPedidos].reverse().map(pedido => {
+                        {pedidos.map(pedido => {
                             const badge = estadoBadge[pedido.estado];
                             return (
-                                <div key={pedido.id} style={{ borderRadius: "12px", border: "1px solid #e0e0e0", overflow: "hidden" }}>
+                                <div key={pedido.id} style={{ borderRadius: "12px", border: "1px solid #e0e0e0", overflow: "hidden", background: "rgba(255,255,255,0.95)", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
                                     <div style={{
                                         display: "flex", alignItems: "center", justifyContent: "space-between",
                                         padding: "10px 14px", background: "#f5f5f5", borderBottom: "1px solid #e0e0e0",

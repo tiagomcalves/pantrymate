@@ -55,7 +55,9 @@ class ItemPedidoCompra(models.Model):
     produto = models.ForeignKey(
         'products.Produto', on_delete=models.SET_NULL, null=True, blank=True
     )
+    nome_livre = models.CharField(max_length=120, blank=True)
+    icone = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
-        nome = self.produto.nome if self.produto else '(sem produto)'
+        nome = self.produto.nome if self.produto else self.nome_livre or '(sem produto)'
         return f"{nome} → Pedido #{self.pedido.id}"

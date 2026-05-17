@@ -143,8 +143,14 @@ const ListaComprasPage = () => {
     if (role === "junior") {
         return (
             <div style={{ padding: "16px", maxWidth: "600px", margin: "0 auto" }}>
-                <h4 style={{ marginBottom: "4px" }}>🙋 Fazer um Pedido</h4>
-                <p style={{ color: "#888", marginBottom: "20px" }}>
+                <div style={{
+                    background: "rgba(255,255,255,0.95)",
+                    borderRadius: "14px",
+                    boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
+                    padding: "20px"
+                }}>
+                <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "650" }}>🙋 Fazer um Pedido</h4>
+                <p style={{ color: "#555", marginBottom: "20px" }}>
                     Pede um produto ao teu responsável. Ele irá aprovar o pedido.
                 </p>
                 <InputGroup style={{ marginBottom: "12px" }}>
@@ -182,6 +188,7 @@ const ListaComprasPage = () => {
                         Pedido enviado! O teu responsável irá ver em breve. 🎉
                     </div>
                 )}
+                </div>
             </div>
         );
     }
@@ -189,8 +196,14 @@ const ListaComprasPage = () => {
     // Vista do Membro e Admin
     return (
         <div style={{ padding: "16px", maxWidth: "600px", margin: "0 auto" }}>
-            <h4 style={{ marginBottom: "4px" }}>🛒 Lista de Compras</h4>
-            <p style={{ color: "#888", marginBottom: "16px" }}>{pendentes} item(s) por comprar</p>
+            <div style={{
+                background: "rgba(255,255,255,0.95)",
+                borderRadius: "14px",
+                boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
+                padding: "20px"
+            }}>
+            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "650" }}>🛒 Lista de Compras</h4>
+            <p style={{ color: "#555", marginBottom: "16px" }}>{pendentes} item(s) por comprar</p>
 
             <div style={{ marginBottom: "20px" }}>
                 <InputGroup>
@@ -247,9 +260,9 @@ const ListaComprasPage = () => {
                     <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "0 12px", marginBottom: "4px" }}>
                         <span style={{ width: "18px" }} />
                         <span style={{ width: "20px" }} />
-                        <span style={{ flex: 1, fontSize: "11px", color: "#aaa", textTransform: "uppercase" }}>Produto</span>
-                        <span style={{ fontSize: "11px", color: "#aaa", minWidth: "32px", textAlign: "right", textTransform: "uppercase" }}>QTD</span>
-                        <span style={{ fontSize: "11px", color: "#aaa", minWidth: "36px", textTransform: "uppercase" }}>UF</span>
+                        <span style={{ flex: 1, fontSize: "11px", color: "#555", fontWeight: "600", textTransform: "uppercase" }}>Produto</span>
+                        <span style={{ fontSize: "11px", color: "#555", fontWeight: "600", minWidth: "32px", textAlign: "right", textTransform: "uppercase" }}>QTD</span>
+                        <span style={{ fontSize: "11px", color: "#555", fontWeight: "600", minWidth: "36px", textTransform: "uppercase" }}>UF</span>
                         {role === "admin" && <span style={{ width: "24px" }} />}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -276,18 +289,18 @@ const ListaComprasPage = () => {
                                 <span style={{
                                     flex: 1,
                                     textDecoration: item.comprado ? "line-through" : "none",
-                                    color: item.comprado ? "#aaa" : "inherit"
+                                    color: item.comprado ? "#aaa" : "#1a1a2e"
                                 }}>
                                     {item.nome}
                                 </span>
-                                <span style={{ fontSize: "12px", color: "#888", minWidth: "32px", textAlign: "right" }}>{item.quantidade}</span>
-                                <span style={{ fontSize: "12px", color: "#aaa", minWidth: "36px" }}>{item.unidade}</span>
+                                <span style={{ fontSize: "12px", color: "#555", minWidth: "32px", textAlign: "right" }}>{item.quantidade}</span>
+                                <span style={{ fontSize: "12px", color: "#777", minWidth: "36px" }}>{item.unidade}</span>
                                 {role === "admin" && (
                                     <Button
                                         close
                                         size="sm"
                                         onClick={() => removerItem(item.id)}
-                                        style={{ color: "#ccc" }}
+                                        style={{ color: "#999" }}
                                     />
                                 )}
                             </div>
@@ -297,10 +310,11 @@ const ListaComprasPage = () => {
             ))}
 
             {itens.length === 0 && (
-                <p style={{ textAlign: "center", color: "#aaa", marginTop: "40px" }}>
+                <p style={{ textAlign: "center", color: "#555", marginTop: "40px" }}>
                     Lista vazia. Adiciona produtos acima!
                 </p>
             )}
+            </div>
         </div>
     );
 };

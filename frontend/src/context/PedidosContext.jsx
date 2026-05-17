@@ -1,24 +1,29 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const FAMILIA_ID = 1; // TODO: derivar do utilizador autenticado
 
 const PedidosContext = createContext(null);
 
 export const PedidosProvider = ({ children }) => {
     const [pedidos, setPedidos] = useState([]);
 
-    const criarPedido = (itens, user) => {
-        const numero = String(pedidos.length + 1).padStart(3, "0");
-        setPedidos(prev => [...prev, {
-            id: Date.now(),
-            numero: `PED-${numero}`,
-            userId: user.id,
-            userName: user.nome,
-            itens,
-            estado: "pendente",
-            criadoEm: new Date().toISOString(),
-        }]);
+    useEffect(() => {
+        axios.get(`/shopping/api/pedidos/?familia_id=${FAMILIA_ID}`)
+            .then(res => setPedidos(res.data))
+            .catch(err => console.error('Erro ao carregar pedidos:', err));
+    }, []);
+
+    const criarPedido = (itens) => {
+        return axios.post(`/shopping/api/pedidos/?familia_id=${FAMILIA_ID}`, { itens })
+            .then(res => {
+                setPedidos(prev => [res.data, ...prev]);
+                return res.data;
+            });
     };
 
     const atualizarEstado = (id, estado) => {
+        // TODO: chamar PATCH /shopping/api/pedidos/<id>/ quando endpoint existir
         setPedidos(prev => prev.map(p => p.id === id ? { ...p, estado } : p));
     };
 
