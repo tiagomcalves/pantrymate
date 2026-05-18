@@ -1,47 +1,59 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
+from family.models import Familia, MembroFamilia
 
 User = get_user_model()
 
+SAMPLE_USERS = [
+    {"first": "Maria", "last": "Marques", "role": "admin"},
+    {"first": "Joao",  "last": "Silva",   "role": "admin"},
+    {"first": "Ana",   "last": "Lucas",   "role": "member"},
+    {"first": "Pedro", "last": "Faria",   "role": "junior"},
+]
+
 
 class Command(BaseCommand):
-    help = "Creates sample users and admin user"
+    help = "Cria utilizadores de demonstração com roles e família"
 
     def handle(self, *args, **kwargs):
-
-        # Create admin
+        # Superuser admin
         if not User.objects.filter(username="admin").exists():
             User.objects.create_superuser(
                 username="admin",
                 email="admin@pantrymate.pt",
                 password="admin123"
             )
-            self.stdout.write("Created admin user")
+            self.stdout.write("Criado superuser: admin / admin123")
 
-        self.create_sample_users()
+        # Família de demonstração
+        familia, _ = Familia.objects.get_or_create(id=1, defaults={"nome": "Família Principal"})
 
-        self.stdout.write(self.style.SUCCESS("Done creating sample users"))
-
-    def create_sample_users(self):
-
-        first_names = ["Maria", "Joao", "Ana", "Pedro"]
-        last_names = ["Marques", "Silva", "Lucas", "Faria"]
-
-        for i in range(len(first_names)):
-            username = first_names[i].lower()
+        for data in SAMPLE_USERS:
+            username = data["first"].lower()
             email = f"{username}@pantrymate.pt"
             password = f"{username}123"
 
             if User.objects.filter(username=username).exists():
-                self.stdout.write(f"Skipping {username}")
+                self.stdout.write(f"Ignorado (já existe): {username}")
                 continue
 
-            User.objects.create_user(
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=password,
-                first_name=first_names[i],
-                last_name=last_names[i],
+                first_name=data["first"],
+                last_name=data["last"],
             )
 
-            self.stdout.write(f"Created user {username}")
+            user.profile.role = data["role"]
+            user.profile.save()
+
+            MembroFamilia.objects.get_or_create(
+                utilizador=user,
+                familia=familia,
+                defaults={"nome": f"{data['first']} {data['last']}", "papel": data["role"]},
+            )
+
+            self.stdout.write(f"Criado: {username} / {password}  [{data['role']}]")
+
+        self.stdout.write(self.style.SUCCESS("Utilizadores de demonstração criados com sucesso."))
