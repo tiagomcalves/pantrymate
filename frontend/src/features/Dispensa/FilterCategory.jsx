@@ -3,16 +3,9 @@ import {Button} from "reactstrap";
 
 const FilterCategory = ({categorys, setFilteredCategory}) => {
     return (
-        <div
-            style={{
-                display: "flex",
-                overflowX: "auto",
-                gap: "10px",
-                paddingBottom: "15px",
-            }}
-        >
+        <div className="d-flex flex-wrap">
             {categorys.map((c) => (
-                <Button key={c} onClick={() => setFilteredCategory(c)}>
+                <Button key={c} onClick={() => setFilteredCategory(c)} style={{height: "50px", margin: "5px"}}>
                     {c}
                 </Button>
             ))}

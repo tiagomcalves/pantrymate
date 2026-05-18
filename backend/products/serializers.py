@@ -13,4 +13,4 @@ class ItemDispensaSerializer(serializers.ModelSerializer):
     categoria = serializers.CharField(source='produto.categoria', read_only=True)
     class Meta:
         model = ItemDispensa
-        fields = ('id', 'familia', 'nome', 'imagem', 'categoria', 'quantidade', 'unidade', 'data_validade', 'adicionado_em', 'adicionado_por')
+        fields = ('id', 'familia', 'produto', 'nome', 'imagem', 'categoria', 'quantidade', 'unidade', 'data_validade', 'adicionado_em', 'adicionado_por')

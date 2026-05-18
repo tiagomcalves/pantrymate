@@ -6,11 +6,10 @@ import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
 import axios from "axios";
 
-
 const Dispensa = () => {
 
     const URL_DISPENSADATA = "http://localhost:8000/products/api/items-dispensa/";
-    const [itemsList, setItemsList] = useState([])//Todo Adicionar depois como segundo parametro setProductsList
+    const [itemsList, setItemsList] = useState([])
     const [filteredCategory, setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
 
@@ -25,8 +24,6 @@ const Dispensa = () => {
         getProducts();
     }, []);
 
-    console.log(itemsList)
-
     let filteredProducts = [...itemsList];
 
     if (filteredCategory !== 'Todos') {
@@ -34,7 +31,7 @@ const Dispensa = () => {
     }
 
     if (productSorted === 'dataValidade') {
-        filteredProducts.sort((a, b) => new Date(a.dataValidade).getTime() - new Date(b.dataValidade).getTime());
+        filteredProducts.sort((a, b) => new Date(a.data_validade).getTime() - new Date(b.data_validade).getTime());
     } else if (productSorted === 'nome') {
         filteredProducts.sort((a, b) => a.nome.localeCompare(b.nome));
     }
@@ -44,7 +41,7 @@ const Dispensa = () => {
             display: "flex",
             flexDirection: "row",
             gap: "20px",
-            height: "650px"
+            height: "650px",
         }}>
             <ContentSection title={"Gestão da dispensa"} w={"60%"} h={"550px"}>
                 <div
@@ -56,13 +53,12 @@ const Dispensa = () => {
                     }}
                 >
                     <div>
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "20px",
-                                height: "100%",
-                                maxWidth: "100%",
-                            }}
+                        <div style={{
+                            display: "flex",
+                            gap: 2,
+                            margin: "0 0 10px 0",
+                            flexWrap: "wrap"
+                        }}
                         >
                             <FilterCategory
                                 categorys={['Todos', 'Frescos', 'Congelados', 'Mercearia']}
