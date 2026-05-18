@@ -118,10 +118,10 @@ const Login = () => {
                     color: "#888"
                 }}>
                     <div style={{ fontWeight: "600", marginBottom: "6px", color: "#555" }}>Contas de demonstração:</div>
-                    <div>👑 maria@familia.pt / <b>admin123</b></div>
-                    <div>👤 joao@familia.pt / <b>joao123</b></div>
-                    <div>🧒 ana@familia.pt / <b>ana123</b></div>
-                    <div>👤 pedro@familia.pt / <b>pedro123</b></div>
+                    <div>👑 maria@pantrymate.pt / <b>maria123</b></div>
+                    <div>👤 joao@pantrymate.pt / <b>joao123</b></div>
+                    <div>🧒 ana@pantrymate.pt / <b>ana123</b></div>
+                    <div>👤 pedro@pantrymate.pt / <b>pedro123</b></div>
                 </div>
             </div>
         </div>
