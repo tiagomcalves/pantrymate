@@ -58,16 +58,11 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  min-height: 100vh;
 }
 
 html {
   background: transparent !important;
-}
-
-body {
-  background: linear-gradient(135deg, #a8d4e8 0%, #f4b96e 100%) !important;
-  background-attachment: fixed !important;
-  min-height: 100vh;
 }
 
 #root {

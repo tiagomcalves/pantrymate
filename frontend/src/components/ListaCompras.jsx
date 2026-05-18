@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
-import { useUser } from "../context/UserContext";
+import { getCurrentSession } from "../features/SessionManager.jsx";
 import { usePedidos } from "../context/PedidosContext";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ const FAMILIA_ID = 1; // TODO: derivar do utilizador autenticado
 const ListaCompras = () => {
     const [itens, setItens] = useState([]);
     const navigate = useNavigate();
-    const { currentUser } = useUser();
+    const { currentUser } = getCurrentSession();
     const role = currentUser?.role;
     const { pedidos } = usePedidos();
 

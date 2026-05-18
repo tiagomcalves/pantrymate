@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from "reactstrap";
-import { useUser } from "../context/UserContext";
+import { getCurrentSession } from "../features/SessionManager.jsx";
+import axios from "axios";
+
+const FAMILIA_ID = 1;
 
 const roleLabel = { admin: "Administrador", member: "Membro", junior: "Júnior" };
 const roleColor = { admin: "success", member: "primary", junior: "warning" };
@@ -16,8 +19,11 @@ const erroNomeMsg = (nome) => {
 };
 
 const FamiliaPage = () => {
-    const { currentUser, membros, registarMembro, removerMembro, editarMembro } = useUser();
+    const { currentUser } = getCurrentSession();
     const role = currentUser?.role;
+
+    const [membros, setMembros] = useState([]);
+    const [erro, setErro] = useState(null);
 
     // Modal adicionar
     const [modalAdicionar, setModalAdicionar] = useState(false);
@@ -33,13 +39,19 @@ const FamiliaPage = () => {
     const [editEmail, setEditEmail] = useState("");
     const [editPassword, setEditPassword] = useState("");
 
+    useEffect(() => {
+        axios.get(`/family/api/membros/?familia_id=${FAMILIA_ID}`)
+            .then(res => setMembros(res.data))
+            .catch(() => setErro("Erro ao carregar membros."));
+    }, []);
+
     const abrirAdicionar = () => {
         setNovoNome(""); setNovoRole("member"); setNovoEmail(""); setNovoPassword("");
+        setErro(null);
         setModalAdicionar(true);
     };
 
     const abrirEditar = (membro) => {
-        const cred = membros.find(m => m.id === membro.id);
         setEditNome(membro.nome);
         setEditRole(membro.role);
         setEditEmail("");
@@ -49,19 +61,40 @@ const FamiliaPage = () => {
 
     const adicionarMembro = () => {
         if (!nomeValido(novoNome) || !novoEmail.trim() || !novoPassword.trim()) return;
-        registarMembro(novoNome.trim(), novoRole, novoEmail.trim(), novoPassword);
-        setModalAdicionar(false);
+        axios.post(`/family/api/membros/?familia_id=${FAMILIA_ID}`, {
+            nome: novoNome.trim(),
+            role: novoRole,
+            email: novoEmail.trim(),
+            password: novoPassword,
+        })
+            .then(res => {
+                setMembros(prev => [...prev, res.data]);
+                setModalAdicionar(false);
+            })
+            .catch(err => {
+                setErro(err.response?.data?.error || "Erro ao adicionar membro.");
+            });
     };
 
     const guardarEdicao = () => {
         if (!nomeValido(editNome)) return;
-        editarMembro(membroEditando.id, {
+        axios.patch(`/family/api/membros/${membroEditando.id}/`, {
             nome: editNome.trim(),
             role: editRole,
-            email: editEmail.trim() || null,
-            password: editPassword || null,
-        });
-        setMembroEditando(null);
+            email: editEmail.trim() || undefined,
+            password: editPassword || undefined,
+        })
+            .then(res => {
+                setMembros(prev => prev.map(m => m.id === res.data.id ? res.data : m));
+                setMembroEditando(null);
+            })
+            .catch(() => setErro("Erro ao editar membro."));
+    };
+
+    const removerMembro = (id) => {
+        axios.delete(`/family/api/membros/${id}/`)
+            .then(() => setMembros(prev => prev.filter(m => m.id !== id)))
+            .catch(() => setErro("Erro ao remover membro."));
     };
 
     const erroNomeAdicionar = novoNome.length > 0 && !nomeValido(novoNome);
@@ -73,12 +106,16 @@ const FamiliaPage = () => {
         <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
             <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>👨‍👩‍👧‍👦 Família</h4>
             <p style={{ color: "#1a1a2e", fontWeight: "600", marginBottom: "20px" }}>
-                {membros.length} membro(s) na tua despensa familiar.
+                {membros.length} membro(s) na tua família.
             </p>
+
+            {erro && (
+                <div style={{ color: "#dc3545", fontSize: "13px", marginBottom: "12px" }}>{erro}</div>
+            )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
                 {membros.map(membro => {
-                    const isSelf = membro.id === currentUser?.id;
+                    const isSelf = membro.profile_id === currentUser?.id;
                     return (
                         <div
                             key={membro.id}
@@ -153,7 +190,7 @@ const FamiliaPage = () => {
             )}
 
             {role !== "admin" && (
-                <p style={{ textAlign: "center", color: "#bbb", fontSize: "13px" }}>
+                <p style={{ textAlign: "center", color: "#1a1a2e", fontSize: "13px", fontWeight: "700" }}>
                     Só o administrador pode gerir os membros.
                 </p>
             )}
@@ -162,10 +199,11 @@ const FamiliaPage = () => {
             <Modal isOpen={modalAdicionar} toggle={() => setModalAdicionar(false)} centered size="sm">
                 <ModalHeader toggle={() => setModalAdicionar(false)}>Novo Membro</ModalHeader>
                 <ModalBody>
+                    {erro && <div style={{ color: "#dc3545", fontSize: "13px", marginBottom: "10px" }}>{erro}</div>}
                     <FormGroup>
-                        <Label>Nome</Label>
+                        <Label>Nome completo</Label>
                         <Input
-                            placeholder="Nome completo..."
+                            placeholder="Nome Apelido..."
                             value={novoNome}
                             invalid={erroNomeAdicionar}
                             onChange={e => setNovoNome(e.target.value)}
@@ -207,9 +245,9 @@ const FamiliaPage = () => {
                 <ModalHeader toggle={() => setMembroEditando(null)}>Editar Membro</ModalHeader>
                 <ModalBody>
                     <FormGroup>
-                        <Label>Nome</Label>
+                        <Label>Nome completo</Label>
                         <Input
-                            placeholder="Nome completo..."
+                            placeholder="Nome Apelido..."
                             value={editNome}
                             invalid={erroNomeEditar}
                             onChange={e => setEditNome(e.target.value)}
