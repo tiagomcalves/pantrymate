@@ -8,3 +8,12 @@
 *.njsproj
 *.sln
 *.sw?
+
+# Django
+backend/db.sqlite3
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/.env
+
+# Claude local settings
+.claude/settings.local.json

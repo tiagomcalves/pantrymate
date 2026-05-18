@@ -48,7 +48,14 @@ def logout_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_view(request):
-    serializer = ProfileSerializer(request)
+    from userprofiles.models import Profile
+    from family.models import MembroFamilia
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    membro = MembroFamilia.objects.filter(utilizador=request.user).first()
+    if membro and membro.papel != profile.role:
+        profile.role = membro.papel
+        profile.save()
+    serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
 

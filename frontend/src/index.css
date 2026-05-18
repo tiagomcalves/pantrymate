@@ -52,16 +52,17 @@
 
 body {
   margin: 0;
+  background-image:
+    linear-gradient(135deg, rgba(30, 80, 255, 0.5), rgba(255, 120, 0, 0.5)),
+    url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 html {
   background: transparent !important;
-}
-
-body {
-  background: linear-gradient(135deg, #a8d4e8 0%, #f4b96e 100%) !important;
-  background-attachment: fixed !important;
-  min-height: 100vh;
 }
 
 #root {
@@ -87,12 +88,8 @@ section {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background-image:
-    linear-gradient(135deg, rgba(30, 80, 255, 0.5), rgba(255, 120, 0, 0.5)),
-    url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 h1,
