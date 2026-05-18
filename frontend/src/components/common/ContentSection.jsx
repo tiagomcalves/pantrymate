@@ -2,9 +2,9 @@ const ContentSection = ({title, w, h, children}) => {
 
     return (
         <section style={{
-            border: "2px solid lightgrey",
-            borderStyle: "groove",
-            borderRadius: "5px",
+            background: "rgba(255, 255, 255, 0.95)",
+            borderRadius: "14px",
+            boxShadow: "0 2px 16px rgba(0, 0, 0, 0.10)",
             width: w,
             height: h,
             maxWidth: "100%",
@@ -14,8 +14,9 @@ const ContentSection = ({title, w, h, children}) => {
             <h5 style={{
                 textAlign: "left",
                 paddingLeft: "20px",
-                paddingTop: "20px",
-                fontWeight: "550"   // 400 = normal, 700 = bold
+                paddingTop: "16px",
+                fontWeight: "650",
+                color: "#1a1a2e"
             }}>
                 {title}
             </h5>
