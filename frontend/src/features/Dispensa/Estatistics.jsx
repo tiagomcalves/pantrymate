@@ -3,7 +3,7 @@ import AdicionarProdutoForm from "./AdicionarProdutoForm.jsx";
 import AdicionarProdutoModal from "./AdicionarProdutoModal.jsx";
 import PieChartDispensa from "./PieChartDispensa.jsx";
 
-const Estatistics = ({productsList}) => {
+const Estatistics = ({productsList, atualProductsList}) => {
 
     const total = productsList.length.toString();
     const totalCloseToExpire = productsList.filter(produto => {
@@ -73,7 +73,9 @@ const Estatistics = ({productsList}) => {
                     <PieChartDispensa productsList={productsList}/>
                 </div>
                 <div style={{textAlign: "center"}}>
-                    <AdicionarProdutoModal/>
+                    <AdicionarProdutoModal
+                        getDispensa={atualProductsList}
+                    />
                 </div>
 
             </div>

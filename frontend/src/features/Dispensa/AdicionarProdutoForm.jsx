@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Button, Form, FormGroup, Table, Label, Input} from "reactstrap";
 import axios from "axios";
 
-function AdicionarProdutoForm({products, toggle, getI}) {
+function AdicionarProdutoForm({products, toggle, getProducts}) {
 
     const URL_DISPENSADATA = "http://localhost:8000/products/api/items-dispensa/";
 
@@ -21,9 +21,16 @@ function AdicionarProdutoForm({products, toggle, getI}) {
             unidade: unit,
             data_validade: validityDate
         }
-        axios.post(URL_DISPENSADATA, newItem).then(() => {
+        axios.post(URL_DISPENSADATA, newItem).then(r => {
+            if(r.status === 201 || r.status === 200) {
+                console.log("oi")
+                toggle();
+                if (getProducts) {
+                    console.log("dn fdnjdnj")
+                    getProducts();
+                }
+            }
             alert("Produto adicionado com sucesso à dispensa!")
-            toggle();
         }).catch(() => {
             alert("Ocorreu um erro ao adicionar o produto")
         });

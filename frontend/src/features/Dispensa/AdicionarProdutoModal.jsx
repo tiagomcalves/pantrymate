@@ -3,7 +3,7 @@ import axios from "axios";
 import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import AdicionarProdutoForm from "./AdicionarProdutoForm.jsx";
 
-const AdicionarProdutoModal = () => {
+const AdicionarProdutoModal = ({getDispensa}) => {
 
     const URL_PRODUCTDATA = "http://localhost:8000/products/api/products/";
 
@@ -35,6 +35,7 @@ const AdicionarProdutoModal = () => {
                     <AdicionarProdutoForm
                         products={products}
                         toggle={toggleModal}
+                        getProducts={getDispensa}
                     />
                 </ModalBody>
             </Modal>

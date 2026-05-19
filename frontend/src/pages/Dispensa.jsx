@@ -95,6 +95,7 @@ const Dispensa = () => {
             </ContentSection>
             <Estatistics
                 productsList={itemsList}
+                atualProductsList={getProducts}
             />
         </div>
     )
