@@ -8,6 +8,7 @@
 *.njsproj
 *.sln
 *.sw?
+/*.txt
 
 # Django
 backend/db.sqlite3
