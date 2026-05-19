@@ -80,6 +80,8 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                                                     name="react-radio"
                                                     checked={selectedOption === index}
                                                     value={index}
+                                                    required
+                                                    disabled={loading}
                                                     className="form-check-input"
                                                     onChange={optionChangeHandler}
                                                 />
@@ -117,6 +119,8 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                             name="datetime"
                             placeholder="datetime placeholder"
                             type="date"
+                            required
+                            disabled={loading}
                             onChange={(e) => setValidityDate(e.target.value)}
                         />
                     </FormGroup>
@@ -127,9 +131,11 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                         <Input
                             id="exampleNumber"
                             name="quantidade"
-                            min="0"
+                            min="1"
                             max="20"
                             type="number"
+                            required
+                            disabled={loading}
                             onChange={(e) => setQuantity(e.target.value)}
                         />
                     </FormGroup>
@@ -142,6 +148,8 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                         id="exampleSelect"
                         name="select"
                         type="select"
+                        required
+                        disabled={loading}
                         onChange={(e) => setUnit(e.target.value)}
                     >
                         <option value="un">
