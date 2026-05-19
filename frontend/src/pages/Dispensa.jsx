@@ -1,16 +1,16 @@
 import GeneralView from "../features/GeneralView.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 import ExpireBadge from "../features/Expiring/ExpireBadge.jsx";
-import produtosData from "../data/produtos.json";
 import {useState} from "react";
 import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
+import { useProdutos } from "../context/ProdutosContext.jsx";
 
 
 const Dispensa = () => {
 
-    const [productsList] = useState([...produtosData])//Todo Adicionar depois como segundo parametro setProductsList
+    const { produtos: productsList } = useProdutos();//Todo Adicionar depois como segundo parametro setProductsList
     const [filteredCategory,  setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
 
