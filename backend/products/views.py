@@ -11,7 +11,15 @@ def products(request):
         produtos = Produto.objects.all()
         serializer = ProdutoSerializer(produtos, many=True)
         return Response(serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+def itens_dispensa(request):
+    if request.method == 'GET':
+        itens = ItemDispensa.objects.all()
+        serializer = ItemDispensaSerializer(itens, many=True)
+        return Response(serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])

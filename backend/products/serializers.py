@@ -1,16 +1,24 @@
 from rest_framework import serializers
-from .models import Produto
-from .models import ItemDispensa
+from .models import Produto, ItemDispensa
+
 
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
-        fields = ('id', 'nome', 'categoria', 'imagem', 'unidade') #Todo tirei o campo codigo barras porque nao estava no models depois adicionar
+        fields = ('id', 'nome', 'categoria', 'imagem', 'unidade')
+
 
 class ItemDispensaSerializer(serializers.ModelSerializer):
-    nome = serializers.CharField(source='produto.nome', read_only=True)
-    imagem = serializers.ImageField(source='produto.imagem', read_only=True)
-    categoria = serializers.CharField(source='produto.categoria', read_only=True)
+    data_validade = serializers.SerializerMethodField()
+
+    def get_data_validade(self, obj):
+        if obj.congelado:
+            return None
+        return obj.data_validade
+
     class Meta:
         model = ItemDispensa
-        fields = ('id', 'familia', 'produto', 'nome', 'imagem', 'categoria', 'quantidade', 'unidade', 'data_validade', 'adicionado_em', 'adicionado_por')
+        fields = (
+            'id', 'produto', 'familia', 'quantidade', 'unidade',
+            'data_validade', 'congelado', 'adicionado_em', 'adicionado_por',
+        )

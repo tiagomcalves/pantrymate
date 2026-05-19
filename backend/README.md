@@ -41,3 +41,8 @@ python manage.py migrate
 
 ## Criação e integração da nova App concluída
 # Se fizer alterações à estrutura dos modelos, tem que repetir o passo 4 
+
+
+# Novo script para popular base de dados vazia com users de demonstracao
+
+`python manage.py sample_users`

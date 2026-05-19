@@ -12,9 +12,9 @@ class Familia(models.Model):
 
 class MembroFamilia(models.Model):
     PAPEL_CHOICES = [
-        ('junior', 'Junior'),
-        ('membro', 'Membro'),
-        ('administrador', 'Administrador'),
+        ('admin', 'Administrador'),
+        ('member', 'Membro'),
+        ('junior', 'Júnior'),
     ]
 
     nome = models.CharField(max_length=100)
@@ -25,7 +25,7 @@ class MembroFamilia(models.Model):
     familia = models.ForeignKey(
         Familia, on_delete=models.CASCADE, related_name='membros'
     )
-    papel = models.CharField(max_length=20, choices=PAPEL_CHOICES, default='membro')
+    papel = models.CharField(max_length=20, choices=PAPEL_CHOICES, default='member')
     juntou_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,25 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Badge} from "reactstrap";
+import {getCurrentSession} from "../../../features/SessionManager.jsx";
 
 const WelcomeUser = () => {
 
-    const [strUsername, setUsername] = useState("Visitante");
-    // const mock_user = {'username': 'Moita'}
-    const mock_user = {}
-
-    useEffect(() => {
-      const data = mock_user;   //  fetch with API later
-
-      if (data.username) {
-        setUsername(data.username);
-      }
-    }, []);
+    const { currentUser } = getCurrentSession();
 
     return (
         <>
             <h3>Bom dia,</h3>
             <div style={{ display: "flex"}} >
-                <h4>{strUsername}!</h4>
+                <h4>{currentUser.first_name}!</h4>
                 <div style={{margin: "5px 20px"}}>
                     <Badge color="success" pill style={{ height: "22px"}}>status</Badge>
                 </div>

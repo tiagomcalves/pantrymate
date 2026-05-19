@@ -52,6 +52,30 @@
 
 body {
   margin: 0;
+  background-image:
+    linear-gradient(135deg, rgba(30, 80, 255, 0.5), rgba(255, 120, 0, 0.5)),
+    url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+html {
+  background: transparent !important;
+}
+
+#root {
+  background: transparent !important;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(2px);
+}
+
+section {
+  background-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 #root {
@@ -64,12 +88,8 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background-image:
-    linear-gradient(135deg, rgba(30, 80, 255, 0.5), rgba(255, 120, 0, 0.5)),
-    url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 h1,
