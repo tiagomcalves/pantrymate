@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Form, FormGroup, Table, Label, Input} from "reactstrap";
+import {Button, Form, FormGroup, Table, Label, Input, Spinner} from "reactstrap";
 import axios from "axios";
 
 function AdicionarProdutoForm({products, toggle, getProducts}) {
@@ -10,9 +10,11 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
     const [validityDate, setValidityDate] = useState("");
     const [unit, setUnit] = useState("un");
     const [quantity, setQuantity] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     const addAndCloseModal = (event) => {
         event.preventDefault();
+        setLoading(true)
         const selectedProduct = {...products[selectedOption]}
         const newItem = {
             familia: 1,
@@ -21,16 +23,18 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
             unidade: unit,
             data_validade: validityDate
         }
+        const timeInicial = Date.now()
         axios.post(URL_DISPENSADATA, newItem).then(r => {
-            if(r.status === 201 || r.status === 200) {
-                console.log("oi")
-                toggle();
-                if (getProducts) {
-                    console.log("dn fdnjdnj")
-                    getProducts();
-                }
+            if (r.status === 201 || r.status === 200) {
+                setTimeout(() => {
+                        toggle();
+                        if (getProducts) {
+                            getProducts();
+                        }
+                    }
+                    , Math.max(0, 2500 - (Date.now() - timeInicial))
+                )
             }
-            alert("Produto adicionado com sucesso à dispensa!")
         }).catch(() => {
             alert("Ocorreu um erro ao adicionar o produto")
         });
@@ -160,7 +164,22 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                         </option>
                     </Input>
                 </FormGroup>
-                <Button>Adicionar</Button>
+                <Button>
+                    {
+                        loading ? (
+                            <>
+                                <Spinner style={{width: '1rem', height: '1rem'}} color="light">
+                                    Carregando...
+                                </Spinner>
+                                <span>
+                                    {' '}Carregando...
+                                </span>
+                            </>
+                        ) : (
+                            "Adicionar produto"
+                        )
+                    }
+                </Button>
             </Form>
         </>
 
