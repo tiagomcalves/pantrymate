@@ -42,9 +42,9 @@ def itens_dispensa(request):
 
         familia = None
         if request.user.is_authenticated:
-            membro = MembroFamilia.objects.filter(utilizador=request.user).first()
+            membro = MembroFamilia.objects.filter(user=request.user).first()
             if membro:
-                familia = membro.familia
+                familia = membro.family
         if not familia:
             familia = Familia.objects.first()
 
