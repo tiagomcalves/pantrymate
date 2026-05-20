@@ -3,8 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
+
+from userprofiles.serializers import ProfileSerializer
 from .models import Familia, MembroFamilia
-from .serializers import MembroFamiliaSerializer
+from .serializers import MembroFamiliaSerializer, FamilyMembersListSerializer
 
 FAMILIA_ID_DEFAULT = 1
 
@@ -17,15 +19,27 @@ def _get_familia(familia_id):
     return familia
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def membros(request):
-    familia_id = request.query_params.get('familia_id', FAMILIA_ID_DEFAULT)
-    familia = _get_familia(familia_id)
+
+    if not hasattr(request.user, "membrofamilia"):
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     if request.method == 'GET':
-        qs = MembroFamilia.objects.filter(familia=familia).select_related('utilizador', 'utilizador__profile')
-        return Response(MembroFamiliaSerializer(qs, many=True).data)
+        qs = request.user.membrofamilia.family.get_members()
+        return Response(FamilyMembersListSerializer(qs, many=True).data)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def membro_add(request):
+
+    role = request.user.profile.get_family_role()
+
+    if role != "admin":
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == 'POST':
         nome_completo = request.data.get('nome', '').strip()
@@ -43,8 +57,10 @@ def membros(request):
         primeiro = parts[0]
         ultimo = parts[1] if len(parts) > 1 else ''
 
+        username = email.split('@', 1)
+
         user = User.objects.create_user(
-            username=email,
+            username=username[0],
             email=email,
             password=password,
             first_name=primeiro,
@@ -53,29 +69,32 @@ def membros(request):
         user.profile.role = role
         user.profile.save()
 
+        family_id = request.user.membrofamilia.family
+
         membro = MembroFamilia.objects.create(
-            nome=nome_completo,
-            utilizador=user,
-            familia=familia,
-            papel=role,
+            user=user,
+            family=family_id,
+            role=role,
         )
-        return Response(MembroFamiliaSerializer(membro).data, status=status.HTTP_201_CREATED)
+        return Response(FamilyMembersListSerializer(membro).data, status=status.HTTP_201_CREATED)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def membro_detail(request, pk):
     try:
-        membro = MembroFamilia.objects.select_related('utilizador', 'utilizador__profile').get(pk=pk)
+        membro = MembroFamilia.objects.select_related('user', 'user__profile').get(pk=pk)
     except MembroFamilia.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'DELETE':
-        if membro.utilizador:
-            membro.utilizador.delete()
+        if membro.user:
+            membro.user.delete()
         else:
             membro.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
 
     if request.method == 'PATCH':
         role = request.data.get('role')
@@ -85,25 +104,27 @@ def membro_detail(request, pk):
 
         if role:
             membro.papel = role
-            if membro.utilizador:
-                membro.utilizador.profile.role = role
-                membro.utilizador.profile.save()
+            if membro.user:
+                membro.user.profile.role = role
+                membro.user.profile.save()
 
         if nome_completo:
             membro.nome = nome_completo
-            if membro.utilizador:
+            if membro.user:
                 parts = nome_completo.split(' ', 1)
-                membro.utilizador.first_name = parts[0]
-                membro.utilizador.last_name = parts[1] if len(parts) > 1 else ''
+                membro.user.first_name = parts[0]
+                membro.user.last_name = parts[1] if len(parts) > 1 else ''
 
-        if email and membro.utilizador:
-            membro.utilizador.email = email
+        if email and membro.user:
+            membro.user.email = email
 
-        if password and membro.utilizador:
-            membro.utilizador.set_password(password)
+        if password and membro.user:
+            membro.user.set_password(password)
 
-        if membro.utilizador:
-            membro.utilizador.save()
+        if membro.user:
+            membro.user.save()
         membro.save()
 
-        return Response(MembroFamiliaSerializer(membro).data)
+        return Response(FamilyMembersListSerializer(membro).data, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)

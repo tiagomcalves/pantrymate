@@ -3,8 +3,6 @@ import { Badge, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label
 import { getCurrentSession } from "../features/SessionManager.jsx";
 import axios from "axios";
 
-const FAMILIA_ID = 1;
-
 const roleLabel = { admin: "Administrador", member: "Membro", junior: "Júnior" };
 const roleColor = { admin: "success", member: "primary", junior: "warning" };
 
@@ -40,8 +38,16 @@ const FamiliaPage = () => {
     const [editPassword, setEditPassword] = useState("");
 
     useEffect(() => {
-        axios.get(`/family/api/membros/?familia_id=${FAMILIA_ID}`)
-            .then(res => setMembros(res.data))
+        axios.get(`/family/api/membros/`, { withCredentials: true})
+            .then(res => {
+                if(res.status === 200){
+                    setMembros(res.data)
+                    setModalAdicionar(false);
+                }
+                else if(res.status === 204){
+                    setMembros(null)
+                }
+            })
             .catch(() => setErro("Erro ao carregar membros."));
     }, []);
 
@@ -61,15 +67,15 @@ const FamiliaPage = () => {
 
     const adicionarMembro = () => {
         if (!nomeValido(novoNome) || !novoEmail.trim() || !novoPassword.trim()) return;
-        axios.post(`/family/api/membros/?familia_id=${FAMILIA_ID}`, {
+        axios.post(`/family/api/membros/add`, {
             nome: novoNome.trim(),
             role: novoRole,
             email: novoEmail.trim(),
             password: novoPassword,
         })
             .then(res => {
-                setMembros(prev => [...prev, res.data]);
-                setModalAdicionar(false);
+                    setMembros(prev => [...prev, res.data]);
+                    setModalAdicionar(false);
             })
             .catch(err => {
                 setErro(err.response?.data?.error || "Erro ao adicionar membro.");
@@ -102,20 +108,31 @@ const FamiliaPage = () => {
     const formularioAdicionarValido = nomeValido(novoNome) && novoEmail.trim() && novoPassword.trim();
     const formularioEditarValido = nomeValido(editNome);
 
+    let membros_msg = "";
+
+    if (membros === null) {
+        membros_msg = "Conta não tem atributo \"membrofamilia\"";
+    } else if (membros.length > 0) {
+        membros_msg = `${membros.length} ${membros.length === 1 ? "membro" : "membros"} na tua família.`;
+    } else {
+        membros_msg = "Ainda não existem membros na tua família.";
+    }
+
     return (
         <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
             <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>👨‍👩‍👧‍👦 Família</h4>
             <p style={{ color: "#1a1a2e", fontWeight: "600", marginBottom: "20px" }}>
-                {membros.length} membro(s) na tua família.
+                {membros_msg}
             </p>
 
             {erro && (
                 <div style={{ color: "#dc3545", fontSize: "13px", marginBottom: "12px" }}>{erro}</div>
             )}
 
+            {membros !== null && (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
                 {membros.map(membro => {
-                    const isSelf = membro.profile_id === currentUser?.id;
+                    const isSelf = membro.nome === (currentUser?.first_name + " " + currentUser?.last_name);
                     return (
                         <div
                             key={membro.id}
@@ -177,7 +194,7 @@ const FamiliaPage = () => {
                         </div>
                     );
                 })}
-            </div>
+            </div>)}
 
             {role === "admin" && (
                 <Button

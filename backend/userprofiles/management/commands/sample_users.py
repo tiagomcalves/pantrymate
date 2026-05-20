@@ -1,14 +1,19 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from family.models import Familia, MembroFamilia
+from userprofiles.models import Profile
 
 User = get_user_model()
 
 SAMPLE_USERS = [
-    {"first": "Maria", "last": "Marques", "role": "admin"},
-    {"first": "Joao",  "last": "Silva",   "role": "admin"},
-    {"first": "Ana",   "last": "Lucas",   "role": "member"},
-    {"first": "Pedro", "last": "Faria",   "role": "junior"},
+    {"first": "Maria",      "last": "Silva",    "role": "admin", "familia": 1},
+    {"first": "Joao",       "last": "Silva",    "role": "admin", "familia": 1},
+    {"first": "Ana",        "last": "Silva",    "role": "member", "familia": 1},
+    {"first": "Pedro",      "last": "Silva",    "role": "junior", "familia": 1},
+
+    {"first": "Claudia",    "last": "Marques",   "role": "admin", "familia": 2},
+    {"first": "Gonçalo",    "last": "Marques",   "role": "member", "familia": 2},
+    {"first": "Hugo",       "last": "Marques",   "role": "junior", "familia": 2}
 ]
 
 
@@ -26,7 +31,10 @@ class Command(BaseCommand):
             self.stdout.write("Criado superuser: admin / admin123")
 
         # Família de demonstração
-        familia, _ = Familia.objects.get_or_create(id=1, defaults={"nome": "Família Principal"})
+        familia1, _ = Familia.objects.get_or_create(id=1, defaults={"nome": "Familia Silva"})
+        familia2, _ = Familia.objects.get_or_create(id=2, defaults={"nome": "Familia Marques"})
+
+        familia = Familia.objects.all()
 
         for data in SAMPLE_USERS:
             username = data["first"].lower()
@@ -45,13 +53,10 @@ class Command(BaseCommand):
                 last_name=data["last"],
             )
 
-            user.profile.role = data["role"]
-            user.profile.save()
-
             MembroFamilia.objects.get_or_create(
-                utilizador=user,
-                familia=familia,
-                defaults={"nome": f"{data['first']} {data['last']}", "papel": data["role"]},
+                user=user,
+                family=familia.get(id=data["familia"]),
+                role=data["role"]
             )
 
             self.stdout.write(f"Criado: {username} / {password}  [{data['role']}]")

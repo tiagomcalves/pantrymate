@@ -6,13 +6,19 @@ const WelcomeUser = () => {
 
     const { currentUser } = getCurrentSession();
 
+    // These must be refactored out
+    const roleLabel = { admin: "Administrador", member: "Membro", junior: "Júnior" };
+    const roleColor = { admin: "success", member: "primary", junior: "warning" };
+
     return (
         <>
             <h3>Bom dia,</h3>
             <div style={{ display: "flex"}} >
                 <h4>{currentUser.first_name}!</h4>
                 <div style={{margin: "5px 20px"}}>
-                    <Badge color="success" pill style={{ height: "22px"}}>status</Badge>
+                    <Badge color={roleColor[currentUser.role]} pill style={{ height: "22px"}}>
+                        {roleLabel[currentUser.role]}
+                    </Badge>
                 </div>
             </div>
         </>
