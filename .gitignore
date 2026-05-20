@@ -17,4 +17,5 @@ backend/**/*.pyc
 backend/.env
 
 # Claude local settings
+.claude/
 .claude/settings.local.json

@@ -83,29 +83,8 @@ const ScannerPage = () => {
                 onChange={handleFileChange}
             />
 
-            {/* Área de upload / preview */}
-            {!imagemPreview ? (
-                <div
-                    onClick={() => inputRef.current.click()}
-                    style={{
-                        width: "100%",
-                        height: "220px",
-                        border: "3px dashed #45A293",
-                        borderRadius: "16px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        background: "#f9f9f9",
-                        marginBottom: "20px",
-                        gap: "10px",
-                        cursor: "pointer",
-                    }}
-                >
-                    <i className="bi bi-cloud-upload" style={{ fontSize: "48px", color: "#45A293" }} />
-                    <span style={{ color: "#aaa", fontSize: "13px" }}>Clica para selecionar uma imagem</span>
-                </div>
-            ) : (
+            {/* Preview da imagem selecionada */}
+            {imagemPreview && (
                 <div style={{ position: "relative", marginBottom: "20px" }}>
                     <img
                         src={imagemPreview}
