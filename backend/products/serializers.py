@@ -9,16 +9,19 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
 
 class ItemDispensaSerializer(serializers.ModelSerializer):
-    data_validade = serializers.SerializerMethodField()
+    # data_validade = serializers.SerializerMethodField()
+    nome = serializers.CharField(source='produto.nome', read_only=True)
+    imagem = serializers.ImageField(source='produto.imagem', read_only=True)
+    categoria = serializers.CharField(source='produto.categoria', read_only=True)
 
-    def get_data_validade(self, obj):
-        if obj.congelado:
-            return None
-        return obj.data_validade
+    # def get_data_validade(self, obj):
+    #     if obj.congelado:
+    #         return None
+    #     return obj.data_validade
 
     class Meta:
         model = ItemDispensa
         fields = (
-            'id', 'produto', 'familia', 'quantidade', 'unidade',
+            'id', 'produto', 'familia', 'nome', 'imagem', 'categoria','quantidade', 'unidade',
             'data_validade', 'congelado', 'adicionado_em', 'adicionado_por',
         )
