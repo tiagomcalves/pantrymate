@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from family.models import MembroFamilia
+from userprofiles.models import Profile
 from userprofiles.serializers import ProfileSerializer
 
 """
@@ -48,14 +50,7 @@ def logout_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_view(request):
-    from userprofiles.models import Profile
-    from family.models import MembroFamilia
-    profile, _ = Profile.objects.get_or_create(user=request.user)
-    membro = MembroFamilia.objects.filter(utilizador=request.user).first()
-    if membro and membro.papel != profile.role:
-        profile.role = membro.papel
-        profile.save()
-    serializer = ProfileSerializer(profile)
+    serializer = ProfileSerializer(request)
     return Response(serializer.data)
 
 

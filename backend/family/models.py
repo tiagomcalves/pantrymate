@@ -1,5 +1,5 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.conf import settings
 
 
 class Familia(models.Model):
@@ -9,6 +9,9 @@ class Familia(models.Model):
     def __str__(self):
         return self.nome
 
+    def get_members(self):
+        return self.membrofamilia_set.all()
+
 
 class MembroFamilia(models.Model):
     PAPEL_CHOICES = [
@@ -17,16 +20,15 @@ class MembroFamilia(models.Model):
         ('junior', 'Júnior'),
     ]
 
-    nome = models.CharField(max_length=100)
-    utilizador = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name='familias'
-    )
-    familia = models.ForeignKey(
-        Familia, on_delete=models.CASCADE, related_name='membros'
-    )
-    papel = models.CharField(max_length=20, choices=PAPEL_CHOICES, default='member')
-    juntou_em = models.DateTimeField(auto_now_add=True)
+    family = models.ForeignKey(
+        Familia, on_delete=models.CASCADE)  #talvez set null mas necessario adicionar safe checks
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE,     #nao devia ser cascade
+        null=True)
+
+    role = models.CharField(max_length=20, choices=PAPEL_CHOICES, default='member')
+    join_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.nome} — {self.familia.nome} ({self.papel})"
+        return f"{self.user.username} — {self.family.nome} ({self.role})"
