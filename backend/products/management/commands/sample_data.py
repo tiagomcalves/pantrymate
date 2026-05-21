@@ -1,0 +1,135 @@
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+from datetime import timedelta
+from products.models import Categoria, Produto, ItemDispensa
+from family.models import Familia
+
+CATEGORIAS = [
+    "Frescos",
+    "Congelados",
+    "Laticínios",
+    "Mercearia",
+    "Padaria",
+    "Bebidas",
+]
+
+# (nome, categoria, unidade)
+PRODUTOS = [
+    ("Tomates Frescos",      "Frescos",    "kg"),
+    ("Fiambre Fatiado",      "Frescos",    "un"),
+    ("Peitos de Frango",     "Frescos",    "kg"),
+    ("Queijo Flamengo",      "Laticínios", "un"),
+    ("Ovos",                 "Frescos",    "un"),
+    ("Presunto Curado",      "Frescos",    "un"),
+    ("Salmão",               "Congelados", "kg"),
+    ("Hambúrgueres",         "Congelados", "un"),
+    ("Ervilhas",             "Congelados", "kg"),
+    ("Leite",                "Laticínios", "L"),
+    ("Iogurte Natural",      "Laticínios", "un"),
+    ("Manteiga",             "Laticínios", "un"),
+    ("Massa Esparguete",     "Mercearia",  "un"),
+    ("Arroz",                "Mercearia",  "kg"),
+    ("Feijão",               "Mercearia",  "un"),
+    ("Azeite",               "Mercearia",  "L"),
+    ("Açúcar",               "Mercearia",  "kg"),
+    ("Pão de Forma",         "Padaria",    "un"),
+    ("Tostas",               "Padaria",    "un"),
+    ("Água",                 "Bebidas",    "L"),
+    ("Sumo de Laranja",      "Bebidas",    "L"),
+]
+
+hoje = timezone.now().date()
+
+# (produto, quantidade, unidade, dias_ate_validade, congelado)
+# dias negativos = já expirado; None = congelado sem data
+DISPENSA_FAMILIA1 = [
+    ("Tomates Frescos",  6,  "un",  3,     False),
+    ("Fiambre Fatiado",  1,  "un",  5,     False),
+    ("Peitos de Frango", 2,  "kg",  None,  True),
+    ("Queijo Flamengo",  1,  "un",  7,     False),
+    ("Ovos",             12, "un",  21,    False),
+    ("Presunto Curado",  1,  "un",  25,    False),
+    ("Leite",            2,  "L",   4,     False),
+    ("Iogurte Natural",  4,  "un",  6,     False),
+    ("Massa Esparguete", 3,  "un",  200,   False),
+    ("Arroz",            1,  "kg",  300,   False),
+    ("Azeite",           1,  "L",   400,   False),
+    ("Pão de Forma",     1,  "un",  2,     False),
+    ("Água",             6,  "L",   365,   False),
+    ("Salmão",           2,  "kg",  None,  True),
+]
+
+DISPENSA_FAMILIA2 = [
+    ("Tomates Frescos",  4,  "un",  2,     False),
+    ("Hambúrgueres",     4,  "un",  None,  True),
+    ("Ervilhas",         1,  "kg",  None,  True),
+    ("Leite",            3,  "L",   5,     False),
+    ("Manteiga",         1,  "un",  30,    False),
+    ("Feijão",           2,  "un",  180,   False),
+    ("Açúcar",           1,  "kg",  365,   False),
+    ("Tostas",           1,  "un",  60,    False),
+    ("Sumo de Laranja",  2,  "L",   10,    False),
+]
+
+
+class Command(BaseCommand):
+    help = "Popula a base de dados com produtos e itens de dispensa de exemplo"
+
+    def handle(self, *args, **kwargs):
+        # Categorias
+        categorias = {}
+        for nome in CATEGORIAS:
+            cat, created = Categoria.objects.get_or_create(nome=nome)
+            categorias[nome] = cat
+            if created:
+                self.stdout.write(f"  Categoria criada: {nome}")
+
+        # Produtos
+        produtos = {}
+        for nome, cat_nome, unidade in PRODUTOS:
+            prod, created = Produto.objects.get_or_create(
+                nome=nome,
+                defaults={"categoria": categorias[cat_nome], "unidade": unidade}
+            )
+            produtos[nome] = prod
+            if created:
+                self.stdout.write(f"  Produto criado: {nome}")
+
+        # Dispensa
+        familia1 = Familia.objects.filter(id=1).first()
+        familia2 = Familia.objects.filter(id=2).first()
+
+        if not familia1 or not familia2:
+            self.stdout.write(self.style.ERROR(
+                "Famílias não encontradas. Corre primeiro: python manage.py sample_users"
+            ))
+            return
+
+        self._criar_itens(familia1, DISPENSA_FAMILIA1, produtos)
+        self._criar_itens(familia2, DISPENSA_FAMILIA2, produtos)
+
+        self.stdout.write(self.style.SUCCESS("Dados de exemplo criados com sucesso."))
+
+    def _criar_itens(self, familia, lista, produtos):
+        for nome, quantidade, unidade, dias, congelado in lista:
+            produto = produtos.get(nome)
+            if not produto:
+                continue
+
+            if ItemDispensa.objects.filter(familia=familia, produto=produto).exists():
+                self.stdout.write(f"  Ignorado (já existe): {nome} — {familia.nome}")
+                continue
+
+            data_validade = None
+            if not congelado and dias is not None:
+                data_validade = hoje + timedelta(days=dias)
+
+            ItemDispensa.objects.create(
+                familia=familia,
+                produto=produto,
+                quantidade=quantidade,
+                unidade=unidade,
+                data_validade=data_validade,
+                congelado=congelado,
+            )
+            self.stdout.write(f"  Item adicionado: {nome} — {familia.nome}")
