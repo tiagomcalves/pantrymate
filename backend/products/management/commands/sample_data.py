@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from products.models import Categoria, Produto, ItemDispensa
 from family.models import Familia
+from recipes.models import ReceitaSugerida
 
 CATEGORIAS = [
     "Frescos",
@@ -107,6 +108,36 @@ class Command(BaseCommand):
 
         self._criar_itens(familia1, DISPENSA_FAMILIA1, produtos)
         self._criar_itens(familia2, DISPENSA_FAMILIA2, produtos)
+
+        # Receitas de exemplo
+        RECEITAS_EXEMPLO = [
+            {
+                "nome": "Paloco do ISCTE",
+                "tempo_preparacao": 35,
+                "ingredientes_usados": ["400g de bacalhau desfiado", "2 dentes de alho", "1 cebola", "azeite q.b.", "salsa picada", "batata cozida"],
+                "passos": ["Cozer o bacalhau e desfiar.", "Refogar a cebola e o alho no azeite.", "Juntar o bacalhau e envolver bem.", "Servir com batata cozida e salsa por cima."],
+            },
+            {
+                "nome": "Exemplo estático",
+                "tempo_preparacao": 20,
+                "ingredientes_usados": ["massa", "tomate", "queijo ralado", "oregãos"],
+                "passos": ["Cozer a massa em água com sal.", "Aquecer o molho de tomate numa frigideira.", "Misturar a massa com o molho.", "Polvilhar com queijo ralado e oregãos."],
+            },
+            {
+                "nome": "Bife à molho do chefe do ISCTE",
+                "tempo_preparacao": 25,
+                "ingredientes_usados": ["2 bifes de vaca", "1 colher de manteiga", "2 dentes de alho", "mostarda", "natas", "sal e pimenta"],
+                "passos": ["Temperar os bifes com sal, pimenta e alho.", "Grelhar os bifes numa frigideira com manteiga.", "Na mesma frigideira, juntar as natas e a mostarda.", "Deixar apurar o molho e servir por cima dos bifes."],
+            },
+        ]
+
+        for familia in [familia1, familia2]:
+            for dados in RECEITAS_EXEMPLO:
+                if not ReceitaSugerida.objects.filter(nome=dados["nome"], familia=familia).exists():
+                    ReceitaSugerida.objects.create(familia=familia, **dados)
+                    self.stdout.write(f"  Receita criada: {dados['nome']} — {familia.nome}")
+                else:
+                    self.stdout.write(f"  Ignorada (já existe): {dados['nome']} — {familia.nome}")
 
         self.stdout.write(self.style.SUCCESS("Dados de exemplo criados com sucesso."))
 
