@@ -12,9 +12,9 @@ class ReceitaSugerida(models.Model):
         'products.Produto', on_delete=models.SET_NULL, null=True, blank=True,
         related_name='receitas_como_imagem'
     )
-    # lista de ingredientes em texto livre, tal como a IA devolve
-    # ex: ["200g tomates", "1 chávena de massa", "queijo a gosto"]
+    # listas tal como a IA devolve
     ingredientes_usados = models.JSONField(default=list)
+    passos = models.JSONField(default=list)
     gerada_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
