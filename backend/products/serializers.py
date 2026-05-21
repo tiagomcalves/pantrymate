@@ -9,6 +9,8 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
 
 class ItemDispensaSerializer(serializers.ModelSerializer):
+    nome = serializers.CharField(source='produto.nome', read_only=True)
+    imagem = serializers.ImageField(source='produto.imagem', read_only=True)
     data_validade = serializers.SerializerMethodField()
 
     def get_data_validade(self, obj):
@@ -19,6 +21,6 @@ class ItemDispensaSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemDispensa
         fields = (
-            'id', 'produto', 'familia', 'quantidade', 'unidade',
+            'id', 'produto', 'nome', 'imagem', 'familia', 'quantidade', 'unidade',
             'data_validade', 'congelado', 'adicionado_em', 'adicionado_por',
         )

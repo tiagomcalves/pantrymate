@@ -15,7 +15,7 @@ const SuggestionByAI = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:8000/products/api/products/")
+        axios.get("http://localhost:8000/products/api/itens/")
             .then(response => {
                 const shuffled = response.data.sort(() => 0.5 - Math.random());
                 setSelectedProducts(shuffled.slice(0, 3));
@@ -77,7 +77,7 @@ const SuggestionByAI = () => {
                         Ideia para o Jantar? (IA)
                     </CardTitle>
                     <CardText style={{ fontSize: "0.85rem", color: "#6c757d" }}>
-                        Usando os teus Tomates e Queijo...
+                        {usingText}
                     </CardText>
 
                     <div style={{ display: "flex", gap: "12px" }}>
