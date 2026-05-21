@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Input, InputGroup } from "reactstrap";
-import { useUser } from "../context/UserContext";
+import { getCurrentSession } from "../features/SessionManager.jsx";
 import axios from "axios";
 
 const FAMILIA_ID = 1; // TODO: derivar do utilizador autenticado
@@ -67,13 +67,20 @@ const ListaComprasPage = () => {
     const [novaQtd, setNovaQtd] = useState(1);
     const [novaUf, setNovaUf] = useState("EA");
     const [pedidoEnviado, setPedidoEnviado] = useState(false);
-    const { currentUser } = useUser();
+    const [pedidos, setPedidos] = useState([]);
+    const { currentUser } = getCurrentSession();
     const role = currentUser?.role;
 
     useEffect(() => {
         axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
             .then(res => setItens(res.data))
             .catch(err => console.error('Erro ao carregar lista de compras:', err));
+    }, []);
+
+    useEffect(() => {
+        axios.get(`/shopping/api/pedidos/?familia_id=${FAMILIA_ID}`)
+            .then(res => setPedidos(res.data.filter(p => p.estado === 'pendente')))
+            .catch(err => console.error('Erro ao carregar pedidos:', err));
     }, []);
 
     const toggleComprado = (id) => {
@@ -121,6 +128,22 @@ const ListaComprasPage = () => {
                 setNovaQtd(1);
             })
             .catch(err => console.error('Erro ao adicionar item:', err));
+    };
+
+    const aceitarPedido = (id) => {
+        axios.patch(`/shopping/api/pedidos/${id}/`, { estado: "aprovado" })
+            .then(() => {
+                setPedidos(prev => prev.filter(p => p.id !== id));
+                axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
+                    .then(res => setItens(res.data));
+            })
+            .catch(err => console.error('Erro ao aceitar pedido:', err));
+    };
+
+    const recusarPedido = (id) => {
+        axios.patch(`/shopping/api/pedidos/${id}/`, { estado: "recusado" })
+            .then(() => setPedidos(prev => prev.filter(p => p.id !== id)))
+            .catch(err => console.error('Erro ao recusar pedido:', err));
     };
 
     const enviarPedido = () => {
@@ -315,6 +338,58 @@ const ListaComprasPage = () => {
                 </p>
             )}
             </div>
+
+            {/* Pedidos Pendentes — só admin */}
+            {role === "admin" && (
+                <div style={{
+                    background: "rgba(255,255,255,0.95)",
+                    borderRadius: "14px",
+                    boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
+                    padding: "20px",
+                    marginTop: "16px",
+                }}>
+                    <h5 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "650" }}>Pedidos Pendentes</h5>
+                    <p style={{ color: "#555", marginBottom: "16px", fontSize: "14px" }}>
+                        {pedidos.length === 0 ? "Sem pedidos pendentes." : `${pedidos.length} pedido(s) a aguardar aprovação.`}
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                        {pedidos.map(pedido => (
+                            <div key={pedido.id} style={{ borderRadius: "12px", border: "1px solid #e0e0e0", overflow: "hidden", background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+                                <div style={{
+                                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                                    padding: "10px 14px", background: "#f5f5f5", borderBottom: "1px solid #e0e0e0",
+                                }}>
+                                    <span style={{ fontWeight: "700", fontSize: "14px", color: "#333" }}>{pedido.numero}</span>
+                                    <div style={{ display: "flex", gap: "8px" }}>
+                                        <Button
+                                            size="sm"
+                                            style={{ background: "#45A293", border: "none", borderRadius: "8px", padding: "4px 12px", fontSize: "13px" }}
+                                            onClick={() => aceitarPedido(pedido.id)}
+                                        >
+                                            ✓ Aceitar
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            style={{ background: "#fff", border: "1px solid #e57373", color: "#e57373", borderRadius: "8px", padding: "4px 12px", fontSize: "13px" }}
+                                            onClick={() => recusarPedido(pedido.id)}
+                                        >
+                                            ✕ Recusar
+                                        </Button>
+                                    </div>
+                                </div>
+                                <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                                    {pedido.itens.map((item, i) => (
+                                        <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px" }}>
+                                            <span>{item.icone}</span>
+                                            <span>{item.nome}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

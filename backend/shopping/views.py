@@ -62,7 +62,10 @@ def pedidos_compra(request):
 
     if request.method == 'POST':
         itens_data = request.data.get('itens', [])
-        pedido = PedidoCompra.objects.create(familia=familia)
+        pedido = PedidoCompra.objects.create(
+            familia=familia,
+            pedido_por=request.user if request.user.is_authenticated else None,
+        )
         for item in itens_data:
             ItemPedidoCompra.objects.create(
                 pedido=pedido,
@@ -70,3 +73,32 @@ def pedidos_compra(request):
                 icone=item.get('icone', '🛒'),
             )
         return Response(PedidoCompraSerializer(pedido).data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PATCH'])
+def pedido_detail(request, pk):
+    try:
+        pedido = PedidoCompra.objects.prefetch_related('itens').get(pk=pk)
+    except PedidoCompra.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    estado = request.data.get('estado')
+    if estado not in ['aprovado', 'recusado']:
+        return Response({'error': 'estado inválido'}, status=status.HTTP_400_BAD_REQUEST)
+
+    pedido.estado = estado
+    pedido.revisto_por = request.user if request.user.is_authenticated else None
+    pedido.save()
+
+    if estado == 'aprovado':
+        for item in pedido.itens.all():
+            ItemListaCompra.objects.create(
+                familia=pedido.familia,
+                nome_livre=item.nome_livre,
+                icone=item.icone,
+                categoria='Outros',
+                quantidade=1,
+                unidade='EA',
+            )
+
+    return Response(PedidoCompraSerializer(pedido).data)

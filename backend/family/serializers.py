@@ -1,26 +1,34 @@
 from rest_framework import serializers
-from .models import MembroFamilia
+from .models import MembroFamilia, Familia
+
+
+class FamiliaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Familia
+        fields = ('id', 'nome', 'criada_em')
 
 
 class MembroFamiliaSerializer(serializers.ModelSerializer):
-    nome = serializers.SerializerMethodField()
-    role = serializers.CharField(source='papel')
-    profile_id = serializers.SerializerMethodField()
+
+    profile_id = serializers.IntegerField(source='user.profile.id')
 
     class Meta:
         model = MembroFamilia
-        fields = ('id', 'nome', 'role', 'profile_id')
+        fields = ('id', 'family', 'user', 'role', 'profile_id')
+
+    # def get_nome(self, obj):
+    #     if obj.utilizador:
+    #         full = f"{obj.utilizador.first_name} {obj.utilizador.last_name}".strip()
+    #         return full or obj.nome
+    #     return obj.nome
+
+class FamilyMembersListSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='user.membrofamilia.id')
+    nome = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MembroFamilia
+        fields = ('id', 'nome', 'role')
 
     def get_nome(self, obj):
-        if obj.utilizador:
-            full = f"{obj.utilizador.first_name} {obj.utilizador.last_name}".strip()
-            return full or obj.nome
-        return obj.nome
-
-    def get_profile_id(self, obj):
-        if obj.utilizador:
-            try:
-                return obj.utilizador.profile.id
-            except Exception:
-                return None
-        return None
+        return f"{obj.user.first_name} {obj.user.last_name}"
