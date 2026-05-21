@@ -18,7 +18,10 @@ def products(request):
 @api_view(['GET', 'POST'])
 def itens_dispensa(request):
     if request.method == 'GET':
-        itens = ItemDispensa.objects.all()
+        membro = MembroFamilia.objects.filter(user=request.user).first()
+        if not membro:
+            return Response([])
+        itens = ItemDispensa.objects.filter(familia=membro.family)
         serializer = ItemDispensaSerializer(itens, many=True)
         return Response(serializer.data)
 
