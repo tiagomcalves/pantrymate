@@ -45,7 +45,7 @@ def items_dispensa(request):
 def items_dispensa_alertas(request):
     if request.method == 'GET':
         hoje = timezone.now().date()
-        no_prazo_limite = hoje + timedelta(days=7)
+        no_prazo_limite = hoje + timedelta(days=3)
         items = ItemDispensa.objects.filter(
             data_validade__lte=no_prazo_limite
         )

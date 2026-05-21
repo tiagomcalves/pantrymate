@@ -5,6 +5,7 @@ import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
 import axios from "axios";
+import {useAlertasContext} from "../context/AlertasContext.jsx";
 
 const Dispensa = () => {
 
@@ -12,6 +13,7 @@ const Dispensa = () => {
     const [itemsList, setItemsList] = useState([])
     const [filteredCategory, setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
+    const {setAlertas} = useAlertasContext()
 
     const getProducts = () => {
         axios.get(URL_DISPENSADATA)
