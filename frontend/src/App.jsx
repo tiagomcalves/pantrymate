@@ -17,6 +17,7 @@ import ListaComprasPage from "./pages/ListaComprasPage.jsx";
 import PedidosPage from "./pages/PedidosPage.jsx";
 import SuggestionPage from "./pages/SuggestionPage.jsx";
 import RecipeDetailPage from "./pages/RecipeDetailPage.jsx";
+import AlertasPage from "./pages/AlertasPage.jsx";
 
 const AppShell = () => (
     <Container style={{ maxWidth: "2560px" }}>
@@ -42,6 +43,7 @@ function App() {
                             <Route path="compras" element={<ListaComprasPage />} />
                             <Route path="pedidos" element={<PedidosPage />} />
                             <Route path="suggestions" element={<SuggestionPage />} />
+                            <Route path="alertas" element={<AlertasPage/>} />
                             <Route path="recipes/:id" element={<RecipeDetailPage />} />
                         </Route>
                     </Route>

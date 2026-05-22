@@ -1,7 +1,7 @@
 import {Dropdown, DropdownToggle, DropdownItem, DropdownMenu} from "reactstrap";
 import {useState} from "react";
 
-const FilterCategory = ({productSorted, setProductSorted}) => {
+const ProductSort = ({productSorted, setProductSorted}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -9,13 +9,11 @@ const FilterCategory = ({productSorted, setProductSorted}) => {
         <div
             style={{
                 display: "flex",
-                overflowX: "auto",
                 gap: "10px",
-                paddingBottom: "15px"
             }}
         >
             <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-                <DropdownToggle>
+                <DropdownToggle style={{height: "50px", margin: "5px"}}>
                     Ordenar por
                 </DropdownToggle>
                 <DropdownMenu container="body">
@@ -28,4 +26,4 @@ const FilterCategory = ({productSorted, setProductSorted}) => {
     )
 }
 
-export default FilterCategory
+export default ProductSort
