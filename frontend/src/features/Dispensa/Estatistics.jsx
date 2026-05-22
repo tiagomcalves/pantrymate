@@ -8,7 +8,7 @@ const Estatistics = ({productsList, atualProductsList}) => {
     const totalCloseToExpire = productsList.filter(produto => {
         const timeleft = new Date(produto.data_validade).getTime() - new Date().getTime();
         const daysLeft = Math.ceil(timeleft / (1000 * 3600 * 24));
-        return daysLeft <= 3
+        return daysLeft <= 3 && !produto.congelado;
     }).length.toString()
 
     return (
