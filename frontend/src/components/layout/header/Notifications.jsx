@@ -1,12 +1,20 @@
 import {Badge, Button} from "reactstrap";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import bellIcon from '../../../assets/bell.svg'
+import {useNavigate} from "react-router-dom";
+import {getCurrentSession} from "../../../features/SessionManager.jsx";
 
 const Notifications = () => {
+
+    const navigate = useNavigate()
+    const { alertas } = getCurrentSession();
+
+    const alertCount = alertas?.length ?? 0;
+
     return (
-        <Button color="primary" outline>
+        <Button color="secondary" outline onClick={() => navigate("/alertas")}>
             <img src={bellIcon} alt="Bell Icon" />{' '}
-          <Badge>4</Badge>
+          <Badge>{alertCount}</Badge>
         </Button>
     );
 }

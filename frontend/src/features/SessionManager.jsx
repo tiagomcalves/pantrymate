@@ -1,6 +1,6 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {fetchAlerts} from "../context/Alertas.js";
 
 export const SessionContext = createContext(null);
 
@@ -13,18 +13,40 @@ const SessionManager = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        axios.get(URL_USER, { withCredentials: true })
-            .then(result => {
-                setCurrentUser(result.data);
-            })
-            .catch(() => {
-                setCurrentUser(null);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const [alertas, setAlertas] = useState();
+
+
+    useEffect( () => {
+
+        loadData().then(r => []);
+
+        const intervalo = setInterval(async () => {
+            try {
+                const alertas = await fetchAlerts();
+                setAlertas(alertas)
+            } catch (err) {
+                console.error("Error fetching alerts: ", err);
+            }
+        }, 86400000); //24 horas
+        return () => clearInterval(intervalo)
     }, []);
+
+    const loadData = async () => {
+                try {
+                    const result = await axios.get(URL_USER, { withCredentials: true });
+
+                    setCurrentUser(result.data);
+
+                    const alerts = await fetchAlerts();
+                    // console.log("alerts: ", alerts);
+                    setAlertas(alerts);
+
+                } catch (err) {
+                    setCurrentUser(null);
+                } finally {
+                    setLoading(false);
+                }
+            };
 
     const handleLogin = async(username, password) => {
         try {
@@ -41,8 +63,9 @@ const SessionManager = ({ children }) => {
 
             if( result.status === 200)  //  We got a sucessfull login, lets fetch the user info for the first time
             {
-                const user_obj_fetch = await axios.get(URL_USER, { withCredentials: true});
-                setCurrentUser((user_obj_fetch.data));
+                // const user_obj_fetch = await axios.get(URL_USER, { withCredentials: true});
+                // setCurrentUser((user_obj_fetch.data));
+                await loadData();
                 return true;
             }
 
@@ -72,7 +95,7 @@ const SessionManager = ({ children }) => {
     };
 
     return (
-        <SessionContext.Provider value={{ currentUser, loading, handleLogin, handleLogout }}>
+        <SessionContext.Provider value={{ currentUser, loading, handleLogin, handleLogout, alertas, setAlertas }}>
             {children}
         </SessionContext.Provider>
     );

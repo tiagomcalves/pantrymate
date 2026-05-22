@@ -1,27 +1,38 @@
-import GeneralView from "../features/GeneralView.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 import ExpireBadge from "../features/Expiring/ExpireBadge.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
-import { useProdutos } from "../context/ProdutosContext.jsx";
+import axios from "axios";
 
 
 const Dispensa = () => {
 
-    const { produtos: productsList } = useProdutos();//Todo Adicionar depois como segundo parametro setProductsList
-    const [filteredCategory,  setFilteredCategory] = useState('Todos');
+    const URL_DISPENSADATA = "http://localhost:8000/products/api/items-dispensa/";
+    const [itemsList, setItemsList] = useState([])
+    const [filteredCategory, setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
 
-    let filteredProducts = [...productsList];
+    const getProducts = () => {
+        axios.get(URL_DISPENSADATA, { withCredentials: true})
+            .then((request) => {
+                setItemsList(request.data)
+            }).catch(error => console.error(error));
+    };
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    let filteredProducts = [...itemsList];
 
     if (filteredCategory !== 'Todos') {
         filteredProducts = filteredProducts.filter(product => product.categoria === filteredCategory);
     }
 
     if (productSorted === 'dataValidade') {
-        filteredProducts.sort((a, b) => new Date(a.dataValidade).getTime() - new Date(b.dataValidade).getTime());
+        filteredProducts.sort((a, b) => new Date(a.data_validade).getTime() - new Date(b.data_validade).getTime());
     } else if (productSorted === 'nome') {
         filteredProducts.sort((a, b) => a.nome.localeCompare(b.nome));
     }
@@ -31,7 +42,7 @@ const Dispensa = () => {
             display: "flex",
             flexDirection: "row",
             gap: "20px",
-            height: "650px"
+            height: "650px",
         }}>
             <ContentSection title={"Gestão da dispensa"} w={"60%"} h={"550px"}>
                 <div
@@ -43,13 +54,12 @@ const Dispensa = () => {
                     }}
                 >
                     <div>
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "20px",
-                                height: "100%",
-                                maxWidth: "100%",
-                            }}
+                        <div style={{
+                            display: "flex",
+                            gap: 2,
+                            margin: "0 0 10px 0",
+                            flexWrap: "wrap"
+                        }}
                         >
                             <FilterCategory
                                 categorys={['Todos', 'Frescos', 'Congelados', 'Mercearia']}
@@ -76,15 +86,19 @@ const Dispensa = () => {
                                 <ExpireBadge
                                     key={produto.id}
                                     name={produto.nome}
-                                    imageFile={produto.imagemSrc || "diet.png"}
-                                    daysLeft={produto.dataValidade}
+                                    imageFile={"http://127.0.0.1:8000" + produto.imagem}
+                                    daysLeft={produto.data_validade}
+                                    congelado={produto.congelado}
                                 />
                             ))}
                         </div>
                     </div>
                 </div>
             </ContentSection>
-            <Estatistics/>
+            <Estatistics
+                productsList={itemsList}
+                atualProductsList={getProducts}
+            />
         </div>
     )
 }

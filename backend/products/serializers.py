@@ -5,20 +5,27 @@ from .models import Produto, ItemDispensa
 class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
-        fields = ('id', 'nome', 'categoria', 'imagem', 'unidade')
+        fields = ('id', 'nome', 'categoria', 'imagem')
 
 
 class ItemDispensaSerializer(serializers.ModelSerializer):
-    data_validade = serializers.SerializerMethodField()
-
-    def get_data_validade(self, obj):
-        if obj.congelado:
-            return None
-        return obj.data_validade
+    data_validade = serializers.CharField(required=False, allow_null=True)
+    nome = serializers.CharField(source='produto.nome', read_only=True)
+    imagem = serializers.ImageField(source='produto.imagem', read_only=True)
+    categoria = serializers.CharField(source='produto.categoria', read_only=True)
+    produto = serializers.PrimaryKeyRelatedField(queryset=Produto.objects.all())
 
     class Meta:
         model = ItemDispensa
         fields = (
-            'id', 'produto', 'familia', 'quantidade', 'unidade',
+            'id', 'produto', 'nome', 'imagem', 'categoria','quantidade', 'unidade',
             'data_validade', 'congelado', 'adicionado_em', 'adicionado_por',
         )
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+
+        if instance.congelado:
+            ret['data_validade'] = None
+
+        return ret

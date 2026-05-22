@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { Button } from "reactstrap";
 import { getCurrentSession } from "../features/SessionManager.jsx";
-import { useProdutos } from "../context/ProdutosContext";
 import axios from "axios";
 
 const PRODUTOS_DETETADOS = [
