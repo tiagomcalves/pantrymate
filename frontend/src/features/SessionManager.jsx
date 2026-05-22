@@ -1,5 +1,4 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {fetchAlerts} from "../context/Alertas.js";
 
@@ -21,6 +20,15 @@ const SessionManager = ({ children }) => {
 
         loadData().then(r => []);
 
+        const intervalo = setInterval(async () => {
+            try {
+                const alertas = await fetchAlerts();
+                setAlertas(alertas)
+            } catch (err) {
+                console.error("Error fetching alerts: ", err);
+            }
+        }, 86400000); //24 horas
+        return () => clearInterval(intervalo)
     }, []);
 
     const loadData = async () => {

@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Button, Form, FormGroup, Table, Label, Input, Spinner} from "reactstrap";
 import axios from "axios";
 import alert from "bootstrap/js/src/alert.js";
@@ -28,16 +28,12 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
             data_validade: validityDate
         }
 
-        if(new Date(validityDate) < Date.now())
-        {
-            console.log("ai nao, um produto expirado!!!");
-            setAlertas(await fetchAlerts());
-        }
-
         const timeInicial = Date.now()
 
-        axios.post(URL_DISPENSADATA, newItem, { withCredentials: true}).then(r => {
+        axios.post(URL_DISPENSADATA, newItem, { withCredentials: true}).then(async r => {
             if (r.status === 201 || r.status === 200) {
+                const dados = await fetchAlerts()
+                setAlertas(dados)
                 setTimeout(() => {
                         toggle();
                         if (getProducts) {

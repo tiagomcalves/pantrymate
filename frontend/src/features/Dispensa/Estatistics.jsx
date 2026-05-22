@@ -1,5 +1,4 @@
 import {Card, CardText, CardTitle} from "reactstrap";
-import AdicionarProdutoForm from "./AdicionarProdutoForm.jsx";
 import AdicionarProdutoModal from "./AdicionarProdutoModal.jsx";
 import PieChartDispensa from "./PieChartDispensa.jsx";
 
