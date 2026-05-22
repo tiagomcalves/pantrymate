@@ -1,7 +1,5 @@
-import GeneralView from "../features/GeneralView.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 import ExpireBadge from "../features/Expiring/ExpireBadge.jsx";
-import produtosData from "../data/produtos.json";
 import {useEffect, useState} from "react";
 import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
@@ -90,6 +88,7 @@ const Dispensa = () => {
                                     name={produto.nome}
                                     imageFile={"http://127.0.0.1:8000" + produto.imagem}
                                     daysLeft={produto.data_validade}
+                                    congelado={produto.congelado}
                                 />
                             ))}
                         </div>

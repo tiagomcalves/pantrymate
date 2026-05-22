@@ -9,15 +9,11 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
 
 class ItemDispensaSerializer(serializers.ModelSerializer):
-    # data_validade = serializers.SerializerMethodField()
+    data_validade = serializers.CharField(required=False, allow_null=True)
     nome = serializers.CharField(source='produto.nome', read_only=True)
     imagem = serializers.ImageField(source='produto.imagem', read_only=True)
     categoria = serializers.CharField(source='produto.categoria', read_only=True)
     produto = serializers.PrimaryKeyRelatedField(queryset=Produto.objects.all())
-    # def get_data_validade(self, obj):
-    #     if obj.congelado:
-    #         return None
-    #     return obj.data_validade
 
     class Meta:
         model = ItemDispensa
@@ -25,3 +21,11 @@ class ItemDispensaSerializer(serializers.ModelSerializer):
             'id', 'produto', 'nome', 'imagem', 'categoria','quantidade', 'unidade',
             'data_validade', 'congelado', 'adicionado_em', 'adicionado_por',
         )
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+
+        if instance.congelado:
+            ret['data_validade'] = None
+
+        return ret
