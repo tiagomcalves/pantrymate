@@ -22,9 +22,9 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            <div id="searchbar" style={{display: "flex", flexDirection: "row", justifyContent: "end"}}>
-                <SearchBox/>
-            </div>
+            {/*<div id="searchbar" style={{display: "flex", flexDirection: "row", justifyContent: "end"}}>*/}
+            {/*    <SearchBox/>*/}
+            {/*</div>*/}
         </header>
     )
 }
