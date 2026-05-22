@@ -28,16 +28,19 @@ const SuggestionPage = () => {
         : "/foods/diet.png"
 
     useEffect(() => {
-        if (!recipe?.name) return
+        if (!recipe?.name) {
+            setLoading(false)
+            return
+        }
 
-        const names = selectedProducts.map(p => p.name).join(', ')
+        const names = selectedProducts.map(p => p.nome).join(', ')
 
         axios.post(GROQ_API_URL, {
             model: 'llama-3.1-8b-instant',
             messages: [{
                 role: 'user',
                 // prompt testado manualmente, nao mexer
-                content: `Dá-me a receita completa de "${recipe.name}" que usa ${names}. Responde APENAS com JSON válido, sem markdown, sem texto extra: {"ingredients": ["ingrediente 1", "ingrediente 2"], "steps": ["passo 1", "passo 2"]}`
+                content: `Dá-me a receita completa de "${recipe.name}" que usa ${names}. Usa terminologia de Portugal (ex: chávena, tacho, frigideira, frigorífico) e não termos brasileiros. Responde APENAS com JSON válido, sem markdown, sem texto extra: {"ingredients": ["ingrediente 1", "ingrediente 2"], "steps": ["passo 1", "passo 2"]}`
             }],
             temperature: 0.7,
         }, {
@@ -51,7 +54,17 @@ const SuggestionPage = () => {
             // as vezes a IA mete markdown mesmo dizendo para nao meter
             const match = content.match(/\{[\s\S]*\}/)
             if (match) content = match[0]
-            setFullRecipe(JSON.parse(content))
+            const parsed = JSON.parse(content)
+            setFullRecipe(parsed)
+
+            const tempoMin = parseInt(recipe.time) || 0
+            axios.post('http://localhost:8000/recipes/api/receitas/', {
+                nome: recipe.name,
+                descricao: '',
+                tempo_preparacao: tempoMin,
+                ingredientes_usados: parsed.ingredients ?? [],
+                passos: parsed.steps ?? [],
+            }, { withCredentials: true }).catch(err => console.error('erro ao guardar receita:', err))
         })
         .catch(err => {
             console.error('erro groq:', err)

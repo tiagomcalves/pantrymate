@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Button, Card, CardBody, CardText, CardTitle } from "reactstrap";
 import ContentSection from "../components/common/ContentSection.jsx";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
@@ -14,14 +14,17 @@ const SuggestionByAI = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        axios.get("http://localhost:8000/products/api/products/")
+    const fetchProdutos = () => {
+        setRecipe(null);
+        axios.get("http://localhost:8000/products/api/itens/", { withCredentials: true })
             .then(response => {
                 const shuffled = response.data.sort(() => 0.5 - Math.random());
                 setSelectedProducts(shuffled.slice(0, 3));
             })
             .catch(error => console.error(error));
-    }, []);
+    };
+
+    useEffect(() => { fetchProdutos(); }, []);
 
     useEffect(() => {
         if (selectedProducts.length === 0) return;
@@ -34,7 +37,7 @@ const SuggestionByAI = () => {
             model: "llama-3.1-8b-instant",
             messages: [{
                 role: "user",
-                content: `Sugere uma receita de jantar portuguesa que use estes ingredientes: ${names}. Responde APENAS com JSON válido, sem markdown, sem texto extra: {"name": "nome da receita", "time": "X min"}`
+                content: `Sugere uma receita de jantar portuguesa que use estes ingredientes: ${names}. Usa terminologia de Portugal (ex: chávena, tacho, frigorífico) e não termos brasileiros. Responde APENAS com JSON válido, sem markdown, sem texto extra: {"name": "nome da receita", "time": "X min"}`
             }],
             temperature: 0.7,
         }, {
@@ -70,17 +73,25 @@ const SuggestionByAI = () => {
         <ContentSection title={"Sugestão Inteligente"}>
             <Card
                 style={{ borderRadius: "12px", width: "100%", cursor: recipe && !loading ? "pointer" : "default" }}
-                onClick={() => recipe && !loading && navigate("/suggestion", { state: { recipe, selectedProducts } })}
+                onClick={() => recipe && !loading && navigate("/suggestions", { state: { recipe, selectedProducts } })}
             >
                 <CardBody>
-                    <CardTitle tag="h6" style={{ fontWeight: "bold" }}>
-                        Ideia para o Jantar? (IA)
-                    </CardTitle>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                        <CardTitle tag="h6" style={{ fontWeight: "bold", margin: 0 }}>
+                            Ideia para o Jantar? (IA)
+                        </CardTitle>
+                        <Button size="sm" disabled={loading}
+                            onClick={e => { e.stopPropagation(); fetchProdutos(); }}
+                            style={{ background: "#45A293", border: "none" }}
+                        >
+                            ↻ alternativa
+                        </Button>
+                    </div>
                     <CardText style={{ fontSize: "0.85rem", color: "#6c757d" }}>
-                        Usando os teus Tomates e Queijo...
+                        {usingText}
                     </CardText>
 
-                    <div style={{ display: "flex", gap: "12px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", textAlign: "center" }}>
                         <img
                             src={recipeImage}
                             alt="Sugestão de receita"

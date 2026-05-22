@@ -16,6 +16,7 @@ import FamiliaPage from "./pages/FamiliaPage.jsx";
 import ListaComprasPage from "./pages/ListaComprasPage.jsx";
 import PedidosPage from "./pages/PedidosPage.jsx";
 import SuggestionPage from "./pages/SuggestionPage.jsx";
+import RecipeDetailPage from "./pages/RecipeDetailPage.jsx";
 import AlertasPage from "./pages/AlertasPage.jsx";
 
 const AppShell = () => (
@@ -43,6 +44,7 @@ function App() {
                             <Route path="pedidos" element={<PedidosPage />} />
                             <Route path="suggestions" element={<SuggestionPage />} />
                             <Route path="alertas" element={<AlertasPage/>} />
+                            <Route path="recipes/:id" element={<RecipeDetailPage />} />
                         </Route>
                     </Route>
                     <Route path="*" element={<Navigate to="/" replace />} />
