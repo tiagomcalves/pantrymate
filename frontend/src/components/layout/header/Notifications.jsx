@@ -1,22 +1,20 @@
 import {Badge, Button} from "reactstrap";
 import React, {useEffect, useState} from "react";
 import bellIcon from '../../../assets/bell.svg'
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {useAlertasContext} from "../../../context/AlertasContext.jsx";
+import {getCurrentSession} from "../../../features/SessionManager.jsx";
 
 const Notifications = () => {
 
     const navigate = useNavigate()
+    const { alertas } = getCurrentSession();
 
-    const {alertas} = useAlertasContext()
-
-    const size = alertas.length
+    const alertCount = alertas?.length ?? 0;
 
     return (
         <Button color="secondary" outline onClick={() => navigate("/alertas")}>
             <img src={bellIcon} alt="Bell Icon" />{' '}
-          <Badge>{size}</Badge>
+          <Badge>{alertCount}</Badge>
         </Button>
     );
 }

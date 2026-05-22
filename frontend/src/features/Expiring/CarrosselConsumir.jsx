@@ -12,7 +12,7 @@ const CarrosselConsumir = () => {
     //  use useEffect() for a single API call on component mount
     //  otherwise React calls it on every Render
     const getItems = () => {
-        axios.get(URL_DISPENSADATA)
+        axios.get(URL_DISPENSADATA, { withCredentials: true})
             .then((request) => {
                 setItemList(request.data)
             }).catch(error => console.error(error));

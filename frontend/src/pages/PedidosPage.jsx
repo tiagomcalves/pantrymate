@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Badge } from "reactstrap";
-import { useUser } from "../context/UserContext";
 import { usePedidos } from "../context/PedidosContext";
 
 const CATEGORIAS = [

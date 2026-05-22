@@ -1,11 +1,13 @@
+import GeneralView from "../features/GeneralView.jsx";
 import ContentSection from "../components/common/ContentSection.jsx";
 import ExpireBadge from "../features/Expiring/ExpireBadge.jsx";
+import produtosData from "../data/produtos.json";
 import {useEffect, useState} from "react";
 import FilterCategory from "../features/Dispensa/FilterCategory.jsx";
 import ProductSort from "../features/Dispensa/ProductSort.jsx";
 import Estatistics from "../features/Dispensa/Estatistics.jsx";
 import axios from "axios";
-import {useAlertasContext} from "../context/AlertasContext.jsx";
+
 
 const Dispensa = () => {
 
@@ -13,10 +15,9 @@ const Dispensa = () => {
     const [itemsList, setItemsList] = useState([])
     const [filteredCategory, setFilteredCategory] = useState('Todos');
     const [productSorted, setProductSorted] = useState('dataValidade')
-    const {setAlertas} = useAlertasContext()
 
     const getProducts = () => {
-        axios.get(URL_DISPENSADATA)
+        axios.get(URL_DISPENSADATA, { withCredentials: true})
             .then((request) => {
                 setItemsList(request.data)
             }).catch(error => console.error(error));

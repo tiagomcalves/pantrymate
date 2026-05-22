@@ -9,7 +9,7 @@ const AlertasPage = () => {
     const [alertas, setAlertas] = useState([]);
 
     const fetchAlertas = () => {
-        axios.get(URL_DISPENSAALERTASDATA)
+        axios.get(URL_DISPENSAALERTASDATA, { withCredentials: true})
             .then((request) => {
                 setAlertas(request.data)
             }).catch(error => console.error(error));

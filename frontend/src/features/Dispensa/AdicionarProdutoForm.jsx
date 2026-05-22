@@ -1,6 +1,9 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Button, Form, FormGroup, Table, Label, Input, Spinner} from "reactstrap";
 import axios from "axios";
+import alert from "bootstrap/js/src/alert.js";
+import {getCurrentSession} from "../SessionManager.jsx";
+import {fetchAlerts} from "../../context/Alertas.js";
 
 function AdicionarProdutoForm({products, toggle, getProducts}) {
 
@@ -12,19 +15,28 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
     const [quantity, setQuantity] = useState(0)
     const [loading, setLoading] = useState(false)
 
-    const addAndCloseModal = (event) => {
+    const { setAlertas } = getCurrentSession();
+
+    const addAndCloseModal = async (event) => {
         event.preventDefault();
         setLoading(true)
         const selectedProduct = {...products[selectedOption]}
         const newItem = {
-            familia: 1,
             produto: selectedProduct.id,
             quantidade: quantity,
             unidade: unit,
             data_validade: validityDate
         }
+
+        if(new Date(validityDate) < Date.now())
+        {
+            console.log("ai nao, um produto expirado!!!");
+            setAlertas(await fetchAlerts());
+        }
+
         const timeInicial = Date.now()
-        axios.post(URL_DISPENSADATA, newItem).then(r => {
+
+        axios.post(URL_DISPENSADATA, newItem, { withCredentials: true}).then(r => {
             if (r.status === 201 || r.status === 200) {
                 setTimeout(() => {
                         toggle();
