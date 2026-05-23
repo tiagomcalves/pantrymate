@@ -100,6 +100,7 @@ def add_item_dispensa(request) -> Response:
         produto=produto,
         unidade=unidade,
         congelado=item_serialized.validated_data.get('congelado', False),
+        data_validade=item_serialized.validated_data.get('data_validade'),
     ).first()
 
     if existente:

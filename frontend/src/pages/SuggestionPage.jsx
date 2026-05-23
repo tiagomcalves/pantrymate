@@ -22,10 +22,7 @@ const SuggestionPage = () => {
     const recipe = state?.recipe
     const selectedProducts = state?.selectedProducts ?? []
 
-    // so usa a imagem do primeiro produto, nao temos mais
-    const recipeImage = selectedProducts.length > 0 && selectedProducts[0].imagem
-        ? selectedProducts[0].imagem
-        : "/foods/diet.png"
+    const recipeImage = "/foods/diet.png"
 
     useEffect(() => {
         if (!recipe?.name) {
@@ -87,7 +84,7 @@ const SuggestionPage = () => {
             }} />
             <Container style={{ marginTop: '50px', marginBottom: '100px', maxWidth: '2560px', position: 'relative', zIndex: 1 }}>
 
-                <Button color="secondary" outline size="sm" onClick={() => navigate(-1)} style={{marginBottom: 20}}>
+                <Button onClick={() => navigate(-1)} style={{ marginBottom: 20, background: "#45A293", border: "none", borderRadius: "12px", padding: "8px 18px", fontWeight: "600", color: "#fff" }}>
                     ← Voltar
                 </Button>
 

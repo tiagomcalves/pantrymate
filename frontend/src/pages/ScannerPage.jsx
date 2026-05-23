@@ -5,7 +5,7 @@ import axios from "axios";
 
 const PRODUTOS_DETETADOS = [
     { nome: "Leite",  quantidade: 6, unidade: "L",  categoria_nome: "Laticínios", data_validade: "2026-07-20" },
-    { nome: "Porco",  quantidade: 3, unidade: "kg", categoria_nome: "Carnes",     data_validade: "2026-05-25" },
+    { nome: "Peitos de Frango",  quantidade: 3, unidade: "kg", categoria_nome: "Frescos",     data_validade: "2026-05-25" },
     { nome: "Arroz",  quantidade: 2, unidade: "kg", categoria_nome: "Outros",     data_validade: "2027-06-01" },
 ];
 
