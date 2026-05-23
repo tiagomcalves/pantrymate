@@ -5,11 +5,30 @@
 - Rúben Rocha
 - Tiago Alves
 
+---
 
-### How to setup
-Run setup.ps1
+### Correr com run.bat (recomendado)
 
-### Como correr o projeto
+**1ª vez — setup inicial:**
+```powershell
+.\setup.ps1
+```
+Cria o ambiente virtual Python, instala todas as dependências e instala os pacotes npm do frontend.
+
+**Depois (e nas vezes seguintes):**
+```
+run.bat
+```
+Instala dependências Python automaticamente, cria e popula a base de dados se ainda não existir, e arranca o frontend e o backend em janelas separadas.
+
+---
+
+### Correr manualmente (sem run.bat)
+
+**1ª vez — setup inicial** (igual ao método com bat):
+```powershell
+.\setup.ps1
+```
 
 **Backend** (dentro da pasta `backend/`):
 ```bash
@@ -24,4 +43,3 @@ python manage.py runserver
 ```bash
 npm run dev
 ```
-
