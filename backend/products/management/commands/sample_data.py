@@ -17,9 +17,9 @@ CATEGORIAS = [
 # (nome, categoria, unidade)
 PRODUTOS = [
     ("Tomates Frescos",      "Frescos",    "kg"),
-    ("Fiambre Fatiado",      "Frescos",    "un"),
+    ("Fiambre Fatiado",      "Frescos",    "g"),
     ("Peitos de Frango",     "Frescos",    "kg"),
-    ("Queijo Flamengo",      "Laticínios", "un"),
+    ("Queijo Flamengo",      "Laticínios", "g"),
     ("Ovos",                 "Frescos",    "un"),
     ("Presunto Curado",      "Frescos",    "un"),
     ("Salmão",               "Congelados", "kg"),
@@ -45,9 +45,9 @@ hoje = timezone.now().date()
 # dias negativos = já expirado; None = congelado sem data
 DISPENSA_FAMILIA1 = [
     ("Tomates Frescos",  6,  "un",  3,     False),
-    ("Fiambre Fatiado",  1,  "un",  5,     False),
+    ("Fiambre Fatiado",  200,  "g",  5,     False),
     ("Peitos de Frango", 2,  "kg",  None,  True),
-    ("Queijo Flamengo",  1,  "un",  7,     False),
+    ("Queijo Flamengo",  300,  "g",  7,     False),
     ("Ovos",             12, "un",  21,    False),
     ("Presunto Curado",  1,  "un",  25,    False),
     ("Leite",            2,  "L",   4,     False),
@@ -90,8 +90,11 @@ class Command(BaseCommand):
         for nome, cat_nome, unidade in PRODUTOS:
             prod, created = Produto.objects.get_or_create(
                 nome=nome,
-                defaults={"categoria": categorias[cat_nome], "unidade": unidade}
+                defaults={"categoria": categorias[cat_nome], "unidade_padrao": unidade}
             )
+            if not created and prod.unidade_padrao != unidade:
+                prod.unidade_padrao = unidade
+                prod.save(update_fields=["unidade_padrao"])
             produtos[nome] = prod
             if created:
                 self.stdout.write(f"  Produto criado: {nome}")

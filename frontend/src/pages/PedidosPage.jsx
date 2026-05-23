@@ -71,7 +71,6 @@ const estadoBadge = {
 };
 
 const PedidosPage = () => {
-    const { currentUser } = useUser();
     const { pedidos, criarPedido } = usePedidos();
 
     const [vista, setVista] = useState("categorias");

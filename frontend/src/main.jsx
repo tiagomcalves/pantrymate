@@ -16,5 +16,7 @@ axios.interceptors.request.use(config => {
 });
 
 createRoot(document.getElementById('root')).render(
-    <App/>
+    <PedidosProvider>
+        <App/>
+    </PedidosProvider>
 )

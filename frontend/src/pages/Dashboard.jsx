@@ -3,11 +3,14 @@ import React from "react";
 import GeneralView from "../features/GeneralView.jsx";
 import SuggestionByAI from "../features/SuggestionByAI.jsx";
 import CarrosselConsumir from "../features/Expiring/CarrosselConsumir.jsx";
+import ListaCompras from "../components/ListaCompras.jsx";
 
 function Dashboard() {
     return (
         <section>
             <GeneralView/>
+            <hr/>
+            <ListaCompras/>
             <hr/>
             <CarrosselConsumir/>
             <hr/>
