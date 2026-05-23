@@ -3,6 +3,7 @@
 **/__pycache__
 *.py[cod]
 _*.py
+!**/__init__.py
 
 # Editor directories and files
 .vscode/*
