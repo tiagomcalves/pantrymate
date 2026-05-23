@@ -63,13 +63,8 @@ const Estatistics = ({productsList, atualProductsList}) => {
                         </h4>
                     </div>
                 </div>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    height: "200px",
-                    marginBottom: "15px"
-                }}>
-                    <PieChartDispensa productsList={productsList}/>
+                <div style={{ marginBottom: "15px" }}>
+                    <PieChartDispensa productsList={productsList} legendPosition="bottom"/>
                 </div>
                 <div style={{textAlign: "center"}}>
                     <AdicionarProdutoModal

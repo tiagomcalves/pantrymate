@@ -10,9 +10,9 @@ function Dashboard() {
         <section>
             <GeneralView/>
             <hr/>
-            <ListaCompras/>
-            <hr/>
             <CarrosselConsumir/>
+            <hr/>
+            <ListaCompras/>
             <hr/>
             <SuggestionByAI/>
             <hr/>
