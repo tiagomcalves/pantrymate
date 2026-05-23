@@ -1,7 +1,6 @@
 @echo off
-echo =======================================
+echo
 echo        PantryMate Launcher
-echo =======================================
 echo.
 
 if not exist "backend\.venv\Scripts\python.exe" (
@@ -44,18 +43,16 @@ if not exist "backend\db.sqlite3" (
     echo.
     echo [BD] Base de dados pronta.
 ) else (
-    echo [BD] Base de dados ja existe. A saltar migrações.
+    echo [BD] Base de dados ja existe. A saltar migracoes.
 )
 
 echo.
-echo A lançar Frontend e Backend...
+echo A lancar Frontend e Backend...
 start "PantryMate Frontend" /D frontend cmd /c "npm run dev & pause"
 start "PantryMate Backend"  /D backend  cmd /c ".\.venv\Scripts\python.exe manage.py runserver & pause"
 
 echo.
-echo =======================================
 echo   Frontend : http://localhost:5173
 echo   Backend  : http://localhost:8000
 echo   Admin    : http://localhost:8000/admin
-echo =======================================
 echo.

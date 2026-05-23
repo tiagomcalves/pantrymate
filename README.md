@@ -1,13 +1,23 @@
 # PantryMate
-## a DIAM project by
-- Gonçalo Moita
-- Rodrigo Delaunay
-- Rúben Rocha
-- Tiago Alves
+## Projeto final DIAM elaborado por:
+- Rúben Rocha – Aluno N.º 66174
+- Tiago Alves – Aluno N.º 106090
+- Rodrigo Delaunay – Aluno N.º 122123
+- Gonçalo Moita – Aluno N.º 123283
 
 ---
 
-### Correr com run.bat (recomendado)
+### Sobre o projeto
+
+PantryMate é uma aplicação web de gestão de despensa familiar que permite controlar stocks, datas de validade, listas de compras e sugestões de receitas geradas por IA.
+
+O projeto está dividido em duas pastas principais:
+- `backend/` — API Django REST (Python)
+- `frontend/` — Interface React + Vite (JavaScript)
+
+---
+
+### Correr com run.bat
 
 **1ª vez — setup inicial:**
 ```powershell
@@ -19,7 +29,6 @@ Cria o ambiente virtual Python, instala todas as dependências e instala os paco
 ```
 run.bat
 ```
-Instala dependências Python automaticamente, cria e popula a base de dados se ainda não existir, e arranca o frontend e o backend em janelas separadas.
 
 ---
 

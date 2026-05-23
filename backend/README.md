@@ -1,6 +1,12 @@
 # Backend — PantryMate
 
-## Configuração inicial
+## Projeto elaborado por
+- Rúben Rocha – Aluno N.º 66174
+- Tiago Alves – Aluno N.º 106090
+- Rodrigo Delaunay – Aluno N.º 122123
+- Gonçalo Moita – Aluno N.º 123283
+
+## Configuração inicial para correr MANUALMENTE (fora setup.ps1 e run.bat)
 
 Estar dentro da pasta `backend/`.
 
@@ -8,10 +14,9 @@ Estar dentro da pasta `backend/`.
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
-O prompt deve mostrar `(.venv)` no início.
 
 ### 2. Instalar dependências
-Só é necessário na primeira vez ou após alterações ao `requirements.txt`:
+
 ```powershell
 pip install -r requirements.txt
 ```
@@ -22,7 +27,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 4. Popular com dados de demonstração
+### 4. Dados demonstração
 ```powershell
 python manage.py sample_users   # cria utilizadores e famílias de exemplo
 python manage.py sample_data    # popula produtos, dispensa e receitas
@@ -32,46 +37,12 @@ python manage.py sample_data    # popula produtos, dispensa e receitas
 ```powershell
 python manage.py runserver
 ```
-O servidor fica disponível em `http://localhost:8000`.
+`http://localhost:8000`.
 
 ### 6. Painel de administração
-Abre `http://localhost:8000/admin/` e entra com as credenciais criadas pelo `sample_users`.
+`http://localhost:8000/admin/`
 
----
-
-## Notas
-
-- O ficheiro `db.sqlite3` é local e não está no git — cada pessoa tem a sua própria base de dados.
-- Sempre que chegarem alterações aos `models.py` via `git pull`, corre `makemigrations` e `migrate` para as aplicar.
-
----
-
-## Adicionar uma nova App
-
-### 1. Criar a app
-```bash
-python manage.py startapp <NovaApp>
-```
-
-### 2. Registar em `backend/settings.py`
-```python
-INSTALLED_APPS = [
-    'novaapp.apps.NovaAppConfig',  # adicionar
-    ...
-]
-```
-
-### 3. Editar `novaapp/models.py` com os modelos pretendidos
-
-### 4. Efetuar migrações
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
----
-
-## Base de Dados — Estrutura Atual
+## BD— Estrutura
 
 ### `userprofiles` — Perfis de Utilizador
 
@@ -81,8 +52,6 @@ python manage.py migrate
 | `id` | PK | automático |
 | `user` | OneToOne → User | utilizador Django associado |
 | `creation_date` | data/hora | automático |
-
-> Criado automaticamente via signal `post_save` quando um `User` é criado.
 
 ---
 
