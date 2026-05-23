@@ -15,7 +15,3 @@ backend/db.sqlite3
 backend/**/__pycache__/
 backend/**/*.pyc
 backend/.env
-
-# Claude local settings
-.claude/
-.claude/settings.local.json
