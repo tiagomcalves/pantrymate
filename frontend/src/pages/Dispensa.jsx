@@ -89,6 +89,8 @@ const Dispensa = () => {
                                     imageFile={"http://127.0.0.1:8000" + produto.imagem}
                                     daysLeft={produto.data_validade}
                                     congelado={produto.congelado}
+                                    quantidade={produto.quantidade}
+                                    unidade={produto.unidade}
                                 />
                             ))}
                         </div>
