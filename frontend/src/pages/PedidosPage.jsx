@@ -3,64 +3,47 @@ import { Button, Badge } from "reactstrap";
 import { usePedidos } from "../context/PedidosContext";
 
 const CATEGORIAS = [
-    { nome: "Laticínios",       icone: "🥛", cor: "#e3f2fd", corTexto: "#1565c0" },
-    { nome: "Padaria",          icone: "🍞", cor: "#fff8e1", corTexto: "#f57f17" },
-    { nome: "Frutas e Legumes", icone: "🥦", cor: "#e8f5e9", corTexto: "#2e7d32" },
-    { nome: "Carnes",           icone: "🥩", cor: "#fce4ec", corTexto: "#c62828" },
-    { nome: "Bebidas",          icone: "🥤", cor: "#f3e5f5", corTexto: "#6a1b9a" },
-    { nome: "Outros",           icone: "🛒", cor: "#f5f5f5", corTexto: "#424242" },
+    { nome: "Frescos",    cor: "#fce4ec", corTexto: "#c62828" },
+    { nome: "Laticínios", cor: "#e3f2fd", corTexto: "#1565c0" },
+    { nome: "Congelados", cor: "#e0f7fa", corTexto: "#00695c" },
+    { nome: "Mercearia",  cor: "#f5f5f5", corTexto: "#424242" },
+    { nome: "Padaria",    cor: "#fff8e1", corTexto: "#f57f17" },
+    { nome: "Bebidas",    cor: "#f3e5f5", corTexto: "#6a1b9a" },
 ];
 
 const CATALOGO = {
-    "Laticínios":       [
-        { nome: "Leite",    icone: "🥛" },
-        { nome: "Queijo",   icone: "🧀" },
-        { nome: "Ovos",     icone: "🥚" },
-        { nome: "Manteiga", icone: "🧈" },
-        { nome: "Iogurte",  icone: "🥛" },
-        { nome: "Natas",    icone: "🥛" },
+    "Frescos": [
+        { nome: "Tomates Frescos"  },
+        { nome: "Fiambre Fatiado"  },
+        { nome: "Peitos de Frango" },
+        { nome: "Ovos"             },
+        { nome: "Presunto Curado"  },
     ],
-    "Padaria":          [
-        { nome: "Pão",      icone: "🍞" },
-        { nome: "Croissant",icone: "🥐" },
-        { nome: "Tostas",   icone: "🍞" },
-        { nome: "Bolo",     icone: "🎂" },
+    "Laticínios": [
+        { nome: "Leite"           },
+        { nome: "Queijo Flamengo" },
+        { nome: "Iogurte Natural" },
+        { nome: "Manteiga"        },
     ],
-    "Frutas e Legumes": [
-        { nome: "Maçã",     icone: "🍎" },
-        { nome: "Tomate",   icone: "🍅" },
-        { nome: "Banana",   icone: "🍌" },
-        { nome: "Laranja",  icone: "🍊" },
-        { nome: "Alface",   icone: "🥬" },
-        { nome: "Cenoura",  icone: "🥕" },
-        { nome: "Batata",   icone: "🥔" },
-        { nome: "Cebola",   icone: "🧅" },
-        { nome: "Alho",     icone: "🧄" },
+    "Congelados": [
+        { nome: "Salmão"       },
+        { nome: "Hambúrgueres" },
+        { nome: "Ervilhas"     },
     ],
-    "Carnes":           [
-        { nome: "Frango",       icone: "🍗" },
-        { nome: "Carne Picada", icone: "🥩" },
-        { nome: "Salsichas",    icone: "🌭" },
-        { nome: "Bacon",        icone: "🥓" },
-        { nome: "Porco",        icone: "🥩" },
-        { nome: "Atum",         icone: "🐟" },
-        { nome: "Salmão",       icone: "🐟" },
+    "Mercearia": [
+        { nome: "Massa Esparguete" },
+        { nome: "Arroz"            },
+        { nome: "Feijão"           },
+        { nome: "Azeite"           },
+        { nome: "Açúcar"           },
     ],
-    "Bebidas":          [
-        { nome: "Água (6x1.5L)",    icone: "💧" },
-        { nome: "Sumo de Laranja",  icone: "🍊" },
-        { nome: "Refrigerante",     icone: "🥤" },
-        { nome: "Cerveja",          icone: "🍺" },
-        { nome: "Vinho",            icone: "🍷" },
-        { nome: "Café",             icone: "☕" },
+    "Padaria": [
+        { nome: "Pão de Forma" },
+        { nome: "Tostas"       },
     ],
-    "Outros":           [
-        { nome: "Açúcar",     icone: "🍬" },
-        { nome: "Sal",        icone: "🧂" },
-        { nome: "Azeite",     icone: "🫙" },
-        { nome: "Massa",      icone: "🍝" },
-        { nome: "Arroz",      icone: "🍚" },
-        { nome: "Detergente", icone: "🧴" },
+    "Bebidas": [
+        { nome: "Água"            },
+        { nome: "Sumo de Laranja" },
     ],
 };
 
@@ -80,7 +63,6 @@ const PedidosPage = () => {
     const [aSubmeter, setASubmeter] = useState(false);
 
     const abrirCategoria = (cat) => {
-        // pré-selecionar o que já está no carrinho para esta categoria
         const jaNoCarrinho = new Set(
             carrinho.filter(i => i.categoria === cat.nome).map(i => i.nome)
         );
@@ -98,13 +80,8 @@ const PedidosPage = () => {
     };
 
     const adicionarAoCarrinho = () => {
-        // remove itens desta categoria que foram desmarcados
         const semCategoria = carrinho.filter(i => i.categoria !== categoriaAtiva.nome);
-        // adiciona os selecionados
-        const novos = [...selecionados].map(nome => {
-            const prod = (CATALOGO[categoriaAtiva.nome] || []).find(p => p.nome === nome);
-            return { nome, icone: prod?.icone || "🛒", categoria: categoriaAtiva.nome };
-        });
+        const novos = [...selecionados].map(nome => ({ nome, categoria: categoriaAtiva.nome }));
         setCarrinho([...semCategoria, ...novos]);
         setVista("categorias");
         setCategoriaAtiva(null);
@@ -135,11 +112,9 @@ const PedidosPage = () => {
                 </button>
 
                 <div style={{
-                    display: "flex", alignItems: "center", gap: "10px",
                     marginBottom: "20px", padding: "12px 16px",
                     borderRadius: "12px", background: categoriaAtiva.cor,
                 }}>
-                    <span style={{ fontSize: "28px" }}>{categoriaAtiva.icone}</span>
                     <h5 style={{ margin: 0, color: categoriaAtiva.corTexto }}>{categoriaAtiva.nome}</h5>
                 </div>
 
@@ -165,7 +140,6 @@ const PedidosPage = () => {
                                     onClick={e => e.stopPropagation()}
                                     style={{ width: "18px", height: "18px", cursor: "pointer", accentColor: categoriaAtiva.corTexto }}
                                 />
-                                <span style={{ fontSize: "22px" }}>{prod.icone}</span>
                                 <span style={{ flex: 1, fontWeight: checked ? "600" : "400", color: checked ? categoriaAtiva.corTexto : "inherit" }}>
                                     {prod.nome}
                                 </span>
@@ -189,7 +163,7 @@ const PedidosPage = () => {
     // ── Vista: grelha de categorias ────────────────────────────────────────────
     return (
         <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
-            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>🙋 Fazer um Pedido</h4>
+            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>Fazer um Pedido</h4>
             <p style={{ color: "#1a1a2e", fontWeight: "600", marginBottom: "20px" }}>
                 Escolhe as categorias e seleciona os produtos que precisas.
             </p>
@@ -225,7 +199,6 @@ const PedidosPage = () => {
                                     {count}
                                 </div>
                             )}
-                            <div style={{ fontSize: "32px", marginBottom: "8px" }}>{cat.icone}</div>
                             <div style={{ fontWeight: "600", color: cat.corTexto, fontSize: "14px" }}>{cat.nome}</div>
                         </div>
                     );
@@ -247,7 +220,7 @@ const PedidosPage = () => {
                                 background: "#fff", border: "1px solid #e0e0e0",
                                 borderRadius: "20px", padding: "4px 10px", fontSize: "13px",
                             }}>
-                                {item.icone} {item.nome}
+                                {item.nome}
                             </span>
                         ))}
                     </div>
@@ -284,9 +257,8 @@ const PedidosPage = () => {
                                     </div>
                                     <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
                                         {pedido.itens.map((item, i) => (
-                                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "14px" }}>
-                                                <span>{item.icone}</span>
-                                                <span>{item.nome}</span>
+                                            <div key={i} style={{ fontSize: "14px" }}>
+                                                {item.nome}
                                             </div>
                                         ))}
                                     </div>
