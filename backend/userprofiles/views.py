@@ -30,6 +30,9 @@ def signup(request):
 
 @api_view(['POST'])
 def login_view(request):
+    if request.method != 'POST':
+        Response(status=status.HTTP_400_BAD_REQUEST)
+
     username = request.data.get('username')
     password = request.data.get('password')
     user = authenticate(request, username=username, password=password)

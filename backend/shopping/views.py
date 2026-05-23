@@ -38,7 +38,7 @@ def lista_compras(request):
             unidade=request.data.get('unidade', 'EA'),
         )
         return Response(ItemListaCompraSerializer(item).data, status=status.HTTP_201_CREATED)
-
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
 def item_lista_compras(request, pk):

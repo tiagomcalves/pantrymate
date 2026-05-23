@@ -64,11 +64,10 @@ def products(request):
 #
 #         serializer = ItemDispensaSerializer(item)
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-1
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def items_dispensa(request):
-
     if request.method == 'GET':
         user_family = request.user.membrofamilia.family
         items = ItemDispensa.objects.filter(familia=user_family)
@@ -98,7 +97,6 @@ def add_item_dispensa(request) -> Response:
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def items_dispensa_alertas(request):
-
     if request.method == 'GET':
         hoje = timezone.now().date()
         no_prazo_limite = hoje + timedelta(days=3)

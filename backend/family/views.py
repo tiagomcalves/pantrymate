@@ -8,16 +8,6 @@ from userprofiles.serializers import ProfileSerializer
 from .models import Familia, MembroFamilia
 from .serializers import MembroFamiliaSerializer, FamilyMembersListSerializer
 
-FAMILIA_ID_DEFAULT = 1
-
-
-def _get_familia(familia_id):
-    familia, _ = Familia.objects.get_or_create(
-        id=familia_id,
-        defaults={'nome': 'Família Principal'}
-    )
-    return familia
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -125,6 +115,6 @@ def membro_detail(request, pk):
             membro.user.save()
         membro.save()
 
-        return Response(FamilyMembersListSerializer(membro).data, status=status.HTTP_200_OK)
+        return Response(FamilyMembersListSerializer(membro).data, status=status.HTTP_202_ACCEPTED)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
