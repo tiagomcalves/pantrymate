@@ -52,3 +52,29 @@ python manage.py runserver
 ```bash
 npm run dev
 ```
+
+---
+
+### Dados criados pelo `sample_users` + `sample_data`
+
+**Utilizadores criados (QUE DEVERÃO SER UTILIZADOS PARA EFETUAR LOG-IN NA PLATAFORMA):**
+- `admin` / `admin123` — superuser (Django Admin)
+- `maria` / `maria123` — Maria Silva, admin da Família Silva
+- `joao` / `joao123` — Joao Silva, admin da Família Silva
+- `ana` / `ana123` — Ana Silva, member da Família Silva
+- `pedro` / `pedro123` — Pedro Silva, junior da Família Silva
+- `claudia` / `claudia123` — Claudia Marques, admin da Família Marques
+- `goncalo` / `goncalo123` — Gonçalo Marques, member da Família Marques
+- `hugo` / `hugo123` — Hugo Marques, junior da Família Marques
+
+> Roles: `admin` gere a família; `member` tem acesso completo; `junior` tem acesso limitado.
+
+**Famílias criadas:** Família Silva · Família Marques
+
+**Catálogo de produtos criado (21 produtos):** Frescos (Tomates Frescos, Fiambre Fatiado, Peitos de Frango, Ovos, Presunto Curado), Congelados (Salmão, Hambúrgueres, Ervilhas), Laticínios (Queijo Flamengo, Leite, Iogurte Natural, Manteiga), Mercearia (Massa Esparguete, Arroz, Feijão, Azeite, Açúcar), Padaria (Pão de Forma, Tostas), Bebidas (Água, Sumo de Laranja).
+
+**Dispensa da Família Silva (14 itens):** Tomates Frescos, Fiambre Fatiado, Peitos de Frango (congelado), Queijo Flamengo, Ovos, Presunto Curado, Leite, Iogurte Natural, Massa Esparguete, Arroz, Azeite, Pão de Forma, Água, Salmão (congelado).
+
+**Dispensa da Família Marques (9 itens):** Tomates Frescos, Hambúrgueres (congelado), Ervilhas (congelado), Leite, Manteiga, Feijão, Açúcar, Tostas, Sumo de Laranja.
+
+**Receitas sugeridas criadas (para ambas as famílias):** Paloco do ISCTE, Exemplo estático, Bife à molho do chefe do ISCTE.
