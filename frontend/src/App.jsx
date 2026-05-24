@@ -30,26 +30,24 @@ const AppShell = () => (
 function App() {
     return (
         <BrowserRouter>
-            <SessionManager>
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route element={<ProtectedRoute />}>
-                        <Route element={<AppShell />}>
-                            <Route index element={<Dashboard />} />
-                            <Route path="dispensa" element={<Dispensa />} />
-                            <Route path="scanner" element={<ScannerPage />} />
-                            <Route path="recipes" element={<Recipes />} />
-                            <Route path="family" element={<FamiliaPage />} />
-                            <Route path="compras" element={<ListaComprasPage />} />
-                            <Route path="pedidos" element={<PedidosPage />} />
-                            <Route path="suggestions" element={<SuggestionPage />} />
-                            <Route path="alertas" element={<AlertasPage/>} />
-                            <Route path="recipes/:id" element={<RecipeDetailPage />} />
-                        </Route>
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route element={<AppShell />}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="dispensa" element={<Dispensa />} />
+                        <Route path="scanner" element={<ScannerPage />} />
+                        <Route path="recipes" element={<Recipes />} />
+                        <Route path="family" element={<FamiliaPage />} />
+                        <Route path="compras" element={<ListaComprasPage />} />
+                        <Route path="pedidos" element={<PedidosPage />} />
+                        <Route path="suggestions" element={<SuggestionPage />} />
+                        <Route path="alertas" element={<AlertasPage/>} />
+                        <Route path="recipes/:id" element={<RecipeDetailPage />} />
                     </Route>
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-            </SessionManager>
+                </Route>
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
         </BrowserRouter>
     );
 }

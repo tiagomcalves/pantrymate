@@ -8,26 +8,26 @@ from userprofiles.serializers import ProfileSerializer
 from .models import Familia, MembroFamilia
 from .serializers import MembroFamiliaSerializer, FamilyMembersListSerializer
 
-FAMILIA_ID_DEFAULT = 1
 
+def get_familia(request):
+    if not hasattr(request, "user"):
+        return None
 
-def _get_familia(familia_id):
-    familia, _ = Familia.objects.get_or_create(
-        id=familia_id,
-        defaults={'nome': 'Família Principal'}
-    )
-    return familia
+    if not hasattr(request.user, "membrofamilia"):
+        return None
+
+    return request.user.membrofamilia.family
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def membros(request):
-
-    if not hasattr(request.user, "membrofamilia"):
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
     if request.method == 'GET':
-        qs = request.user.membrofamilia.family.get_members()
+        _family = get_familia(request)
+        if _family is None:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        qs = _family.get_members()
         return Response(FamilyMembersListSerializer(qs, many=True).data)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -69,7 +69,7 @@ def membro_add(request):
         user.profile.role = role
         user.profile.save()
 
-        family_id = request.user.membrofamilia.family
+        family_id = get_familia(request)
 
         membro = MembroFamilia.objects.create(
             user=user,

@@ -32,13 +32,13 @@ const ListaComprasPage = () => {
     }, []);
 
     useEffect(() => {
-        axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
+        axios.get(`/shopping/api/lista/`, { withCredentials: true})
             .then(res => setItens(res.data))
             .catch(err => console.error('Erro ao carregar lista de compras:', err));
     }, []);
 
     useEffect(() => {
-        axios.get(`/shopping/api/pedidos/?familia_id=${FAMILIA_ID}`)
+        axios.get(`/shopping/api/pedidos/`, { withCredentials: true})
             .then(res => setPedidos(res.data.filter(p => p.estado === 'pendente')))
             .catch(err => console.error('Erro ao carregar pedidos:', err));
     }, []);

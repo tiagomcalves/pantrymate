@@ -1,8 +1,8 @@
 import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import {PedidosProvider} from './context/PedidosContext'
 import axios from 'axios'
+import SessionManager from "./features/SessionManager.jsx";
 
 axios.interceptors.request.use(config => {
     const csrfToken = document.cookie
@@ -16,7 +16,7 @@ axios.interceptors.request.use(config => {
 });
 
 createRoot(document.getElementById('root')).render(
-    <PedidosProvider>
+    <SessionManager>
         <App/>
-    </PedidosProvider>
+    </SessionManager>
 )

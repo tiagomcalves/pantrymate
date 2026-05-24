@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {fetchAlerts} from "../context/Alertas.js";
+import {fetchPedidos, criarPedido, atualizarEstado} from "../context/Pedidos.js";
 
 export const SessionContext = createContext(null);
 
@@ -14,10 +15,12 @@ const SessionManager = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const [alertas, setAlertas] = useState();
+    const [pedidos, setPedidos] = useState([]);
 
 
     useEffect( () => {
 
+    // console.log("SessionProvider mounted");
         loadData().then(r => []);
 
         const intervalo = setInterval(async () => {
@@ -95,7 +98,9 @@ const SessionManager = ({ children }) => {
     };
 
     return (
-        <SessionContext.Provider value={{ currentUser, loading, handleLogin, handleLogout, alertas, setAlertas }}>
+        <SessionContext.Provider value={{ currentUser, loading, handleLogin, handleLogout,
+            alertas, setAlertas,
+            pedidos, setPedidos, fetchPedidos, criarPedido, atualizarEstado }}>
             {children}
         </SessionContext.Provider>
     );

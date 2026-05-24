@@ -1,6 +1,6 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button, Badge } from "reactstrap";
-import { usePedidos } from "../context/PedidosContext";
+import {getCurrentSession} from "../features/SessionManager.jsx";
 
 const CATEGORIAS = [
     { nome: "Frescos",    cor: "#fce4ec", corTexto: "#c62828" },
@@ -54,13 +54,19 @@ const estadoBadge = {
 };
 
 const PedidosPage = () => {
-    const { pedidos, criarPedido } = usePedidos();
+    const { pedidos, setPedidos, fetchPedidos, criarPedido, atualizarEstado } = getCurrentSession();
 
     const [vista, setVista] = useState("categorias");
     const [categoriaAtiva, setCategoriaAtiva] = useState(null);
     const [selecionados, setSelecionados] = useState(new Set());
     const [carrinho, setCarrinho] = useState([]);
     const [aSubmeter, setASubmeter] = useState(false);
+
+    useEffect(() => {
+        fetchPedidos().then(data => {
+            setPedidos(data);
+        });
+    }, []);
 
     const abrirCategoria = (cat) => {
         const jaNoCarrinho = new Set(
@@ -90,8 +96,12 @@ const PedidosPage = () => {
     const submeterPedido = () => {
         if (carrinho.length === 0 || aSubmeter) return;
         setASubmeter(true);
+
         criarPedido(carrinho)
-            .then(() => setCarrinho([]))
+            .then(() => {
+                setCarrinho([]);
+                setPedidos(carrinho);
+            })
             .catch(err => console.error('Erro ao criar pedido:', err))
             .finally(() => setASubmeter(false));
     };
@@ -245,6 +255,7 @@ const PedidosPage = () => {
                     <h6 style={{ color: "#555", marginBottom: "12px" }}>Os meus pedidos</h6>
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                         {pedidos.map(pedido => {
+                            console.log(pedido.estado);
                             const badge = estadoBadge[pedido.estado];
                             return (
                                 <div key={pedido.id} style={{ borderRadius: "12px", border: "1px solid #e0e0e0", overflow: "hidden", background: "rgba(255,255,255,0.95)", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>

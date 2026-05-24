@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge, Button } from "reactstrap";
-import { getCurrentSession } from "../features/SessionManager.jsx";
-import { usePedidos } from "../context/PedidosContext";
+import {getCurrentSession, SessionContext} from "../features/SessionManager.jsx";
 import axios from "axios";
 
-const FAMILIA_ID = 1; // TODO: derivar do utilizador autenticado
 
 const ListaCompras = () => {
     const [itens, setItens] = useState([]);
     const navigate = useNavigate();
-    const { currentUser } = getCurrentSession();
+    const { currentUser, pedidos, setPedidos, criarPedido } = getCurrentSession();
     const role = currentUser?.role;
-    const { pedidos } = usePedidos();
 
     useEffect(() => {
-        axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
+        axios.get(`/shopping/api/lista/`)
             .then(res => setItens(res.data))
             .catch(err => console.error('Erro ao carregar lista de compras:', err));
     }, []);
@@ -33,7 +30,7 @@ const ListaCompras = () => {
     const pendentes = itens.length;
 
     if (role === "junior") {
-        const ultimoPedido = pedidos[0];
+        const ultimoPedido = pedidos[0] ?? null;
         return (
             <div style={{
                 marginBottom: "16px",
