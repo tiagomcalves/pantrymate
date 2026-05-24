@@ -35,10 +35,10 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AppShell />}>
                         <Route index element={<Dashboard />} />
-                        <Route path="dispensa" element={<Dispensa />} />
+                        <Route path="despensa" element={<Dispensa />} />
                         <Route path="scanner" element={<ScannerPage />} />
                         <Route path="recipes" element={<Recipes />} />
-                        <Route path="family" element={<FamiliaPage />} />
+                        <Route path="familia" element={<FamiliaPage />} />
                         <Route path="compras" element={<ListaComprasPage />} />
                         <Route path="pedidos" element={<PedidosPage />} />
                         <Route path="suggestions" element={<SuggestionPage />} />

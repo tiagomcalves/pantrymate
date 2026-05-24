@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      '/account': 'http://localhost:8000',
       '/products': 'http://localhost:8000',
       '/shopping': 'http://localhost:8000',
       '/family': 'http://localhost:8000',
-      '/recipes': 'http://localhost:8000',
     }
   }
 })

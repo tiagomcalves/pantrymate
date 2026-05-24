@@ -24,12 +24,12 @@ const NavMenu = () => {
             style={{ height: "30px" }}
         >
             <NavMenuItem icon={dashboardIcon} string={"Dashboard"} href={"/"}/>
-            <NavMenuItem icon={pantryIcon} string={"Despensa"} href={"/dispensa"}/>
+            <NavMenuItem icon={pantryIcon} string={"Despensa"} href={"/despensa"}/>
             {role !== "junior" && (
                 <NavMenuItem icon={scannerIcon} string={"Scanner"} href={"/scanner"}/>
             )}
             <NavMenuItem icon={recipesIcon} string={"Receitas"} href={"/recipes"}/>
-            <NavMenuItem icon={familyIcon} string={"Familia"} href={"/family"}/>
+            <NavMenuItem icon={familyIcon} string={"Familia"} href={"/familia"}/>
         </ButtonGroup>
     )
 }
