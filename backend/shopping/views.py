@@ -36,12 +36,16 @@ def lista_compras(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def item_lista_compras(request, pk):
+    if request.method != 'DELETE':
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
     try:
-        item = ItemListaCompra.objects.get(pk=pk)
+        _family = get_familia(request)
+        item = ItemListaCompra.objects.get(pk=pk, family=_family)
+        item.delete()
     except ItemListaCompra.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    item.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -70,10 +74,15 @@ def pedidos_compra(request):
             )
         return Response(PedidoCompraSerializer(pedido).data, status=status.HTTP_201_CREATED)
 
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def pedido_detail(request, pk):
+    if request.method != 'PATCH':
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
     try:
         pedido = PedidoCompra.objects.prefetch_related('itens').get(pk=pk)
     except PedidoCompra.DoesNotExist:
