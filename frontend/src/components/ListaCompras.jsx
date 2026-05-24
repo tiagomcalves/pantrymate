@@ -12,9 +12,15 @@ const ListaCompras = () => {
     const role = currentUser?.role;
 
     useEffect(() => {
+        if( role !== "junior"){
         axios.get(`/shopping/api/lista/`)
             .then(res => setItens(res.data))
             .catch(err => console.error('Erro ao carregar lista de compras:', err));
+        }
+
+        axios.get(`/shopping/api/pedidos/`, { withCredentials: true})
+            .then(res => setPedidos(res.data.filter(p => p.estado === 'pendente')))
+            .catch(err => console.error('Erro ao carregar pedidos:', err));
     }, []);
 
     const toggleComprado = (id) => {

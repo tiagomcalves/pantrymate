@@ -98,7 +98,7 @@ const ListaComprasPage = () => {
         axios.patch(`/shopping/api/pedidos/${id}/`, { estado: "aprovado" })
             .then(() => {
                 setPedidos(prev => prev.filter(p => p.id !== id));
-                axios.get(`/shopping/api/lista/?familia_id=${FAMILIA_ID}`)
+                axios.get(`/shopping/api/lista/`)
                     .then(res => setItens(res.data));
             })
             .catch(err => console.error('Erro ao aceitar pedido:', err));

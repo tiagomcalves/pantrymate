@@ -46,6 +46,7 @@ def item_lista_compras(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def pedidos_compra(request):
     _familia = get_familia(request)
     if _familia is None:
@@ -71,6 +72,7 @@ def pedidos_compra(request):
 
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def pedido_detail(request, pk):
     try:
         pedido = PedidoCompra.objects.prefetch_related('itens').get(pk=pk)

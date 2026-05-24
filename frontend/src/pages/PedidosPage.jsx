@@ -254,7 +254,7 @@ const PedidosPage = () => {
                     <h6 style={{ color: "#555", marginBottom: "12px" }}>Os meus pedidos</h6>
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                         {pedidos.map(pedido => {
-                            console.log(pedido.estado);
+                            // console.log(pedido.estado);
                             const badge = estadoBadge[pedido.estado];
                             return (
                                 <div key={pedido.id} style={{ borderRadius: "12px", border: "1px solid #e0e0e0", overflow: "hidden", background: "rgba(255,255,255,0.95)", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
