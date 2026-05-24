@@ -14,7 +14,7 @@ def products(request):
     if request.method == 'GET':
         produtos = Produto.objects.all()
         serializer = ProdutoSerializer(produtos, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -26,6 +26,10 @@ def scanner_adicionar(request):
     ItemDispensa. Cria o Produto e a Categoria se ainda não existirem.
     Payload: { "produtos": [{ "nome", "quantidade", "unidade", "categoria_nome", "data_validade" }] }
     """
+
+    if request.method != 'POST':
+        return Response({'error': 'lista de produtos vazia'}, status=status.HTTP_400_BAD_REQUEST)
+
     produtos_data = request.data.get('produtos', [])
     if not produtos_data:
         return Response({'error': 'lista de produtos vazia'}, status=status.HTTP_400_BAD_REQUEST)
