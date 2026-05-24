@@ -4,14 +4,13 @@ import { getCurrentSession } from "../features/SessionManager.jsx";
 import axios from "axios";
 
 const PRODUTOS_DETETADOS = [
-    { nome: "Leite",  quantidade: 6, unidade: "L",  categoria_nome: "Laticínios", dataValidade: "2026-07-20", imagemSrc: "/foods/diet.png" },
-    { nome: "Porco",  quantidade: 3, unidade: "kg", categoria_nome: "Carnes",     dataValidade: "2026-05-25", imagemSrc: "/foods/diet.png" },
-    { nome: "Arroz",  quantidade: 2, unidade: "kg", categoria_nome: "Outros",     dataValidade: "2027-06-01", imagemSrc: "/foods/diet.png" },
+    { nome: "Leite",  quantidade: 6, unidade: "L",  categoria_nome: "Laticínios", data_validade: "2026-07-20" },
+    { nome: "Peitos de Frango",  quantidade: 3, unidade: "kg", categoria_nome: "Frescos",     data_validade: "2026-05-25" },
+    { nome: "Arroz",  quantidade: 2, unidade: "kg", categoria_nome: "Outros",     data_validade: "2027-06-01" },
 ];
 
 const ScannerPage = () => {
     const { currentUser } = getCurrentSession();
-    const { adicionarProdutos } = useProdutos();
     const role = currentUser?.role;
     const inputRef = useRef(null);
 
@@ -37,28 +36,11 @@ const ScannerPage = () => {
     const handleAdicionar = async () => {
         setEstado("adicionando");
         try {
-            await Promise.all(
-                PRODUTOS_DETETADOS.map(p =>
-                    axios.post(
-                        "http://localhost:8000/products/api/itens/",
-                        { nome: p.nome, quantidade: p.quantidade, unidade: p.unidade, categoria_nome: p.categoria_nome },
-                        { withCredentials: true }
-                    )
-                )
-            );
+            await axios.post("/products/api/scanner/", { produtos: PRODUTOS_DETETADOS });
+            setEstado("adicionado");
         } catch {
-            // backend indisponível — continua com contexto local
+            setEstado("erro");
         }
-        adicionarProdutos(
-            PRODUTOS_DETETADOS.map(p => ({
-                nome: p.nome,
-                categoria: p.categoria_nome,
-                dataValidade: p.dataValidade,
-                imagemSrc: p.imagemSrc,
-                quantidade: p.quantidade,
-            }))
-        );
-        setEstado("adicionado");
     };
 
     const handleReset = () => {
@@ -192,6 +174,22 @@ const ScannerPage = () => {
                         onClick={handleReset}
                     >
                         Carregar outra imagem
+                    </Button>
+                </div>
+            )}
+
+            {/* Erro ao guardar */}
+            {estado === "erro" && (
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <div style={{ fontSize: "48px", marginBottom: "8px" }}>❌</div>
+                    <p style={{ color: "#c62828", fontWeight: "600", marginBottom: "16px" }}>
+                        Erro ao guardar na base de dados. Tenta novamente.
+                    </p>
+                    <Button
+                        style={{ background: "#45A293", border: "none", borderRadius: "12px", padding: "10px 20px", fontWeight: "600", color: "#fff" }}
+                        onClick={() => setEstado("resultado")}
+                    >
+                        Tentar novamente
                     </Button>
                 </div>
             )}

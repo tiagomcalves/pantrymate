@@ -93,7 +93,7 @@ def membro_detail(request, pk):
         password = request.data.get('password', '')
 
         if role:
-            membro.papel = role
+            membro.role = role
             if membro.user:
                 membro.user.profile.role = role
                 membro.user.profile.save()

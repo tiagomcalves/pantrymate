@@ -16,12 +16,18 @@ const SuggestionByAI = () => {
 
     const fetchProdutos = () => {
         setRecipe(null);
+        setError(null);
+        setLoading(true);
         axios.get("http://localhost:8000/products/api/itens/", { withCredentials: true })
             .then(response => {
                 const shuffled = response.data.sort(() => 0.5 - Math.random());
                 setSelectedProducts(shuffled.slice(0, 3));
             })
-            .catch(error => console.error(error));
+            .catch(err => {
+                console.error(err);
+                setError("Não foi possível carregar os produtos.");
+                setLoading(false);
+            });
     };
 
     useEffect(() => { fetchProdutos(); }, []);
@@ -29,9 +35,9 @@ const SuggestionByAI = () => {
     useEffect(() => {
         if (selectedProducts.length === 0) return;
 
+        setError(null);
         setLoading(true);
         const names = selectedProducts.map(p => p.nome).join(", ");
-        console.log("produtos selecionados:", names);
 
         axios.post(GROQ_API_URL, {
             model: "llama-3.1-8b-instant",
@@ -50,7 +56,9 @@ const SuggestionByAI = () => {
             let content = response.data.choices[0].message.content.trim();
             const match = content.match(/\{[\s\S]*\}/);
             if (match) content = match[0];
-            setRecipe(JSON.parse(content));
+            const parsed = JSON.parse(content);
+            if (!parsed.name) throw new Error("Resposta inválida da IA.");
+            setRecipe(parsed);
         })
         .catch(err => {
             console.error("Groq error:", err);
@@ -61,12 +69,10 @@ const SuggestionByAI = () => {
 
     const names = selectedProducts.map(p => p.nome);
     const usingText = names.length > 0
-        ? `Usando os teus ${names.join(", ")}...`
+        ? `Utilizando ${names.join(", ")}...`
         : "A carregar produtos...";
 
-    const recipeImage = selectedProducts.length > 0 && selectedProducts[0].imagem
-        ? selectedProducts[0].imagem
-        : "/foods/diet.png";
+    const recipeImage = "/foods/diet.png";
 
     // so funciona quando o backend ta ligado
     return (
@@ -84,7 +90,7 @@ const SuggestionByAI = () => {
                             onClick={e => { e.stopPropagation(); fetchProdutos(); }}
                             style={{ background: "#45A293", border: "none" }}
                         >
-                            ↻ alternativa
+                            ↻ Alternativa
                         </Button>
                     </div>
                     <CardText style={{ fontSize: "0.85rem", color: "#6c757d" }}>

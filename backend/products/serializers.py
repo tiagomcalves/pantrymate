@@ -3,9 +3,11 @@ from .models import Produto, ItemDispensa
 
 
 class ProdutoSerializer(serializers.ModelSerializer):
+    categoria_nome = serializers.CharField(source='categoria.nome', read_only=True)
+
     class Meta:
         model = Produto
-        fields = ('id', 'nome', 'categoria', 'imagem')
+        fields = ('id', 'nome', 'categoria', 'categoria_nome', 'imagem', 'unidade_padrao')
 
 
 class ItemDispensaSerializer(serializers.ModelSerializer):

@@ -14,19 +14,19 @@ class Categoria(models.Model):
 
 class Produto(models.Model):
     UNIDADE_CHOICES = [
-        ('un', 'Unidade'),
-        ('cx', 'Caixa'),
-        ('kg', 'Quilograma'),
-        ('g', 'Grama'),
-        ('L', 'Litro'),
-        ('mL', 'Mililitro'),
+        ('un', 'UN'),
+        ('cx', 'CX'),
+        ('kg', 'kg'),
+        ('g', 'g'),
+        ('L', 'L'),
+        ('mL', 'mL'),
     ]
 
     nome = models.CharField(max_length=120)
     categoria = models.ForeignKey(
         Categoria, on_delete=models.SET_NULL, null=True, blank=True, related_name='produtos'
     )
-
+    unidade_padrao = models.CharField(max_length=10, choices=UNIDADE_CHOICES, default='un')
     imagem = models.ImageField(upload_to='produtos/', blank=True, null=True)
 
     def __str__(self):

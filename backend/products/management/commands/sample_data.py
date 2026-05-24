@@ -14,29 +14,29 @@ CATEGORIAS = [
     "Bebidas",
 ]
 
-# (nome, categoria, unidade)
+# (nome, categoria, unidade, imagem)
 PRODUTOS = [
-    ("Tomates Frescos",      "Frescos",    "kg"),
-    ("Fiambre Fatiado",      "Frescos",    "un"),
-    ("Peitos de Frango",     "Frescos",    "kg"),
-    ("Queijo Flamengo",      "Laticínios", "un"),
-    ("Ovos",                 "Frescos",    "un"),
-    ("Presunto Curado",      "Frescos",    "un"),
-    ("Salmão",               "Congelados", "kg"),
-    ("Hambúrgueres",         "Congelados", "un"),
-    ("Ervilhas",             "Congelados", "kg"),
-    ("Leite",                "Laticínios", "L"),
-    ("Iogurte Natural",      "Laticínios", "un"),
-    ("Manteiga",             "Laticínios", "un"),
-    ("Massa Esparguete",     "Mercearia",  "un"),
-    ("Arroz",                "Mercearia",  "kg"),
-    ("Feijão",               "Mercearia",  "un"),
-    ("Azeite",               "Mercearia",  "L"),
-    ("Açúcar",               "Mercearia",  "kg"),
-    ("Pão de Forma",         "Padaria",    "un"),
-    ("Tostas",               "Padaria",    "un"),
-    ("Água",                 "Bebidas",    "L"),
-    ("Sumo de Laranja",      "Bebidas",    "L"),
+    ("Tomates Frescos",  "Frescos",    "kg",  "produtos/tomates_frescos.jpg"),
+    ("Fiambre Fatiado",  "Frescos",    "g",   "produtos/fiambre_fatiado.jpg"),
+    ("Peitos de Frango", "Frescos",    "kg",  "produtos/peitos_frango.jpg"),
+    ("Queijo Flamengo",  "Laticínios", "g",   "produtos/queijo_flamengo.jpg"),
+    ("Ovos",             "Frescos",    "un",  "produtos/ovos.jpg"),
+    ("Presunto Curado",  "Frescos",    "un",  "produtos/presunto.jpg"),
+    ("Salmão",           "Congelados", "kg",  "produtos/salmao.jpg"),
+    ("Hambúrgueres",     "Congelados", "un",  "produtos/hamburgueres.jpg"),
+    ("Ervilhas",         "Congelados", "kg",  "produtos/ervilhas.jpg"),
+    ("Leite",            "Laticínios", "L",   "produtos/leite.jpg"),
+    ("Iogurte Natural",  "Laticínios", "un",  "produtos/iogurte.jpg"),
+    ("Manteiga",         "Laticínios", "un",  "produtos/manteiga.jpg"),
+    ("Massa Esparguete", "Mercearia",  "un",  "produtos/massa_esparguete.jpg"),
+    ("Arroz",            "Mercearia",  "kg",  "produtos/arroz.jpg"),
+    ("Feijão",           "Mercearia",  "un",  "produtos/feijao.jpg"),
+    ("Azeite",           "Mercearia",  "L",   "produtos/azeite.jpg"),
+    ("Açúcar",           "Mercearia",  "kg",  "produtos/acucar.jpg"),
+    ("Pão de Forma",     "Padaria",    "un",  "produtos/pao_de_forma.jpg"),
+    ("Tostas",           "Padaria",    "un",  "produtos/tostas.jpg"),
+    ("Água",             "Bebidas",    "L",   "produtos/agua.jpg"),
+    ("Sumo de Laranja",  "Bebidas",    "L",   "produtos/sumo_laranja.jpg"),
 ]
 
 hoje = timezone.now().date()
@@ -45,9 +45,9 @@ hoje = timezone.now().date()
 # dias negativos = já expirado; None = congelado sem data
 DISPENSA_FAMILIA1 = [
     ("Tomates Frescos",  6,  "un",  3,     False),
-    ("Fiambre Fatiado",  1,  "un",  5,     False),
+    ("Fiambre Fatiado",  200,  "g",  5,     False),
     ("Peitos de Frango", 2,  "kg",  None,  True),
-    ("Queijo Flamengo",  1,  "un",  7,     False),
+    ("Queijo Flamengo",  300,  "g",  7,     False),
     ("Ovos",             12, "un",  21,    False),
     ("Presunto Curado",  1,  "un",  25,    False),
     ("Leite",            2,  "L",   4,     False),
@@ -87,11 +87,21 @@ class Command(BaseCommand):
 
         # Produtos
         produtos = {}
-        for nome, cat_nome, unidade in PRODUTOS:
+        for nome, cat_nome, unidade, imagem in PRODUTOS:
             prod, created = Produto.objects.get_or_create(
                 nome=nome,
-                defaults={"categoria": categorias[cat_nome], "unidade": unidade}
+                defaults={"categoria": categorias[cat_nome], "unidade_padrao": unidade, "imagem": imagem}
             )
+            if not created:
+                atualizar = []
+                if prod.unidade_padrao != unidade:
+                    prod.unidade_padrao = unidade
+                    atualizar.append("unidade_padrao")
+                if not prod.imagem:
+                    prod.imagem = imagem
+                    atualizar.append("imagem")
+                if atualizar:
+                    prod.save(update_fields=atualizar)
             produtos[nome] = prod
             if created:
                 self.stdout.write(f"  Produto criado: {nome}")

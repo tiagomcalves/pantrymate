@@ -3,38 +3,43 @@
     "id": 1,
     "nome": "Tomates Frescos",
     "categoria": "Frescos",
-    "dataValidade": "2026-05-12",
-    "imagemSrc": "/foods/tomate.jpg",
+    "unidade": "kg",
+    "dataValidade": "2026-06-10",
+    "imagemSrc": "/foods/tomates_frescos.jpg",
     "quantidade": 6
   },
   {
     "id": 2,
     "nome": "Fiambre Fatiado",
     "categoria": "Frescos",
-    "dataValidade": "2026-05-14",
-    "imagemSrc": "/foods/fiambre.jpg",
-    "quantidade": 1
+    "unidade": "g",
+    "dataValidade": "2026-06-14",
+    "imagemSrc": "/foods/fiambre_fatiado.jpg",
+    "quantidade": 200
   },
   {
     "id": 3,
     "nome": "Peitos de Frango",
-    "categoria": "Congelados",
-    "dataValidade": "2026-05-07",
-    "imagemSrc": "/foods/frango.jpg",
+    "categoria": "Frescos",
+    "unidade": "kg",
+    "dataValidade": "2026-06-07",
+    "imagemSrc": "/foods/peitos_frango.jpg",
     "quantidade": 2
   },
   {
     "id": 4,
     "nome": "Queijo Flamengo",
-    "categoria": "Frescos",
-    "dataValidade": "2026-05-08",
-    "imagemSrc": "/foods/queijo.jpg",
-    "quantidade": 1
+    "categoria": "Laticínios",
+    "unidade": "g",
+    "dataValidade": "2026-06-08",
+    "imagemSrc": "/foods/queijo_flamengo.jpg",
+    "quantidade": 400
   },
   {
     "id": 5,
     "nome": "Ovos",
-    "categoria": "Mercearia",
+    "categoria": "Frescos",
+    "unidade": "un",
     "dataValidade": "2026-12-01",
     "imagemSrc": "/foods/ovos.jpg",
     "quantidade": 12
@@ -43,16 +48,144 @@
     "id": 6,
     "nome": "Presunto Curado",
     "categoria": "Frescos",
-    "dataValidade": "2026-06-15",
+    "unidade": "un",
+    "dataValidade": "2026-08-15",
     "imagemSrc": "/foods/presunto.jpg",
     "quantidade": 1
   },
   {
     "id": 7,
+    "nome": "Salmão",
+    "categoria": "Congelados",
+    "unidade": "kg",
+    "dataValidade": "2026-10-20",
+    "imagemSrc": "/foods/salmao.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 8,
+    "nome": "Hambúrgueres",
+    "categoria": "Congelados",
+    "unidade": "un",
+    "dataValidade": "2026-11-05",
+    "imagemSrc": "/foods/hamburgueres.jpg",
+    "quantidade": 4
+  },
+  {
+    "id": 9,
+    "nome": "Ervilhas",
+    "categoria": "Congelados",
+    "unidade": "kg",
+    "dataValidade": "2027-03-01",
+    "imagemSrc": "/foods/ervilhas.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 10,
+    "nome": "Leite",
+    "categoria": "Laticínios",
+    "unidade": "L",
+    "dataValidade": "2026-06-20",
+    "imagemSrc": "/foods/leite.jpg",
+    "quantidade": 3
+  },
+  {
+    "id": 11,
+    "nome": "Iogurte Natural",
+    "categoria": "Laticínios",
+    "unidade": "un",
+    "dataValidade": "2026-06-18",
+    "imagemSrc": "/foods/iogurte.jpg",
+    "quantidade": 4
+  },
+  {
+    "id": 12,
+    "nome": "Manteiga",
+    "categoria": "Laticínios",
+    "unidade": "un",
+    "dataValidade": "2026-09-01",
+    "imagemSrc": "/foods/manteiga.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 13,
     "nome": "Massa Esparguete",
     "categoria": "Mercearia",
-    "dataValidade": "2026-12-10",
-    "imagemSrc": "/foods/diet.png",
+    "unidade": "un",
+    "dataValidade": "2027-06-10",
+    "imagemSrc": "/foods/massa_esparguete.jpg",
     "quantidade": 3
+  },
+  {
+    "id": 14,
+    "nome": "Arroz",
+    "categoria": "Mercearia",
+    "unidade": "kg",
+    "dataValidade": "2027-01-01",
+    "imagemSrc": "/foods/arroz.jpg",
+    "quantidade": 2
+  },
+  {
+    "id": 15,
+    "nome": "Feijão",
+    "categoria": "Mercearia",
+    "unidade": "un",
+    "dataValidade": "2027-02-15",
+    "imagemSrc": "/foods/feijao.jpg",
+    "quantidade": 2
+  },
+  {
+    "id": 16,
+    "nome": "Azeite",
+    "categoria": "Mercearia",
+    "unidade": "L",
+    "dataValidade": "2027-04-01",
+    "imagemSrc": "/foods/azeite.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 17,
+    "nome": "Açúcar",
+    "categoria": "Mercearia",
+    "unidade": "kg",
+    "dataValidade": "2028-01-01",
+    "imagemSrc": "/foods/acucar.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 18,
+    "nome": "Pão de Forma",
+    "categoria": "Padaria",
+    "unidade": "un",
+    "dataValidade": "2026-06-12",
+    "imagemSrc": "/foods/pao_de_forma.jpg",
+    "quantidade": 1
+  },
+  {
+    "id": 19,
+    "nome": "Tostas",
+    "categoria": "Padaria",
+    "unidade": "un",
+    "dataValidade": "2026-12-01",
+    "imagemSrc": "/foods/tostas.jpg",
+    "quantidade": 2
+  },
+  {
+    "id": 20,
+    "nome": "Água",
+    "categoria": "Bebidas",
+    "unidade": "L",
+    "dataValidade": "2028-06-01",
+    "imagemSrc": "/foods/agua.jpg",
+    "quantidade": 6
+  },
+  {
+    "id": 21,
+    "nome": "Sumo de Laranja",
+    "categoria": "Bebidas",
+    "unidade": "L",
+    "dataValidade": "2026-07-01",
+    "imagemSrc": "/foods/sumo_laranja.jpg",
+    "quantidade": 2
   }
 ]

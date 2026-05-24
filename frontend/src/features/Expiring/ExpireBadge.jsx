@@ -2,7 +2,7 @@ import {Badge, Card, CardBody, CardText, CardTitle, ListGroup, ListGroupItem} fr
 import ProductCard from "../../components/common/ProductCard.jsx";
 import {useEffect, useState} from "react";
 
-const ExpireBadge = ({name, imageFile, daysLeft, congelado}) => {
+const ExpireBadge = ({name, imageFile, daysLeft, congelado, quantidade, unidade}) => {
 
     const imgPath = imageFile;
     const [tempo, setTempo] = useState({dias: 0, horas: 0, minutos: 0, segundos: 0});
@@ -52,6 +52,10 @@ const ExpireBadge = ({name, imageFile, daysLeft, congelado}) => {
     }
 
 
+    const dataFormatada = daysLeft
+        ? new Date(daysLeft).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        : null;
+
     return (
         <ProductCard title={name} img={imgPath}>
             <Badge color={labelColor} style={styleBadge} pill>
@@ -59,6 +63,16 @@ const ExpireBadge = ({name, imageFile, daysLeft, congelado}) => {
                     {labelDays}
                 </CardText>
             </Badge>
+            {quantidade != null && (
+                <CardText style={{ fontSize: '0.78rem', color: '#555', marginTop: '6px', marginBottom: 0 }}>
+                    {quantidade} {unidade}
+                </CardText>
+            )}
+            {!congelado && dataFormatada && quantidade != null && (
+                <CardText style={{ fontSize: '0.75rem', color: '#888', marginTop: '2px', marginBottom: 0 }}>
+                    Val: {dataFormatada}
+                </CardText>
+            )}
         </ProductCard>
     )
 }

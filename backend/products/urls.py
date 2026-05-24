@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/items-dispensa/alertas/', views.items_dispensa_alertas),
     path('api/products/', views.products),
     path('api/itens/', views.items_dispensa),
+    path('api/scanner/', views.scanner_adicionar),
 ]

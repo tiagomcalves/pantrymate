@@ -50,9 +50,11 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
         });
     };
 
-    const optionChangeHandler = (event) => { // (4)
+    const optionChangeHandler = (event) => {
         const optionId = parseInt(event.target.value);
         setSelectedOption(optionId);
+        const unidade = products[optionId]?.unidade_padrao;
+        if (unidade) setUnit(unidade);
     };
 
     return (
@@ -169,16 +171,17 @@ function AdicionarProdutoForm({products, toggle, getProducts}) {
                             name="select"
                             type="select"
                             required
-                            disabled={loading}
+                            value={unit}
+                            disabled={loading || selectedOption !== -1}
                             style={{borderRadius: "8px", borderColor: "rgba(0,0,0,0.12)"}}
                             onChange={(e) => setUnit(e.target.value)}
                         >
-                            <option value="un">Unidade</option>
-                            <option value="cx">Caixa</option>
-                            <option value="kg">Quilograma</option>
-                            <option value="g">Grama</option>
-                            <option value="L">Litro</option>
-                            <option value="mL">Mililitro</option>
+                            <option value="un">UN</option>
+                            <option value="cx">CX</option>
+                            <option value="kg">kg</option>
+                            <option value="g">g</option>
+                            <option value="L">L</option>
+                            <option value="mL">mL</option>
                         </Input>
                     </FormGroup>
                 </div>

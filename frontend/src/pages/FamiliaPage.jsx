@@ -120,7 +120,7 @@ const FamiliaPage = () => {
 
     return (
         <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
-            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>👨‍👩‍👧‍👦 Família</h4>
+            <h4 style={{ marginBottom: "4px", color: "#1a1a2e", fontWeight: "700" }}>Família</h4>
             <p style={{ color: "#1a1a2e", fontWeight: "600", marginBottom: "20px" }}>
                 {membros_msg}
             </p>
