@@ -13,7 +13,7 @@ export const fetchPedidos = async () => {
     }
 };
 
-export const criarPedido = (itens) => {
+export const criarPedido = async (itens) => {
     return axios.post(URL_PEDIDOS, { itens }, { withCredentials: true })
         .then(res => {
             return res.data;

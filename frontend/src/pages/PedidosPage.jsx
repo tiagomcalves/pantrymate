@@ -96,11 +96,10 @@ const PedidosPage = () => {
     const submeterPedido = () => {
         if (carrinho.length === 0 || aSubmeter) return;
         setASubmeter(true);
-
         criarPedido(carrinho)
-            .then(() => {
+            .then((res) => {
+                setPedidos(prev => [res, ...prev]);
                 setCarrinho([]);
-                setPedidos(carrinho);
             })
             .catch(err => console.error('Erro ao criar pedido:', err))
             .finally(() => setASubmeter(false));
