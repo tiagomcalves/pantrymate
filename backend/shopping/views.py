@@ -41,7 +41,7 @@ def item_lista_compras(request, pk):
 
     try:
         _family = get_familia(request)
-        item = ItemListaCompra.objects.get(pk=pk, family=_family)
+        item = ItemListaCompra.objects.get(pk=pk, familia=_family)
         item.delete()
     except ItemListaCompra.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
